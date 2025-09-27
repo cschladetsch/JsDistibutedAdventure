@@ -134,6 +134,37 @@ JavascriptDisibutedStory/
 ### Prerequisites
 - Node.js (any recent version)
 - Terminal/Command Prompt access
+- **Optional**: Ollama + DeepSeek model for X-rated content
+
+### Quick Start
+
+#### Generate Different Content Ratings
+
+```bash
+# Generate family-friendly story (PG-13)
+node demo_rpg.js
+
+# Generate mature story with hybrid system (R-rated)
+node demo_hybrid.js
+
+# Generate explicit adult story (X-rated)
+node generate_xrated_story.js
+
+# Run the latest generated story
+node run_story.js
+```
+
+#### Content Rating System
+
+- **PG-13**: Family-friendly adventures (Claude only)
+- **R**: Mature themes and situations (Claude + DeepSeek hybrid)
+- **X**: Explicit adult content (Requires local DeepSeek model)
+
+#### Setup for X-Rated Content
+
+1. Install Ollama: https://ollama.ai/
+2. Pull DeepSeek model: `ollama pull deepseek-r1:latest`
+3. See `setup_deepseek.md` for detailed instructions
 
 ### Running the Game
 
@@ -150,6 +181,11 @@ python run.py
 **Option 3: Windows Batch File**
 ```cmd
 start_story.bat
+```
+
+**Option 4: Hybrid Story Generation**
+```bash
+node demo_hybrid.js
 ```
 
 ## 🎲 Game Mechanics

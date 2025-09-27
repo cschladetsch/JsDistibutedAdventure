@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const { Story, Page, LLMStoryGenerator } = require('./StorySystem.js'); // Import classes
+const HybridStoryGenerator = require('./external/HybridStoryGenerator');
 
 // Combat system for timing-based battles
 class CombatSystem {
@@ -320,9 +321,10 @@ Theme: ${theme}`;
      * Generates a long-form story by first creating an outline, then generating content for each part.
      * @param {string} theme - A high-level theme for the story (e.g., "A haunted house mystery").
      * @param {number} minPages - Minimum number of pages the story should have.
+     * @param {Object} options - Generation options including content rating
      * @returns {Story|null} The fully generated Story object.
      */
-    async generateLongStory(theme, minPages = 20) {
+    async generateLongStory(theme, minPages = 20, options = {}) {
         console.log(`Generating long story for theme: "${theme}"`);
 
         // --- Phase 1: Generate the High-Level Outline ---
@@ -336,23 +338,32 @@ Theme: ${theme}`;
         console.log("Generating base story structure...");
         let fullStoryData = await this._generateAdvancedStoryData(theme, simulatedOutline);
 
-        // --- Phase 3: Generate Additional Chapter Pages ---
+        // --- Phase 3: Generate Additional Chapter Pages (Optimized) ---
+        const chapterPromises = [];
         for (let i = 0; i < simulatedOutline.chapters.length; i++) {
             const chapter = simulatedOutline.chapters[i];
             console.log(`Generating pages for Chapter ${i+1}: ${chapter.title}...`);
+
+            // Enhanced prompt with content rating awareness
+            const contentRating = options.contentRating || 'PG-13';
+            const matureContent = contentRating !== 'PG-13' ? `
+- Include content appropriate for ${contentRating} rating
+- Add mature themes and situations where suitable
+- Create adult character interactions and consequences` : '';
 
             const pageGenPrompt = `Generate additional story pages for Chapter ${i+1}: "${chapter.title}"
 
 Chapter Description: ${chapter.description}
 Overall Theme: ${theme}
 Story Title: ${simulatedOutline.title}
+Content Rating: ${contentRating}
 
 Create interconnected pages that expand on this chapter. Include:
 - Combat encounters appropriate to the theme
 - Exploration and discovery elements
 - Character interactions and dialogue
 - Meaningful player choices that affect the story
-- Connections to other parts of the story
+- Connections to other parts of the story${matureContent}
 
 Return ONLY a JSON object with a "pages" property containing the new pages:
 {
@@ -367,12 +378,27 @@ Return ONLY a JSON object with a "pages" property containing the new pages:
   }
 }`;
 
-            const chapterPagesData = await this._callClaudeApi(pageGenPrompt, "You are a creative RPG story designer. Generate engaging interactive content with meaningful choices and consequences.");
-
-            if (chapterPagesData && chapterPagesData.pages) {
-                Object.assign(fullStoryData.pages, chapterPagesData.pages);
-            }
+            // Generate chapters in parallel for better performance
+            chapterPromises.push(
+                this._callClaudeApi(pageGenPrompt, "You are a creative RPG story designer. Generate engaging interactive content with meaningful choices and consequences.")
+                    .then(chapterPagesData => {
+                        if (chapterPagesData && chapterPagesData.pages) {
+                            return chapterPagesData.pages;
+                        }
+                        return {};
+                    })
+                    .catch(error => {
+                        console.warn(`Failed to generate chapter ${i+1}:`, error.message);
+                        return {};
+                    })
+            );
         }
+
+        // Wait for all chapters to complete
+        const chapterResults = await Promise.all(chapterPromises);
+        chapterResults.forEach(pages => {
+            Object.assign(fullStoryData.pages, pages);
+        });
 
         console.log("Assembling all generated pages into a single story...");
         const parser = new LLMStoryGenerator(this.system);
@@ -476,4 +502,4 @@ Return ONLY valid JSON:
     }
 }
 
-module.exports = { ClaudeStoryGenerator, CombatSystem };
+module.exports = { ClaudeStoryGenerator, CombatSystem, HybridStoryGenerator };

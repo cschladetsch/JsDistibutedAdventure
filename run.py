@@ -127,8 +127,17 @@ generateStory().then(story => {{
             f.write(generator_script)
 
         print("🚀 Running story generator...")
+
+        # On Windows, prevent console window flicker by using startupinfo
+        startup_info = None
+        if sys.platform.startswith('win'):
+            startup_info = subprocess.STARTUPINFO()
+            startup_info.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+            startup_info.wShowWindow = subprocess.SW_HIDE
+
         result = subprocess.run(["node", "temp_generator.js"],
-                              capture_output=True, text=True, cwd=".", encoding='utf-8')
+                              capture_output=True, text=True, cwd=".", encoding='utf-8',
+                              startupinfo=startup_info)
 
         # Clean up
         if os.path.exists("temp_generator.js"):
@@ -187,9 +196,22 @@ def main():
         if not generate_new_story(min_pages):
             print("❌ Story generation failed. Exiting.")
             sys.exit(1)
+
         print("\n" + "="*50)
-        print("🎮 Now starting the newly generated story...")
-        print("="*50 + "\n")
+        print("✅ Story generation complete!")
+        print("="*50)
+        print("🎮 To play the story, run one of these:")
+        print("   • Double-click: play_story.cmd")
+        print("   • Command line: node run_story.js")
+        print("   • Python: python run.py (without --generate)")
+        print("="*50)
+
+        if sys.platform.startswith('win') and sys.stdin.isatty():
+            try:
+                input("\nPress Enter to continue...")
+            except (EOFError, KeyboardInterrupt):
+                pass
+        return
 
     # Determine story file to use
     story_file = None
@@ -214,8 +236,13 @@ def main():
         print("="*50)
         print()
 
-        # Run the Node.js story interactively
-        result = subprocess.call(cmd, cwd=".")
+        # Run the Node.js story interactively with full terminal control
+        if sys.platform.startswith('win'):
+            # On Windows, run in current console window without creating new one
+            result = subprocess.call(cmd, cwd=".")
+        else:
+            # On Unix-like systems, use normal call with inherited streams
+            result = subprocess.call(cmd, cwd=".", stdin=sys.stdin, stdout=sys.stdout, stderr=sys.stderr)
 
         # Check if we're in an interactive console that will close immediately
         # This happens when double-clicking the .py file or running from some terminals

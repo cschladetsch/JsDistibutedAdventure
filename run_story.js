@@ -17,17 +17,31 @@ function debugLog(message, data = null) {
 process.on('uncaughtException', (error) => {
     console.error('[FATAL ERROR] Uncaught Exception:', error);
     console.error('Stack trace:', error.stack);
-    process.exit(1);
+    console.log('\n🚨 Press Enter to exit...');
+    process.stdin.once('data', () => process.exit(1));
 });
 
 process.on('unhandledRejection', (reason, promise) => {
     console.error('[FATAL ERROR] Unhandled Promise Rejection:', reason);
     console.error('Promise:', promise);
-    process.exit(1);
+    console.log('\n🚨 Press Enter to exit...');
+    process.stdin.once('data', () => process.exit(1));
+});
+
+// Keep process alive if input is piped
+process.stdin.on('end', () => {
+    console.log('\n📝 Input stream ended. Press Ctrl+C to exit or run interactively.');
 });
 
 // Log when script starts
 debugLog('Script starting up');
+
+// Check if we're in a proper terminal
+if (!process.stdin.isTTY) {
+    console.log('⚠️  Warning: Not running in an interactive terminal.');
+    console.log('📝 This may cause input issues. Try running from Command Prompt directly.');
+    console.log('');
+}
 
 class StoryRunner {
     constructor(storyFile) {
@@ -99,8 +113,15 @@ class StoryRunner {
             debugLog('Creating readline interface');
             this.rl = readline.createInterface({
                 input: process.stdin,
-                output: process.stdout
+                output: process.stdout,
+                terminal: true
             });
+
+            // Ensure stdin is in raw mode for proper input handling
+            if (process.stdin.isTTY) {
+                process.stdin.setRawMode(false);
+            }
+
             debugLog('Readline interface created successfully');
         } catch (error) {
             debugLog('Error creating readline interface', { error: error.message, stack: error.stack });
@@ -621,6 +642,12 @@ class StoryRunner {
         return new Promise((resolve) => {
             const askChoice = () => {
                 this.rl.question(`\nEnter your choice (1-${maxChoice}) or 'v' for inventory: `, (answer) => {
+                    if (!answer) {
+                        console.log(`❌ Please enter a choice.`);
+                        askChoice();
+                        return;
+                    }
+
                     const trimmedAnswer = answer.trim().toLowerCase();
 
                     if (trimmedAnswer === 'v') {
@@ -633,9 +660,10 @@ class StoryRunner {
                     if (isNaN(choice) || choice < 1 || choice > maxChoice) {
                         console.log(`❌ Invalid choice. Please enter a number between 1 and ${maxChoice}, or 'v' for inventory.`);
                         askChoice();
-                    } else {
-                        resolve(choice);
+                        return;
                     }
+
+                    resolve(choice);
                 });
             };
             askChoice();
