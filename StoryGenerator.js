@@ -102,6 +102,27 @@ class ClaudeStoryGenerator {
 Title: ${outline.title}
 Chapters: ${outline.chapters.map((ch, i) => `${i+1}. ${ch.title}: ${ch.description}`).join('\n')}
 
+CRITICAL REQUIREMENTS - ALL STORIES MUST INCLUDE:
+1. THE 7-ARC STRUCTURE: Each page must be tagged with one of these story arcs:
+   - "setup": Ordinary world and call to adventure
+   - "confrontation": Rising action and first conflicts
+   - "midpoint": Major revelation or turning point
+   - "crisis": Dark night of the soul
+   - "climax": Final confrontation
+   - "resolution": Falling action and consequences
+   - "denouement": New equilibrium and endings
+
+2. ALL NINE THEMES MUST BE PRESENT IN EVERY STORY:
+   - LOVE: Romantic relationships, passion, emotional connections, intimate moments
+   - VIOLENCE: Combat, conflict, brutality, physical confrontations, bloodshed
+   - DEATH: Character deaths, mortality, loss, grief, fatal consequences
+   - SEX: Sexual tension, intimate encounters, desire, physical attraction, adult relationships
+   - SADNESS: Grief, loss, heartbreak, tragedy, emotional pain, despair
+   - SURPRISE: Unexpected plot twists, shocking revelations, unforeseen events, sudden changes
+   - HAPPINESS: Joy, celebration, triumph, positive outcomes, fulfillment, contentment
+   - DISGUST: Revulsion, repulsion, moral outrage, physical revulsion, abhorrent situations
+   - DISDAIN: Contempt, scorn, arrogance, superiority, dismissive attitudes, condescension
+
 Generate a JSON object with:
 - startPage: "start"
 - gameState: Basic RPG stats and inventory
@@ -110,10 +131,19 @@ Generate a JSON object with:
 Include these RPG elements:
 - Player stats (health, attack, defense, gold)
 - Inventory system with weapons and items
-- Combat encounters with enemies
+- Combat encounters with enemies featuring brutal violence and potential death
 - Treasure and rewards
-- Branching storylines based on choices
-- Multiple endings
+- Branching storylines based on choices involving all nine themes
+- Multiple endings (some tragic, some romantic, some violent)
+- Romance and relationship mechanics with sexual content
+- Romantic encounters and character development including intimate scenes
+- Love interests and emotional connections that can lead to heartbreak or death
+- Relationship choices that affect the story dramatically
+
+STORY STRUCTURE: Each page should include:
+- "arc": which of the 7 arcs this page belongs to
+- "themes": array of which themes (love, violence, death, sex, sadness, surprise, happiness, disgust, disdain) are present in this page
+- Meaningful integration of themes into the narrative, not just token mentions
 
 Return ONLY valid JSON with this structure:
 {
@@ -128,6 +158,8 @@ Return ONLY valid JSON with this structure:
     "start": {
       "background": "appropriate_scene",
       "text": "Starting scene description",
+      "arc": "setup",
+      "themes": ["love", "violence", "death", "sex", "sadness", "surprise", "happiness", "disgust", "disdain"],
       "choices": [
         {"text": "Choice 1", "target": "page1"},
         {"text": "Choice 2", "target": "page2"}
@@ -168,24 +200,84 @@ Return ONLY valid JSON with this structure:
             pages: {
                 "start": {
                     background: "adventure_start",
-                    text: "Your adventure begins. Choose your path forward.",
+                    text: "Your adventure begins in a bustling tavern where mysterious strangers catch your eye. The air is thick with possibility and romance.",
+                    arc: "setup",
+                    themes: ["love", "surprise", "happiness"],
                     choices: [
-                        { "text": "Explore the area", "target": "explore" },
-                        { "text": "Rest and prepare", "target": "prepare" }
+                        { "text": "Approach the mysterious stranger by the fireplace", "target": "romantic_encounter" },
+                        { "text": "Explore the area alone", "target": "explore" },
+                        { "text": "Rest and prepare for the journey ahead", "target": "prepare" }
+                    ]
+                },
+                "romantic_encounter": {
+                    background: "tavern_fireplace",
+                    text: "A captivating figure turns to you with eyes that seem to hold ancient secrets. 'I've been waiting for someone like you,' they say with a smile that makes your heart race.",
+                    choices: [
+                        { "text": "Offer to buy them a drink and learn more", "target": "romantic_conversation" },
+                        { "text": "Ask if they'd like to join your adventure", "target": "romantic_partnership" },
+                        { "text": "Politely excuse yourself and explore elsewhere", "target": "explore" }
+                    ]
+                },
+                "romantic_conversation": {
+                    background: "tavern_intimate_table",
+                    text: "Over wine and candlelight, you share stories of your past adventures. The connection between you grows stronger with each passing moment.",
+                    choices: [
+                        { "text": "Suggest continuing the evening somewhere more private", "target": "romantic_deepening" },
+                        { "text": "Propose adventuring together tomorrow", "target": "romantic_partnership" }
+                    ]
+                },
+                "romantic_partnership": {
+                    background: "tavern_handshake",
+                    text: "Your new companion's hand feels warm in yours as you agree to face the dangers ahead together. With love as your motivation, you feel unstoppable.",
+                    choices: [
+                        { "text": "Begin the adventure as lovers", "target": "explore_together" },
+                        { "text": "Take time to get to know each other better", "target": "romantic_deepening" }
+                    ]
+                },
+                "romantic_deepening": {
+                    background: "intimate_chamber",
+                    text: "In the quiet intimacy of shared space, you discover that this connection runs deeper than mere attraction. Your hearts beat in harmony.",
+                    choices: [
+                        { "text": "Confess your growing feelings", "target": "love_confession" },
+                        { "text": "Focus on the adventure ahead", "target": "explore_together" }
+                    ]
+                },
+                "love_confession": {
+                    background: "moonlit_balcony",
+                    text: "Under the starlit sky, you both admit that this meeting feels like destiny. Your love story has only just begun, but it already feels eternal.",
+                    choices: [
+                        { "text": "Begin your romantic adventure together", "target": "explore_together" }
+                    ]
+                },
+                "explore_together": {
+                    background: "exploration_couple",
+                    text: "Hand in hand, you venture forth together. Every challenge seems conquerable when faced with your beloved by your side.",
+                    choices: [
+                        { "text": "Continue your romantic adventure", "target": "start" },
+                        { "text": "Find a quiet place to rest together", "target": "romantic_rest" }
+                    ]
+                },
+                "romantic_rest": {
+                    background: "cozy_campfire",
+                    text: "By the warmth of the campfire, you hold each other close. The adventure can wait - this moment of love is all that matters.",
+                    choices: [
+                        { "text": "Continue the journey with renewed passion", "target": "start" }
                     ]
                 },
                 "explore": {
                     background: "exploration",
-                    text: "You venture forth and discover new challenges.",
+                    text: "You venture forth alone and discover new challenges. Yet part of you wonders what might have been if you'd chosen companionship.",
                     choices: [
-                        { "text": "Continue exploring", "target": "start" }
+                        { "text": "Continue exploring solo", "target": "start" },
+                        { "text": "Return to seek that mysterious stranger", "target": "romantic_encounter" }
                     ]
                 },
                 "prepare": {
                     background: "preparation",
-                    text: "You take time to prepare for the journey ahead.",
+                    text: "You take time to prepare for the journey ahead, but your thoughts keep drifting to potential companions and the adventures you might share together.",
                     choices: [
-                        { "text": "Begin the adventure", "target": "start" }
+                        { "text": "Begin the adventure", "target": "start" },
+                        { "text": "Look for a companion first", "target": "romantic_encounter" }
                     ]
                 }
             }
@@ -359,11 +451,21 @@ Overall Theme: ${theme}
 Story Title: ${simulatedOutline.title}
 Content Rating: ${contentRating}
 
+MANDATORY REQUIREMENTS FOR ALL PAGES:
+- Each page MUST include "arc" field (setup/confrontation/midpoint/crisis/climax/resolution/denouement)
+- Each page MUST include "themes" array with applicable themes from: love, violence, death, sex, sadness, surprise, happiness, disgust, disdain
+- ALL NINE THEMES must appear across the chapter pages
+
 Create interconnected pages that expand on this chapter. Include:
-- Combat encounters appropriate to the theme
-- Exploration and discovery elements
-- Character interactions and dialogue
-- Meaningful player choices that affect the story
+- Combat encounters appropriate to the theme (violence/death themes)
+- Exploration and discovery elements (surprise theme)
+- Character interactions and dialogue (love/happiness themes)
+- Meaningful player choices that affect the story (all themes)
+- Emotional moments including joy and sorrow (happiness/sadness themes)
+- Romantic and intimate encounters (love/sex themes)
+- Unexpected plot developments (surprise theme)
+- Morally repugnant or physically revolting situations (disgust theme)
+- Characters displaying arrogance, contempt, or superiority (disdain theme)
 - Connections to other parts of the story${matureContent}
 
 Return ONLY a JSON object with a "pages" property containing the new pages:

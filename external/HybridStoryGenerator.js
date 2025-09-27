@@ -105,7 +105,7 @@ class HybridStoryGenerator {
                 const xRatedPrompt = this._createXRatedPrompt(theme, story, options);
                 const xRatedContent = await this.deepSeekClient.generateXRatedContent(xRatedPrompt, {
                     rating: this.contentRating,
-                    themes: options.themes || ['romance', 'passion', 'intimacy'],
+                    themes: options.themes || ['romance', 'passion', 'intimacy', 'love', 'relationships', 'emotional_connection'],
                     temperature: 0.9
                 });
 
@@ -148,6 +148,10 @@ The content should be provocative yet tasteful, focusing on:
 - Intimate encounters and relationships
 - Adult decision-making and consequences
 - Sophisticated character interactions
+- Love stories and romantic development
+- Emotional vulnerability and trust
+- Romantic tension and chemistry
+- Relationship building and commitment
 
 Create 2-3 interconnected pages with explicit content.`;
 
@@ -173,7 +177,7 @@ Create 2-3 interconnected pages with explicit content.`;
             if (regularPage && regularPage.prompts) {
                 // Add a choice leading to mature content
                 regularPage.prompts.push({
-                    text: "Explore intimate possibilities... 🔞",
+                    text: "Follow your heart's desires... 💕🔞",
                     target_id: xRatedPageId,
                     requirements: { contentRating: this.contentRating }
                 });

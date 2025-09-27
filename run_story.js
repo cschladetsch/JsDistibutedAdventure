@@ -1,7 +1,10 @@
+// Suppress Node.js warnings
+process.removeAllListeners('warning');
+process.on('warning', () => {}); // Silently ignore warnings
+
 const fs = require('fs');
 const readline = require('readline');
 const { Story } = require('./StorySystem.js');
-const { CombatSystem } = require('./StoryGenerator.js');
 const Colors = require('./external/colors.js');
 
 // Enhanced logging function
@@ -10,19 +13,13 @@ function debugLog(message, data = null) {
     return;
 }
 
-// Catch uncaught exceptions and promise rejections
+// Suppress error logging for cleaner output
 process.on('uncaughtException', (error) => {
-    console.error('[FATAL ERROR] Uncaught Exception:', error);
-    console.error('Stack trace:', error.stack);
-    console.log('\n🚨 Press Enter to exit...');
-    process.stdin.once('data', () => process.exit(1));
+    process.exit(1);
 });
 
 process.on('unhandledRejection', (reason, promise) => {
-    console.error('[FATAL ERROR] Unhandled Promise Rejection:', reason);
-    console.error('Promise:', promise);
-    console.log('\n🚨 Press Enter to exit...');
-    process.stdin.once('data', () => process.exit(1));
+    process.exit(1);
 });
 
 // Keep process alive if input is piped
@@ -33,12 +30,7 @@ process.stdin.on('end', () => {
 // Log when script starts
 debugLog('Script starting up');
 
-// Check if we're in a proper terminal
-if (!process.stdin.isTTY) {
-    console.log('⚠️  Warning: Not running in an interactive terminal.');
-    console.log('📝 This may cause input issues. Try running from Command Prompt directly.');
-    console.log('');
-}
+// Suppress terminal warnings for cleaner output
 
 class StoryRunner {
     constructor(storyFile) {
@@ -366,10 +358,10 @@ class StoryRunner {
             console.log('Press SPACE when the marker hits the blue target zone!');
 
             let position = 0;
-            const barLength = 50;
-            const speed = 0.8; // Increased speed for smoother movement
+            const barLength = 60;
+            const speed = 1.2; // Much faster for challenge
             let direction = 1;
-            const blueZone = { start: 25, end: 25 };  // Very small blue target zone (1 character wide)
+            const blueZone = { start: 29, end: 31 };  // Smaller blue target zone (3 chars wide)
 
             // Show static reference bar first
             let staticBar = '';
@@ -388,9 +380,19 @@ class StoryRunner {
                 process.stdout.write('\r          [');
 
                 let animatedBar = '';
+                const currentPos = Math.floor(position);
+
                 for (let i = 0; i < barLength; i++) {
-                    if (Math.floor(position) === i) {
-                        animatedBar += Colors.brightWhiteOnBlack('█'); // Moving marker
+                    if (currentPos === i) {
+                        // Use different markers based on position for smoother visual
+                        const subPosition = position - currentPos;
+                        if (subPosition < 0.3) {
+                            animatedBar += Colors.brightWhiteOnBlack('▌'); // Left part of marker
+                        } else if (subPosition < 0.7) {
+                            animatedBar += Colors.brightWhiteOnBlack('█'); // Full marker
+                        } else {
+                            animatedBar += Colors.brightWhiteOnBlack('▐'); // Right part of marker
+                        }
                     } else if (i >= blueZone.start && i <= blueZone.end) {
                         animatedBar += Colors.bgBlue(' '); // Blue target zone
                     } else {
@@ -401,10 +403,14 @@ class StoryRunner {
                 process.stdout.write(animatedBar + ']');
 
                 position += speed * direction;
-                if (position >= barLength - 1 || position <= 0) {
-                    direction *= -1;
+                if (position >= barLength - 1) {
+                    position = barLength - 1;
+                    direction = -1;
+                } else if (position <= 0) {
+                    position = 0;
+                    direction = 1;
                 }
-            }, 50); // Faster refresh rate for smoother animation
+            }, 16); // 60 FPS for ultra-smooth animation
 
             // Set up input handling
             process.stdin.setRawMode(true);
@@ -420,15 +426,21 @@ class StoryRunner {
 
                     console.log('\n'); // New line after bar
 
-                    // Calculate timing accuracy based on hitting the blue zone
-                    let timing = 0.1; // Default miss
+                    // Calculate timing accuracy based on position
+                    let timing = position / barLength; // Convert position to 0-1 timing
                     let zoneHit = 'miss';
 
                     if (position >= blueZone.start && position <= blueZone.end) {
                         zoneHit = 'blue';
                         timing = 0.5; // Perfect hit
                         console.log(`🎯 ${Colors.blue('PERFECT HIT!')} Critical damage!`);
+                    } else if (Math.abs(position - 30) <= 5) { // Green zone around blue
+                        zoneHit = 'green';
+                        timing = 0.4 + (Math.random() * 0.2); // Good hit range
+                        console.log(`🎯 ${Colors.green('GOOD HIT!')} Solid damage!`);
                     } else {
+                        zoneHit = 'miss';
+                        timing = Math.random() * 0.3; // Poor hit
                         console.log(`🎯 Missed the target! Minimal damage.`);
                     }
 
@@ -447,6 +459,9 @@ class StoryRunner {
         console.log(`\n⚔️  COMBAT: ${combatData.enemy.name}`);
         console.log(`Enemy HP: ${combatData.enemy.health}/${combatData.enemy.maxHealth}`);
         console.log(`Enemy ATK: ${combatData.enemy.attack} | DEF: ${combatData.enemy.defense}`);
+
+        // Import CombatSystem locally to avoid circular dependency
+        const { CombatSystem } = require('./StoryGenerator.js');
 
         const combat = new CombatSystem(
             this.gameState.player_stats,
@@ -798,50 +813,119 @@ class StoryRunner {
 
     async getChoice(maxChoice) {
         return new Promise((resolve) => {
-            const askChoice = () => {
-                let promptText = `\nEnter your choice (1-${maxChoice}) or 'v' for inventory`;
+            // Check if we can use raw mode (TTY environment)
+            const canUseRawMode = process.stdin.isTTY && typeof process.stdin.setRawMode === 'function';
+
+            if (canUseRawMode) {
+                // Use instant key press mode
+                let promptText = `\nPress a key for your choice (1-${maxChoice}) or 'v' for inventory`;
                 if (this.story.quest_system_enabled) {
                     promptText += ", 'q' for quest log";
                 }
                 promptText += ": ";
 
-                this.rl.question(promptText, (answer) => {
-                    if (!answer) {
-                        console.log(`❌ Please enter a choice.`);
-                        askChoice();
-                        return;
+                console.log(promptText);
+
+                // Enable raw mode for immediate key detection
+                process.stdin.setRawMode(true);
+                process.stdin.resume();
+                process.stdin.setEncoding('utf8');
+
+                const handleKeyPress = (key) => {
+                    // Clean up listeners and reset stdin
+                    process.stdin.setRawMode(false);
+                    process.stdin.pause();
+                    process.stdin.removeListener('data', handleKeyPress);
+
+                    // Handle Ctrl+C
+                    if (key === '\u0003') {
+                        console.log('\n👋 Goodbye!');
+                        process.exit();
                     }
 
-                    const trimmedAnswer = answer.trim().toLowerCase();
+                    const keyPressed = key.toLowerCase();
 
-                    if (trimmedAnswer === 'v') {
+                    if (keyPressed === 'v') {
+                        console.log(`\n📦 You pressed 'v' - showing inventory...`);
                         this.showDetailedInventory();
-                        askChoice();
+                        // Restart choice selection
+                        this.getChoice(maxChoice).then(resolve);
                         return;
                     }
 
-                    if (trimmedAnswer === 'q') {
+                    if (keyPressed === 'q' && this.story.quest_system_enabled) {
+                        console.log(`\n📋 You pressed 'q' - showing quest log...`);
                         this.showActiveQuests();
-                        askChoice();
+                        // Restart choice selection
+                        this.getChoice(maxChoice).then(resolve);
                         return;
                     }
 
-                    const choice = parseInt(answer, 10);
+                    const choice = parseInt(keyPressed, 10);
                     if (isNaN(choice) || choice < 1 || choice > maxChoice) {
-                        let errorMsg = `❌ Invalid choice. Please enter a number between 1 and ${maxChoice}, or 'v' for inventory`;
+                        let errorMsg = `\n❌ Invalid key '${keyPressed}'. Press a number between 1 and ${maxChoice}, or 'v' for inventory`;
                         if (this.story.quest_system_enabled) {
                             errorMsg += ", 'q' for quest log";
                         }
                         errorMsg += ".";
                         console.log(errorMsg);
-                        askChoice();
+                        // Restart choice selection
+                        this.getChoice(maxChoice).then(resolve);
                         return;
                     }
 
+                    console.log(`\n⚡ You pressed '${keyPressed}' - choice selected instantly!`);
                     resolve(choice);
-                });
-            };
-            askChoice();
+                };
+
+                process.stdin.on('data', handleKeyPress);
+            } else {
+                // Fallback to traditional readline mode
+                const askChoice = () => {
+                    let promptText = `\nEnter your choice (1-${maxChoice}) or 'v' for inventory`;
+                    if (this.story.quest_system_enabled) {
+                        promptText += ", 'q' for quest log";
+                    }
+                    promptText += ": ";
+
+                    this.rl.question(promptText, (answer) => {
+                        if (!answer) {
+                            console.log(`❌ Please enter a choice.`);
+                            askChoice();
+                            return;
+                        }
+
+                        const trimmedAnswer = answer.trim().toLowerCase();
+
+                        if (trimmedAnswer === 'v') {
+                            this.showDetailedInventory();
+                            askChoice();
+                            return;
+                        }
+
+                        if (trimmedAnswer === 'q') {
+                            this.showActiveQuests();
+                            askChoice();
+                            return;
+                        }
+
+                        const choice = parseInt(answer, 10);
+                        if (isNaN(choice) || choice < 1 || choice > maxChoice) {
+                            let errorMsg = `❌ Invalid choice. Please enter a number between 1 and ${maxChoice}, or 'v' for inventory`;
+                            if (this.story.quest_system_enabled) {
+                                errorMsg += ", 'q' for quest log";
+                            }
+                            errorMsg += ".";
+                            console.log(errorMsg);
+                            askChoice();
+                            return;
+                        }
+
+                        resolve(choice);
+                    });
+                };
+                askChoice();
+            }
         });
     }
 
