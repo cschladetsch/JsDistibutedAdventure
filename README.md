@@ -245,6 +245,65 @@ Stories are serialized as JSON with this structure:
 - **Emergent Narrative**: Player choices drive unique story experiences
 - **Accessible Complexity**: Deep systems with intuitive interfaces
 
+## 🎨 Image Generation Tools
+
+### Static Image Generation Options
+
+**Commercial Cloud Services:**
+- **Midjourney** - High-quality artistic images, subscription-based
+- **DALL-E 3** (OpenAI) - Excellent for detailed prompts, API available
+- **Stable Diffusion XL** - Open source, can run locally or cloud
+- **Adobe Firefly** - Commercial use friendly, integrated with Adobe suite
+
+**Free/Open Source:**
+- **Stable Diffusion** - Free, runs locally, extensive community models
+- **AUTOMATIC1111** - Popular SD web interface for local generation
+- **ComfyUI** - Node-based SD interface for advanced workflows
+
+### Dynamic Image Generation with Gemini
+
+**Google Gemini Integration:**
+- **Gemini Pro Vision** - Can analyze and describe existing images
+- **Imagen 3** (via Vertex AI) - Google's image generation model
+- **API Integration** - Use Google Cloud Vertex AI for programmatic access
+
+**Local vs Cloud Implementation:**
+
+**Cloud PC Benefits:**
+- High-end GPU access (RTX 4090, A100)
+- No local hardware investment
+- Services like Vast.ai, RunPod, or Google Colab Pro
+- Cost: $0.50-$2.00/hour for powerful instances
+
+**Local Setup:**
+- Requires RTX 3070+ (8GB+ VRAM recommended)
+- One-time hardware cost but unlimited usage
+- Full control over models and settings
+- Privacy and offline capability
+
+### Integration Ideas for Story System
+
+```javascript
+// Example image generation integration
+class ImageGenerator {
+  async generateSceneImage(pageText, backgroundId) {
+    const prompt = `Fantasy post-apocalyptic scene: ${pageText}`;
+
+    // Option 1: Local Stable Diffusion API
+    return await this.callLocalSD(prompt);
+
+    // Option 2: Cloud service
+    return await this.callGeminiImagen(prompt);
+  }
+}
+```
+
+**Recommended Approach:**
+1. Start with cloud services for prototyping
+2. Consider local setup if generating many images
+3. Use Gemini for dynamic prompt enhancement
+4. Cache generated images to avoid regeneration costs
+
 ## 📝 Contributing
 
 1. Fork the repository

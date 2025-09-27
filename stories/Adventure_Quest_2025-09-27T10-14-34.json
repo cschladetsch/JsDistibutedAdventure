@@ -1,0 +1,379 @@
+{
+  "id": "generated_story",
+  "title": "Adventure Quest",
+  "start_page_id": "start",
+  "pages": {
+    "start": {
+      "id": "start",
+      "text": "You begin your adventure in an unknown land.",
+      "background_id": "adventure_start",
+      "prompts": [
+        {
+          "text": "Investigate the situation",
+          "target_id": "investigate",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false
+        },
+        {
+          "text": "Prepare for action",
+          "target_id": "prepare",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false
+        },
+        {
+          "text": "Seek help from others",
+          "target_id": "seek_help",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false
+    },
+    "explore": {
+      "id": "explore",
+      "text": "You venture forth and discover new challenges.",
+      "background_id": "exploration",
+      "prompts": [
+        {
+          "text": "Continue exploring",
+          "target_id": "start",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false
+    },
+    "prepare": {
+      "id": "prepare",
+      "text": "You take time to ready yourself for the challenges ahead. Your preparations are interrupted by danger!",
+      "background_id": "preparation_area",
+      "prompts": [
+        {
+          "text": "Fight!",
+          "target_id": "combat_encounter_2",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false
+        },
+        {
+          "text": "Flee to safety",
+          "target_id": "seek_help",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false
+    },
+    "adventure_page_1": {
+      "background": "adventure_scene_1",
+      "text": "Adventure continues at location 1. You face new challenges and discoveries here.",
+      "choices": [
+        {
+          "text": "Continue exploring",
+          "target": "adventure_page_1"
+        },
+        {
+          "text": "Search for treasure",
+          "target": "treasure_1"
+        },
+        {
+          "text": "Rest and recover",
+          "target": "rest_1"
+        }
+      ]
+    },
+    "treasure_1": {
+      "background": "treasure_scene",
+      "text": "You search for treasure and find valuable items!",
+      "rewards": {
+        "gold": 12
+      },
+      "choices": [
+        {
+          "text": "Continue adventure",
+          "target": "adventure_page_1"
+        }
+      ]
+    },
+    "rest_1": {
+      "background": "rest_area",
+      "text": "You take time to rest and recover your strength.",
+      "rewards": {
+        "healing": 10
+      },
+      "choices": [
+        {
+          "text": "Continue refreshed",
+          "target": "adventure_page_1"
+        }
+      ]
+    },
+    "adventure_page_2": {
+      "id": "adventure_page_2",
+      "text": "Adventure continues at location 2. You face new challenges and discoveries here.",
+      "background_id": "adventure_scene_2",
+      "prompts": [
+        {
+          "text": "Continue exploring",
+          "target_id": "adventure_page_3",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false
+        },
+        {
+          "text": "Search for treasure",
+          "target_id": "treasure_2",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false
+        },
+        {
+          "text": "Rest and recover",
+          "target_id": "rest_2",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false
+    },
+    "treasure_2": {
+      "id": "treasure_2",
+      "text": "You search for treasure and find valuable items!",
+      "background_id": "treasure_scene",
+      "prompts": [
+        {
+          "text": "Continue adventure",
+          "target_id": "adventure_page_3",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false
+    },
+    "rest_2": {
+      "id": "rest_2",
+      "text": "You take time to rest and recover your strength.",
+      "background_id": "rest_area",
+      "prompts": [
+        {
+          "text": "Continue refreshed",
+          "target_id": "adventure_page_3",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false
+    },
+    "adventure_page_3": {
+      "id": "adventure_page_3",
+      "text": "Adventure continues at location 3. You face new challenges and discoveries here.",
+      "background_id": "adventure_scene_3",
+      "prompts": [
+        {
+          "text": "Continue exploring",
+          "target_id": "adventure_page_1",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false
+        },
+        {
+          "text": "Search for treasure",
+          "target_id": "treasure_3",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false
+        },
+        {
+          "text": "Rest and recover",
+          "target_id": "rest_3",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false
+    },
+    "treasure_3": {
+      "id": "treasure_3",
+      "text": "You search for treasure and find valuable items!",
+      "background_id": "treasure_scene",
+      "prompts": [
+        {
+          "text": "Continue adventure",
+          "target_id": "adventure_page_1",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false
+    },
+    "rest_3": {
+      "id": "rest_3",
+      "text": "You take time to rest and recover your strength.",
+      "background_id": "rest_area",
+      "prompts": [
+        {
+          "text": "Continue refreshed",
+          "target_id": "adventure_page_1",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false
+    },
+    "investigate": {
+      "id": "investigate",
+      "text": "You carefully examine your surroundings and discover important clues. Suddenly, you hear movement nearby!",
+      "background_id": "investigation_scene",
+      "prompts": [
+        {
+          "text": "Face the threat",
+          "target_id": "combat_encounter_1",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false
+        },
+        {
+          "text": "Try to avoid conflict",
+          "target_id": "prepare",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false
+    },
+    "seek_help": {
+      "id": "seek_help",
+      "text": "You find helpful allies who provide valuable assistance. Together, you face new challenges.",
+      "background_id": "ally_meeting",
+      "prompts": [
+        {
+          "text": "Continue the adventure",
+          "target_id": "start",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false
+    },
+    "combat_encounter_1": {
+      "id": "combat_encounter_1",
+      "text": "A Bandit blocks your path! Prepare for battle!",
+      "background_id": "battle_scene",
+      "prompts": [
+        {
+          "text": "Attack!",
+          "target_id": "combat_timing",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false
+    },
+    "combat_encounter_2": {
+      "id": "combat_encounter_2",
+      "text": "A fierce Beast appears! This will be a tough fight!",
+      "background_id": "battle_scene",
+      "prompts": [
+        {
+          "text": "Engage in combat!",
+          "target_id": "combat_timing",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false
+    },
+    "victory_1": {
+      "id": "victory_1",
+      "text": "You have defeated the Bandit! You feel stronger and find some treasure.",
+      "background_id": "victory_scene",
+      "prompts": [
+        {
+          "text": "Continue exploring",
+          "target_id": "start",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false
+    },
+    "victory_2": {
+      "id": "victory_2",
+      "text": "Incredible! You have bested the mighty Beast! You gain valuable rewards.",
+      "background_id": "victory_scene",
+      "prompts": [
+        {
+          "text": "Celebrate your victory",
+          "target_id": "start",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false
+    },
+    "defeat": {
+      "id": "defeat",
+      "text": "You have been defeated, but you manage to escape with your life. You retreat to safety to recover.",
+      "background_id": "defeat_scene",
+      "prompts": [
+        {
+          "text": "Try again",
+          "target_id": "start",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false
+    }
+  }
+}

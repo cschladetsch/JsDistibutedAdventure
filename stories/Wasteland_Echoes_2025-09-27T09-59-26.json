@@ -1,0 +1,140 @@
+{
+  "id": "generated_story",
+  "title": "Wasteland Echoes",
+  "start_page_id": "start",
+  "pages": {
+    "start": {
+      "id": "start",
+      "text": "You begin your adventure in an unknown land.",
+      "background_id": "adventure_start",
+      "prompts": [
+        {
+          "text": "Investigate the situation",
+          "target_id": "investigate",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false
+        },
+        {
+          "text": "Prepare for action",
+          "target_id": "prepare",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false
+        },
+        {
+          "text": "Seek help from others",
+          "target_id": "seek_help",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false
+    },
+    "explore": {
+      "id": "explore",
+      "text": "You venture forth and discover new challenges.",
+      "background_id": "exploration",
+      "prompts": [
+        {
+          "text": "Continue exploring",
+          "target_id": "start",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false
+    },
+    "prepare": {
+      "id": "prepare",
+      "text": "You take time to ready yourself for the challenges ahead.",
+      "background_id": "preparation_area",
+      "prompts": [
+        {
+          "text": "Begin the mission",
+          "target_id": "start",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false
+    },
+    "adventure_page_1": {
+      "background": "adventure_scene",
+      "text": "Your adventure continues with new challenges and discoveries.",
+      "choices": [
+        {
+          "text": "Face the challenge",
+          "target": "adventure_page_2"
+        },
+        {
+          "text": "Find another way",
+          "target": "adventure_page_3"
+        }
+      ]
+    },
+    "adventure_page_2": {
+      "background": "challenge_scene",
+      "text": "You bravely face the challenge head-on.",
+      "choices": [
+        {
+          "text": "Continue forward",
+          "target": "adventure_page_1"
+        }
+      ]
+    },
+    "adventure_page_3": {
+      "background": "alternative_path",
+      "text": "You discover an alternative approach that leads to new possibilities.",
+      "choices": [
+        {
+          "text": "Explore further",
+          "target": "adventure_page_1"
+        }
+      ]
+    },
+    "investigate": {
+      "id": "investigate",
+      "text": "You carefully examine your surroundings and discover important clues.",
+      "background_id": "investigation_scene",
+      "prompts": [
+        {
+          "text": "Follow the clues",
+          "target_id": "start",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false
+    },
+    "seek_help": {
+      "id": "seek_help",
+      "text": "You find helpful allies who provide valuable assistance.",
+      "background_id": "ally_meeting",
+      "prompts": [
+        {
+          "text": "Work together",
+          "target_id": "start",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false
+    }
+  }
+}

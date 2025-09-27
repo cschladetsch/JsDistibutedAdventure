@@ -70,147 +70,6 @@ class ClaudeStoryGenerator {
         }
     }
 
-    /**
-     * Generates RPG-enhanced story data with combat, treasure, and loops.
-     */
-    _generateRPGStoryData() {
-        return {
-            startPage: "start",
-            gameState: {
-                playerStats: { health: 100, maxHealth: 100, attack: 10, defense: 5, gold: 0 },
-                inventory: ["Basic Sword"],
-                weapons: {
-                    "Basic Sword": { damage: 8, accuracy: 0.8 },
-                    "Iron Blade": { damage: 15, accuracy: 0.75 },
-                    "Mystic Staff": { damage: 12, accuracy: 0.9 }
-                }
-            },
-            pages: {
-                "start": {
-                    background: "forest_clearing",
-                    text: "You stand at the edge of a dark forest, sword in hand. Ancient ruins beckon in the distance, promising treasure and danger.",
-                    choices: [
-                        { "text": "Enter the forest cautiously", "target": "forest_path" },
-                        { "text": "Head directly to the ruins", "target": "ruins_entrance" },
-                        { "text": "Search the clearing for supplies", "target": "treasure_find" }
-                    ]
-                },
-                "forest_path": {
-                    background: "dark_forest",
-                    text: "The forest is thick and ominous. You hear rustling in the bushes ahead.",
-                    choices: [
-                        { "text": "Investigate the sound", "target": "goblin_encounter" },
-                        { "text": "Sneak around quietly", "target": "hidden_chest" },
-                        { "text": "Turn back to the clearing", "target": "start" }
-                    ]
-                },
-                "goblin_encounter": {
-                    background: "forest_combat",
-                    text: "A snarling goblin jumps out! It has 25 HP and wields a rusty dagger.",
-                    combat: {
-                        enemy: { name: "Goblin", health: 25, maxHealth: 25, attack: 6, defense: 2 },
-                        victory: "goblin_victory",
-                        defeat: "player_defeat"
-                    },
-                    choices: [
-                        { "text": "Attack with timing!", "target": "combat_timing", "action": "combat" }
-                    ]
-                },
-                "combat_timing": {
-                    background: "combat_bar",
-                    text: "Press SPACE when the marker hits the green zone for maximum damage!",
-                    timingBar: {
-                        zones: ["miss", "hit", "critical", "hit", "miss"],
-                        damageMultipliers: [0.1, 0.8, 1.5, 0.8, 0.1]
-                    },
-                    choices: [
-                        { "text": "Continue combat", "target": "combat_result" }
-                    ]
-                },
-                "goblin_victory": {
-                    background: "victory",
-                    text: "The goblin falls defeated! You find 15 gold coins and notice an Iron Blade glinting nearby.",
-                    rewards: { gold: 15, items: ["Iron Blade"] },
-                    choices: [
-                        { "text": "Continue deeper into forest", "target": "deeper_forest" },
-                        { "text": "Return to clearing", "target": "start" }
-                    ]
-                },
-                "hidden_chest": {
-                    background: "treasure_chest",
-                    text: "You discover a hidden chest containing a Mystic Staff and 25 gold!",
-                    rewards: { gold: 25, items: ["Mystic Staff"] },
-                    choices: [
-                        { "text": "Continue exploring", "target": "deeper_forest" },
-                        { "text": "Head to the ruins", "target": "ruins_entrance" }
-                    ]
-                },
-                "ruins_entrance": {
-                    background: "ancient_ruins",
-                    text: "The ancient ruins loom before you. Stone gargoyles guard the entrance, and you can hear echoing footsteps within.",
-                    choices: [
-                        { "text": "Enter boldly", "target": "skeleton_encounter" },
-                        { "text": "Search around the perimeter", "target": "ruins_treasure" },
-                        { "text": "Return to the forest", "target": "forest_path" }
-                    ]
-                },
-                "skeleton_encounter": {
-                    background: "ruins_combat",
-                    text: "An ancient skeleton warrior emerges! It has 40 HP and carries a bone sword.",
-                    combat: {
-                        enemy: { name: "Skeleton Warrior", health: 40, maxHealth: 40, attack: 12, defense: 5 },
-                        victory: "skeleton_victory",
-                        defeat: "player_defeat"
-                    },
-                    choices: [
-                        { "text": "Engage in combat!", "target": "combat_timing", "action": "combat" }
-                    ]
-                },
-                "skeleton_victory": {
-                    background: "victory",
-                    text: "The skeleton crumbles to dust! You find 30 gold and a health potion.",
-                    rewards: { gold: 30, healing: 25 },
-                    choices: [
-                        { "text": "Explore deeper into ruins", "target": "treasure_room" },
-                        { "text": "Exit and explore elsewhere", "target": "start" }
-                    ]
-                },
-                "treasure_room": {
-                    background: "treasure_chamber",
-                    text: "You've found the treasure chamber! Golden artifacts fill the room, but you sense a powerful guardian nearby.",
-                    choices: [
-                        { "text": "Grab treasure quickly", "target": "dragon_encounter" },
-                        { "text": "Approach cautiously", "target": "stealth_treasure" }
-                    ]
-                },
-                "dragon_encounter": {
-                    background: "dragon_lair",
-                    text: "A mighty dragon awakens! It has 80 HP and breathes fire.",
-                    combat: {
-                        enemy: { name: "Ancient Dragon", health: 80, maxHealth: 80, attack: 20, defense: 10 },
-                        victory: "dragon_victory",
-                        defeat: "player_defeat"
-                    },
-                    choices: [
-                        { "text": "Face the dragon!", "target": "combat_timing", "action": "combat" }
-                    ]
-                },
-                "dragon_victory": {
-                    background: "ultimate_victory",
-                    text: "Incredible! You have slain the dragon and claim the ultimate treasure: 500 gold and the legendary Dragon Slayer sword!",
-                    rewards: { gold: 500, items: ["Dragon Slayer"] },
-                    choices: []
-                },
-                "player_defeat": {
-                    background: "defeat",
-                    text: "You have been defeated! But fear not - you wake up back at the clearing with a chance to try again.",
-                    choices: [
-                        { "text": "Try again", "target": "start" }
-                    ]
-                }
-            }
-        };
-    }
 
     /**
      * Generates themes with more variety and interesting mechanics.
@@ -235,65 +94,100 @@ class ClaudeStoryGenerator {
     /**
      * Enhanced story generation with dynamic world state and complex loops.
      */
-    _generateAdvancedStoryData(theme) {
-        const themes = this._generateInterestingThemes();
-        const selectedTheme = theme || themes[Math.floor(Math.random() * themes.length)];
+    async _generateAdvancedStoryData(theme, outline) {
+        const baseStoryPrompt = `Create a base RPG story structure for the theme "${theme}" with the following outline:
 
-        // Generate base story but with enhanced mechanics
-        const baseStory = this._generateRPGStoryData();
+Title: ${outline.title}
+Chapters: ${outline.chapters.map((ch, i) => `${i+1}. ${ch.title}: ${ch.description}`).join('\n')}
 
-        // Add time-based elements and persistent world state tracking
-        baseStory.gameState.worldState.timeLoop = 0;
-        baseStory.gameState.worldState.decisions = [];
-        baseStory.gameState.worldState.exploredAreas = [];
-        baseStory.gameState.worldState.objectStates = {
-            "start_table": "upright",
-            "forest_bridge": "intact",
-            "village_fountain": "clean",
-            "ruins_door": "closed"
-        };
-        baseStory.gameState.worldState.relationships = {
-            goblins: "neutral",
-            villagers: "neutral",
-            ancients: "unknown"
-        };
+Generate a JSON object with:
+- startPage: "start"
+- gameState: Basic RPG stats and inventory
+- pages: A set of interconnected story pages with choices, combat, and exploration
 
-        // Add pages with dynamic text based on world state
-        Object.assign(baseStory.pages, {
-            "dynamic_room": {
-                background: "inn_room",
-                dynamicText: {
-                    base: "You enter a cozy inn room. A wooden table sits in the center.",
-                    conditions: {
-                        "objectStates.start_table == 'flipped'": "You enter a cozy inn room. The wooden table lies overturned from your previous visit, its contents scattered across the floor."
-                    }
-                },
-                choices: [
-                    { "text": "Flip the table", "target": "table_flipped", "condition": "objectStates.start_table == 'upright'" },
-                    { "text": "Right the overturned table", "target": "table_righted", "condition": "objectStates.start_table == 'flipped'" },
-                    { "text": "Leave the room", "target": "start", "condition": null }
-                ]
-            },
-            "table_flipped": {
-                background: "inn_room",
-                text: "You angrily flip the table over! It crashes to the floor with a loud bang, sending dishes and papers flying everywhere. You feel slightly better but also a bit guilty.",
-                worldStateChanges: { "objectStates.start_table": "flipped" },
-                choices: [
-                    { "text": "Leave the mess and go", "target": "start", "condition": null },
-                    { "text": "Clean up the mess", "target": "table_righted", "condition": null }
-                ]
-            },
-            "table_righted": {
-                background: "inn_room",
-                text: "You carefully right the table and organize the scattered items. The room looks neat and tidy again.",
-                worldStateChanges: { "objectStates.start_table": "upright" },
-                choices: [
-                    { "text": "Leave the room", "target": "start", "condition": null }
-                ]
+Include these RPG elements:
+- Player stats (health, attack, defense, gold)
+- Inventory system with weapons and items
+- Combat encounters with enemies
+- Treasure and rewards
+- Branching storylines based on choices
+- Multiple endings
+
+Return ONLY valid JSON with this structure:
+{
+  "startPage": "start",
+  "gameState": {
+    "playerStats": {"health": 100, "maxHealth": 100, "attack": 10, "defense": 5, "gold": 0},
+    "inventory": ["Basic Sword"],
+    "weapons": {"Basic Sword": {"damage": 8, "accuracy": 0.8}},
+    "worldState": {"timeLoop": 0, "decisions": [], "exploredAreas": []}
+  },
+  "pages": {
+    "start": {
+      "background": "appropriate_scene",
+      "text": "Starting scene description",
+      "choices": [
+        {"text": "Choice 1", "target": "page1"},
+        {"text": "Choice 2", "target": "page2"}
+      ]
+    }
+  }
+}`;
+
+        const systemPrompt = `You are an expert RPG game designer. Create engaging interactive story content with meaningful choices, combat mechanics, and exploration elements. Always return properly formatted JSON.`;
+
+        try {
+            const result = await this._callClaudeApi(baseStoryPrompt, systemPrompt);
+
+            if (result && result.startPage && result.pages) {
+                return result;
+            } else {
+                console.warn("LLM returned invalid story format, using fallback");
+                return this._generateFallbackStoryData();
             }
-        });
+        } catch (error) {
+            console.warn("Error generating story with LLM, using fallback:", error.message);
+            return this._generateFallbackStoryData();
+        }
+    }
 
-        return baseStory;
+    /**
+     * Fallback story data when LLM generation fails.
+     */
+    _generateFallbackStoryData() {
+        return {
+            startPage: "start",
+            gameState: {
+                playerStats: { health: 100, maxHealth: 100, attack: 10, defense: 5, gold: 0 },
+                inventory: ["Basic Sword"],
+                weapons: { "Basic Sword": { damage: 8, accuracy: 0.8 } },
+                worldState: { timeLoop: 0, decisions: [], exploredAreas: [] }
+            },
+            pages: {
+                "start": {
+                    background: "adventure_start",
+                    text: "Your adventure begins. Choose your path forward.",
+                    choices: [
+                        { "text": "Explore the area", "target": "explore" },
+                        { "text": "Rest and prepare", "target": "prepare" }
+                    ]
+                },
+                "explore": {
+                    background: "exploration",
+                    text: "You venture forth and discover new challenges.",
+                    choices: [
+                        { "text": "Continue exploring", "target": "start" }
+                    ]
+                },
+                "prepare": {
+                    background: "preparation",
+                    text: "You take time to prepare for the journey ahead.",
+                    choices: [
+                        { "text": "Begin the adventure", "target": "start" }
+                    ]
+                }
+            }
+        };
     }
 
     /**
@@ -301,13 +195,11 @@ class ClaudeStoryGenerator {
      */
     async _callClaudeApi(prompt, systemPrompt) {
         if (!this.apiKey) {
-            // If no API key, we fall back to the simulated JSON from the original system.
             console.log("SIMULATING API CALL...");
             const simulator = new LLMStoryGenerator(this.system);
             return simulator.simulateLLMCall(prompt);
         }
 
-        // In a real implementation, you would make the fetch request here.
         console.log("MAKING (simulated) REAL API CALL to Claude...");
         /*
         const headers = {
@@ -316,19 +208,112 @@ class ClaudeStoryGenerator {
             'content-type': 'application/json'
         };
         const body = JSON.stringify({
-            model: "claude-3-opus-20240229", // Or another powerful model
+            model: "claude-3-opus-20240229",
             max_tokens: 4096,
             system: systemPrompt,
             messages: [{ role: "user", content: prompt }]
         });
-        
+
         const response = await fetch(this.apiEndpoint, { method: 'POST', headers, body });
         const data = await response.json();
         return JSON.parse(data.content[0].text);
         */
-       
-        // For this demo, we'll return advanced RPG story data with enhanced mechanics
-        return this._generateAdvancedStoryData();
+
+        // Since no API key is available, use the simulator
+        const simulator = new LLMStoryGenerator(this.system);
+        return simulator.simulateLLMCall(prompt);
+    }
+
+    /**
+     * Generates a theme-appropriate story outline using LLM prompting.
+     * @param {string} theme - The theme to base the story on.
+     * @returns {Promise<Object>} An outline object with title and chapters.
+     */
+    async _generateOutlineForTheme(theme) {
+        const outlinePrompt = `You are a master storyteller creating an interactive RPG adventure. Generate a compelling story outline for the theme: "${theme}"
+
+REQUIREMENTS:
+- Create a captivating story title that captures the essence of the theme
+- Design exactly 5 chapters that form a complete narrative arc
+- Each chapter should have meaningful player choices that affect the story
+- Include multiple possible endings (good, bad, neutral)
+- Make the story engaging for interactive gameplay
+
+FORMAT: Return ONLY a valid JSON object with this exact structure:
+{
+  "title": "Your Creative Title Here",
+  "chapters": [
+    {
+      "title": "Chapter 1 Title",
+      "description": "Detailed description of what happens in this chapter, including the main choices players face and their consequences."
+    },
+    {
+      "title": "Chapter 2 Title",
+      "description": "Description of chapter 2..."
+    },
+    {
+      "title": "Chapter 3 Title",
+      "description": "Description of chapter 3..."
+    },
+    {
+      "title": "Chapter 4 Title",
+      "description": "Description of chapter 4..."
+    },
+    {
+      "title": "Chapter 5 Title",
+      "description": "Description of the final chapter with multiple possible endings..."
+    }
+  ]
+}
+
+GUIDELINES:
+- Title should be 2-4 words, evocative and memorable
+- Chapter descriptions should be 1-3 sentences describing key events and choices
+- Focus on player agency and meaningful decisions
+- Include elements like combat, exploration, social interaction, and moral dilemmas
+- Each chapter should build upon the previous one
+- The final chapter should offer distinctly different endings based on player choices
+
+Theme: ${theme}`;
+
+        const systemPrompt = `You are a creative RPG story designer with expertise in interactive fiction. You specialize in creating engaging branching narratives that give players meaningful choices. Always respond with properly formatted JSON that follows the exact structure requested.`;
+
+        try {
+            const result = await this._callClaudeApi(outlinePrompt, systemPrompt);
+
+            // Validate the result has the required structure
+            if (result && result.title && result.chapters && Array.isArray(result.chapters) && result.chapters.length === 5) {
+                return result;
+            } else {
+                console.warn("LLM returned invalid outline format, using fallback");
+                return this._generateFallbackOutline(theme);
+            }
+        } catch (error) {
+            console.warn("Error generating outline with LLM, using fallback:", error.message);
+            return this._generateFallbackOutline(theme);
+        }
+    }
+
+    /**
+     * Generates a simple fallback outline when LLM generation fails.
+     * @param {string} theme - The theme to base the story on.
+     * @returns {Object} A basic outline object.
+     */
+    _generateFallbackOutline(theme) {
+        const words = theme.toLowerCase().split(' ');
+        const titleWords = words.slice(0, 3).map(word => word.charAt(0).toUpperCase() + word.slice(1));
+        const title = titleWords.join(' ') + " Quest";
+
+        return {
+            title: title,
+            chapters: [
+                { title: "The Beginning", description: `The adventure starts in a world of ${theme}. The protagonist must make their first crucial choice about how to approach their quest.` },
+                { title: "The Challenge", description: `Facing the main obstacles and conflicts inherent in ${theme}. Player choices determine their strategy and allies.` },
+                { title: "The Discovery", description: `Uncovering secrets and gaining new understanding about the world and the quest. Moral dilemmas test the protagonist's values.` },
+                { title: "The Trial", description: `The ultimate test that will determine the outcome of the adventure. Multiple paths lead to different final scenarios.` },
+                { title: "The Resolution", description: `The final choices that shape the ending: triumph and glory, tragic sacrifice, or bittersweet compromise.` }
+            ]
+        };
     }
 
     /**
@@ -342,59 +327,56 @@ class ClaudeStoryGenerator {
 
         // --- Phase 1: Generate the High-Level Outline ---
         const outlinePrompt = `Create a detailed story outline for a branching narrative with 5 major chapters. The theme is: ${theme}. The story should have a clear beginning, a complex middle with choices, and multiple endings (at least one good, one bad). Provide the outline as a JSON object with a "title" and a list of "chapters", where each chapter has a "title" and a "description" of the key events and choices within it.`;
-        
-        // In a real scenario, the outline would be dynamically generated. We'll simulate it here.
-        const simulatedOutline = {
-            title: "The Silent Watcher",
-            chapters: [
-                { title: "The Invitation", description: "The player inherits a secluded mansion from a distant relative. The first chapter involves arriving and the initial exploration, discovering the house is not as empty as it seems. Choices revolve around where to explore first." },
-                { title: "Whispers in the Walls", description: "Player experiences strange events. They must find the source, leading them to a hidden study or a locked basement. Choices determine what clues they find about the house's past." },
-                { title: "The Watcher's Journal", description: "Player finds a journal detailing the life of the previous owner, who was haunted by a 'silent watcher'. Choices involve deciphering clues in the journal to reveal the watcher's nature (ghost, creature, or psychological)." },
-                { title: "The Confrontation", description: "Based on the clues, the player prepares to confront the entity. They must choose a method: a spiritual ritual, a scientific trap, or an attempt to communicate." },
-                { title: "The Inheritance", description: "The final chapter. Success could mean cleansing the house and claiming the inheritance (Good Ending), while failure could mean becoming the next spirit trapped within (Bad Ending), or simply fleeing in terror (Neutral Ending)." }
-            ]
-        };
+
+        // Generate dynamic outline based on theme
+        const simulatedOutline = await this._generateOutlineForTheme(theme);
         console.log("Generated story outline:", simulatedOutline.title);
 
-        // --- Phase 2 & 3: Generate Story from Outline & Assemble ---
-        let fullStoryData = { startPage: "chapter1_start", pages: {} };
-        let previousChapterSummary = "The story is just beginning.";
+        // --- Phase 2: Generate Base Story Structure ---
+        console.log("Generating base story structure...");
+        let fullStoryData = await this._generateAdvancedStoryData(theme, simulatedOutline);
 
+        // --- Phase 3: Generate Additional Chapter Pages ---
         for (let i = 0; i < simulatedOutline.chapters.length; i++) {
             const chapter = simulatedOutline.chapters[i];
             console.log(`Generating pages for Chapter ${i+1}: ${chapter.title}...`);
 
-            const pageGenPrompt = `Generate the pages for a chapter titled "${chapter.title}".
-            Overall Story Theme: ${theme}.
-            Chapter Synopsis: ${chapter.description}.
-            Events of Previous Chapter: ${previousChapterSummary}.
-            
-            The start page for this chapter must be named "chapter${i+1}_start".
-            Ensure the choices at the end of this chapter lead to pages in the next chapter (e.g., "chapter${i+2}_start") or to an ending page.
-            Return ONLY the JSON object for the "pages" of this chapter.`;
+            const pageGenPrompt = `Generate additional story pages for Chapter ${i+1}: "${chapter.title}"
 
-            // This call would generate a new set of pages for each chapter.
-            const chapterPagesData = await this._callClaudeApi(pageGenPrompt, "You are a creative storyteller who generates content in a specific JSON format.");
-            
-            // For the demo, we'll just use the same JSON pages for each "chapter" to prove the loop works.
-            Object.assign(fullStoryData.pages, chapterPagesData.pages);
-            
-            // Create links between chapters (a real LLM would be instructed to do this).
-            // This is a simplified linking for the demo.
-            if (i < simulatedOutline.chapters.length - 1) {
-                const lastPageKey = Object.keys(chapterPagesData.pages).pop();
-                if(fullStoryData.pages[lastPageKey].choices.length > 0) {
-                   fullStoryData.pages[lastPageKey].choices[0].target = `chapter${i+2}_start`;
-                }
+Chapter Description: ${chapter.description}
+Overall Theme: ${theme}
+Story Title: ${simulatedOutline.title}
+
+Create interconnected pages that expand on this chapter. Include:
+- Combat encounters appropriate to the theme
+- Exploration and discovery elements
+- Character interactions and dialogue
+- Meaningful player choices that affect the story
+- Connections to other parts of the story
+
+Return ONLY a JSON object with a "pages" property containing the new pages:
+{
+  "pages": {
+    "page_id_1": {
+      "background": "scene_description",
+      "text": "What happens in this scene",
+      "choices": [
+        {"text": "Choice text", "target": "next_page_id"}
+      ]
+    }
+  }
+}`;
+
+            const chapterPagesData = await this._callClaudeApi(pageGenPrompt, "You are a creative RPG story designer. Generate engaging interactive content with meaningful choices and consequences.");
+
+            if (chapterPagesData && chapterPagesData.pages) {
+                Object.assign(fullStoryData.pages, chapterPagesData.pages);
             }
-            
-            previousChapterSummary = chapter.description; // Update for the next iteration.
         }
 
         console.log("Assembling all generated pages into a single story...");
-        // We use the parser from the original generator as it's a perfect tool for this.
         const parser = new LLMStoryGenerator(this.system);
-        const finalStory = parser.parse(fullStoryData, "long_form_story_1", simulatedOutline.title);
+        const finalStory = parser.parse(fullStoryData, "generated_story", simulatedOutline.title);
 
         // Ensure minimum page count by generating additional pages if needed
         let currentPageCount = Object.keys(finalStory.pages).length;
@@ -404,17 +386,64 @@ class ClaudeStoryGenerator {
             console.log(`Generating additional pages to meet minimum requirement...`);
             const additionalPagesNeeded = minPages - currentPageCount;
 
-            // Generate additional pages by creating more branching paths
-            for (let i = 0; i < additionalPagesNeeded; i++) {
-                const additionalPageData = await this._callClaudeApi(
-                    `Generate a single additional page for the story "${simulatedOutline.title}" that extends one of the existing storylines. The page should have meaningful choices and connect to existing pages where appropriate.`,
-                    "You are a creative storyteller who generates content in a specific JSON format."
-                );
+            const BATCH_SIZE = 50;
+            const MAX_PAGES = 500;
 
-                // Add the new page to the story
-                if (additionalPageData.pages) {
-                    Object.assign(fullStoryData.pages, additionalPageData.pages);
-                    Object.assign(finalStory.pages, additionalPageData.pages);
+            if (additionalPagesNeeded > MAX_PAGES) {
+                console.warn(`⚠️  Requested ${minPages} pages exceeds maximum of ${MAX_PAGES + currentPageCount} pages.`);
+                console.warn(`   Limiting generation to ${MAX_PAGES} additional pages for performance.`);
+            }
+
+            const pagesToGenerate = Math.min(additionalPagesNeeded, MAX_PAGES);
+
+            for (let batchStart = 0; batchStart < pagesToGenerate; batchStart += BATCH_SIZE) {
+                const batchEnd = Math.min(batchStart + BATCH_SIZE, pagesToGenerate);
+                const batchSize = batchEnd - batchStart;
+
+                console.log(`Generating batch: pages ${batchStart + 1}-${batchEnd} of ${pagesToGenerate}...`);
+
+                const batchPrompt = `Generate ${batchSize} additional interconnected story pages for "${simulatedOutline.title}".
+
+Theme: ${theme}
+Story Context: ${simulatedOutline.chapters.map(ch => ch.title).join(', ')}
+
+Create diverse content including:
+- Combat encounters with enemies appropriate to the theme
+- Exploration and discovery sequences
+- Social interactions and dialogue
+- Puzzle-solving challenges
+- Treasure hunting and rewards
+- Moral dilemmas and meaningful choices
+- Multiple story paths and outcomes
+
+Each page should connect to others through player choices. Include variety in:
+- Combat difficulty and enemy types
+- Exploration locations and secrets
+- Character interactions and relationships
+- Rewards and consequences for actions
+
+Return ONLY valid JSON:
+{
+  "pages": {
+    "unique_page_id_1": {
+      "background": "scene_setting",
+      "text": "Engaging scene description with clear choices",
+      "choices": [
+        {"text": "Action choice", "target": "another_page_id"}
+      ]
+    }
+  }
+}`;
+
+                const batchData = await this._callClaudeApi(batchPrompt, "You are an expert RPG content creator. Generate diverse, interconnected story content that creates engaging player experiences.");
+
+                if (batchData && batchData.pages) {
+                    Object.assign(fullStoryData.pages, batchData.pages);
+                    Object.assign(finalStory.pages, batchData.pages);
+                }
+
+                if (batchEnd < pagesToGenerate) {
+                    await new Promise(resolve => setTimeout(resolve, 100));
                 }
             }
 
@@ -426,7 +455,15 @@ class ClaudeStoryGenerator {
         const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5);
         const sanitizedTitle = simulatedOutline.title.replace(/[^a-zA-Z0-9]/g, '_');
         const fileName = `${sanitizedTitle}_${timestamp}.json`;
-        const filePath = path.join('stories', fileName);
+
+        // Ensure stories directory exists
+        const storiesDir = 'stories';
+        if (!fs.existsSync(storiesDir)) {
+            fs.mkdirSync(storiesDir, { recursive: true });
+            console.log(`Created directory: ${storiesDir}`);
+        }
+
+        const filePath = path.join(storiesDir, fileName);
 
         try {
             fs.writeFileSync(filePath, finalStory.toJSON());

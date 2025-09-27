@@ -211,9 +211,32 @@ def main():
     try:
         cmd = ["node", "run_story.js", str(story_file)]
         print(f"🚀 Running: {' '.join(cmd)}")
-        subprocess.run(cmd, cwd=".")
+        print("="*50)
+        print()
+
+        # Run the Node.js story interactively
+        result = subprocess.call(cmd, cwd=".")
+
+        # Check if we're in an interactive console that will close immediately
+        # This happens when double-clicking the .py file or running from some terminals
+        if sys.platform.startswith('win') and sys.stdin.isatty():
+            try:
+                # Only pause if we can actually read input
+                print("\n" + "="*50)
+                print("🎮 Game session ended.")
+                input("Press Enter to close...")
+            except (EOFError, KeyboardInterrupt):
+                # If we can't read input, just exit gracefully
+                pass
+    except KeyboardInterrupt:
+        print("\n\n👋 Story interrupted by user. Goodbye!")
     except Exception as e:
         print(f"❌ Error running app: {e}")
+        if sys.platform.startswith('win') and sys.stdin.isatty():
+            try:
+                input("\nPress Enter to close...")
+            except (EOFError, KeyboardInterrupt):
+                pass
         sys.exit(1)
 
 

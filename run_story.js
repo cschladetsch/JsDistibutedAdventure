@@ -2,6 +2,7 @@ const fs = require('fs');
 const readline = require('readline');
 const { Story } = require('./StorySystem.js');
 const { CombatSystem } = require('./StoryGenerator.js');
+const Colors = require('./external/colors.js');
 
 // Enhanced logging function
 function debugLog(message, data = null) {
@@ -56,7 +57,38 @@ class StoryRunner {
             throw error;
         }
         this.gameState = this.storyData.gameState || {
-            playerStats: { health: 100, maxHealth: 100, attack: 10, defense: 5, gold: 0 },
+            playerStats: {
+                // Core Stats
+                health: 100, maxHealth: 100, mana: 50, maxMana: 50,
+                stamina: 100, maxStamina: 100, energy: 100, maxEnergy: 100,
+
+                // Primary Attributes
+                strength: 10, dexterity: 10, constitution: 10, intelligence: 10,
+                wisdom: 10, charisma: 10, luck: 10, perception: 10,
+
+                // Combat Stats
+                attack: 10, defense: 5, accuracy: 75, evasion: 10,
+                criticalChance: 5, criticalDamage: 150, blockChance: 10,
+
+                // Magic Stats
+                spellPower: 5, manaRegeneration: 2, spellResistance: 0,
+
+                // Social Stats
+                reputation: 0, leadership: 5, intimidation: 5, persuasion: 5,
+                deception: 5, insight: 5, diplomacy: 5,
+
+                // Survival Stats
+                survival: 5, stealth: 5, lockpicking: 0, trapDetection: 0,
+
+                // Economic Stats
+                gold: 0, merchantRep: 0, craftingSkill: 0,
+
+                // Experience & Progression
+                experience: 0, level: 1, skillPoints: 0,
+
+                // Status Effects
+                poisoned: false, blessed: false, cursed: false, exhausted: false
+            },
             inventory: ["Basic Sword"],
             weapons: {
                 "Basic Sword": { damage: 8, accuracy: 0.8 }
@@ -78,56 +110,184 @@ class StoryRunner {
         debugLog('StoryRunner constructor completed successfully');
     }
 
+    generateCombatDataForPage(pageId) {
+        // Generate appropriate combat data based on the page ID and story context
+        const enemies = [
+            { name: "Bandit", health: 30, maxHealth: 30, attack: 9, defense: 3 },
+            { name: "Goblin Warrior", health: 25, maxHealth: 25, attack: 7, defense: 2 },
+            { name: "Orc Brute", health: 50, maxHealth: 50, attack: 15, defense: 6 },
+            { name: "Beast", health: 45, maxHealth: 45, attack: 14, defense: 5 },
+            { name: "Undead Soldier", health: 35, maxHealth: 35, attack: 12, defense: 4 },
+            { name: "Wild Wolf", health: 28, maxHealth: 28, attack: 10, defense: 2 },
+            { name: "Skeleton Archer", health: 22, maxHealth: 22, attack: 8, defense: 1 },
+            { name: "Dark Mage", health: 40, maxHealth: 40, attack: 18, defense: 3 }
+        ];
+
+        // Select enemy based on encounter number or randomly
+        let enemyIndex = 0;
+        if (pageId.includes('combat_encounter_1')) {
+            enemyIndex = 0; // Bandit
+        } else if (pageId.includes('combat_encounter_2')) {
+            enemyIndex = 2; // Orc Brute (tougher)
+        } else {
+            enemyIndex = Math.floor(Math.random() * enemies.length);
+        }
+
+        const selectedEnemy = { ...enemies[enemyIndex] };
+
+        return {
+            enemy: selectedEnemy,
+            victory: this.findVictoryPage(pageId),
+            defeat: this.findDefeatPage(pageId)
+        };
+    }
+
+    findVictoryPage(combatPageId) {
+        // Look for victory pages related to this combat
+        const storyPages = Object.keys(this.storyData.pages);
+
+        // Try to find specific victory page for this encounter
+        const victoryId = combatPageId.replace('combat_encounter', 'victory');
+        if (storyPages.includes(victoryId)) {
+            return victoryId;
+        }
+
+        // Look for any victory page
+        const victoryPage = storyPages.find(pageId =>
+            pageId.includes('victory') ||
+            this.storyData.pages[pageId].text?.toLowerCase().includes('victory') ||
+            this.storyData.pages[pageId].text?.toLowerCase().includes('defeated')
+        );
+
+        return victoryPage || "start"; // Fallback to start
+    }
+
+    findDefeatPage(combatPageId) {
+        // Look for defeat pages or safe fallback
+        const storyPages = Object.keys(this.storyData.pages);
+
+        // Try to find specific defeat page
+        const defeatId = combatPageId.replace('combat_encounter', 'defeat');
+        if (storyPages.includes(defeatId)) {
+            return defeatId;
+        }
+
+        // Look for any defeat page
+        const defeatPage = storyPages.find(pageId =>
+            pageId.includes('defeat') ||
+            this.storyData.pages[pageId].text?.toLowerCase().includes('defeat') ||
+            this.storyData.pages[pageId].text?.toLowerCase().includes('retreat')
+        );
+
+        return defeatPage || "start"; // Fallback to start
+    }
+
     showStats() {
+        const stats = this.gameState.playerStats;
         console.log(`\n📊 PLAYER STATS:`);
-        console.log(`❤️  Health: ${this.gameState.playerStats.health}/${this.gameState.playerStats.maxHealth}`);
-        console.log(`⚔️  Attack: ${this.gameState.playerStats.attack}`);
-        console.log(`🛡️  Defense: ${this.gameState.playerStats.defense}`);
-        console.log(`💰 Gold: ${this.gameState.playerStats.gold}`);
-        if (this.gameState.playerStats.experience !== undefined) {
-            console.log(`⭐ Experience: ${this.gameState.playerStats.experience}`);
+        console.log(`❤️  Health: ${stats.health}/${stats.maxHealth} | 🔵 Mana: ${stats.mana}/${stats.maxMana} | 💪 Stamina: ${stats.stamina}/${stats.maxStamina}`);
+        console.log(`🏆 Level: ${stats.level} | ⭐ XP: ${stats.experience} | 🎯 Skill Points: ${stats.skillPoints}`);
+
+        console.log(`\n🎯 COMBAT STATS:`);
+        console.log(`⚔️  ATK: ${stats.attack} | 🛡️  DEF: ${stats.defense} | 🎯 ACC: ${stats.accuracy}% | 💨 EVA: ${stats.evasion}%`);
+        console.log(`💥 Crit: ${stats.criticalChance}% | 🔥 Crit DMG: ${stats.criticalDamage}% | 🛡️  Block: ${stats.blockChance}%`);
+
+        console.log(`\n💪 ATTRIBUTES:`);
+        console.log(`STR: ${stats.strength} | DEX: ${stats.dexterity} | CON: ${stats.constitution} | INT: ${stats.intelligence}`);
+        console.log(`WIS: ${stats.wisdom} | CHA: ${stats.charisma} | LUK: ${stats.luck} | PER: ${stats.perception}`);
+
+        console.log(`\n🎭 SOCIAL & SKILLS:`);
+        console.log(`👑 REP: ${stats.reputation} | 🗣️  Lead: ${stats.leadership} | 😤 Intim: ${stats.intimidation} | 💬 Persua: ${stats.persuasion}`);
+        console.log(`🎭 Decep: ${stats.deception} | 👁️  Insight: ${stats.insight} | 🤝 Diplo: ${stats.diplomacy}`);
+        console.log(`🏕️  Survival: ${stats.survival} | 🥷 Stealth: ${stats.stealth} | 🔓 Lockpick: ${stats.lockpicking} | 🪤 Traps: ${stats.trapDetection}`);
+
+        if (stats.poisoned || stats.blessed || stats.cursed || stats.exhausted) {
+            console.log(`\n⚡ STATUS EFFECTS:`);
+            if (stats.poisoned) console.log(`🟢 Poisoned`);
+            if (stats.blessed) console.log(`✨ Blessed`);
+            if (stats.cursed) console.log(`😈 Cursed`);
+            if (stats.exhausted) console.log(`😴 Exhausted`);
         }
-        if (this.gameState.playerStats.level !== undefined) {
-            console.log(`🏆 Level: ${this.gameState.playerStats.level}`);
-        }
-        console.log(`🎒 Inventory: ${this.gameState.inventory.slice(0, 3).join(', ')}${this.gameState.inventory.length > 3 ? '...' : ''}`);
-        console.log(`💡 Tip: Type 'v' during choices to view detailed inventory`);
+
+        console.log(`\n💰 Gold: ${stats.gold} | 🎒 Items: ${this.gameState.inventory.slice(0, 3).join(', ')}${this.gameState.inventory.length > 3 ? '...' : ''}`);
+        console.log(`💡 Tip: Type 'v' during choices to view detailed stats and inventory`);
     }
 
     async simulateTimingBar() {
         return new Promise((resolve) => {
             console.log('\n⚔️  COMBAT TIMING BAR');
-            console.log('Press ENTER when you see the marker hit the target zone!');
-            console.log('[----🎯----🔥----🎯----] ← Target zones');
+            console.log('Press SPACE when the marker hits the blue target zone!');
+            console.log(''); // Blank line for spacing
 
             let position = 0;
-            const barLength = 20;
-            const speed = 0.2;
+            const barLength = 50;
+            const speed = 0.5;
             let direction = 1;
+            const blueZone = { start: 25, end: 25 };  // Very small blue target zone (1 character wide)
 
             const interval = setInterval(() => {
-                // Clear line and show moving bar
-                process.stdout.write('\r');
-                const bar = Array(barLength).fill('-');
-                bar[Math.floor(position)] = '█';
-                process.stdout.write(`[${bar.join('')}]`);
+                // Clear the current line and redraw
+                process.stdout.write('\r\x1b[K'); // Clear entire line
+
+                let animatedBar = '';
+                for (let i = 0; i < barLength; i++) {
+                    if (Math.floor(position) === i) {
+                        animatedBar += Colors.brightWhiteOnBlack('█'); // Moving marker
+                    } else if (i >= blueZone.start && i <= blueZone.end) {
+                        animatedBar += Colors.bgBlue(' '); // Blue target zone
+                    } else {
+                        animatedBar += '═'; // Gray bar
+                    }
+                }
+
+                process.stdout.write(`[${animatedBar}]`);
 
                 position += speed * direction;
                 if (position >= barLength - 1 || position <= 0) {
                     direction *= -1;
                 }
-            }, 50);
+            }, 100);
 
-            this.rl.question('\n\nPress ENTER to attack! ', () => {
-                clearInterval(interval);
-                const timing = position / barLength;
-                resolve(timing);
-            });
+            // Set up input handling
+            process.stdin.setRawMode(true);
+            process.stdin.resume();
+            process.stdin.setEncoding('utf8');
+
+            const handleInput = (key) => {
+                if (key === ' ' || key === '\r' || key === '\n') {
+                    clearInterval(interval);
+                    process.stdin.setRawMode(false);
+                    process.stdin.pause();
+                    process.stdin.removeListener('data', handleInput);
+
+                    console.log('\n'); // New line after bar
+
+                    // Calculate timing accuracy based on hitting the blue zone
+                    let timing = 0.1; // Default miss
+                    let zoneHit = 'miss';
+
+                    if (position >= blueZone.start && position <= blueZone.end) {
+                        zoneHit = 'blue';
+                        timing = 0.5; // Perfect hit
+                        console.log(`🎯 ${Colors.blue('PERFECT HIT!')} Critical damage!`);
+                    } else {
+                        console.log(`🎯 Missed the target! Minimal damage.`);
+                    }
+
+                    resolve({ timing, zone: zoneHit, position: position });
+                } else if (key === '\u0003') { // Ctrl+C
+                    clearInterval(interval);
+                    process.exit();
+                }
+            };
+
+            process.stdin.on('data', handleInput);
+            console.log('Press SPACE when the █ marker hits the blue zone!');
         });
     }
 
     async handleCombat(combatData) {
-        console.log(`\n🐲 COMBAT: ${combatData.enemy.name}`);
+        console.log(`\n⚔️  COMBAT: ${combatData.enemy.name}`);
         console.log(`Enemy HP: ${combatData.enemy.health}/${combatData.enemy.maxHealth}`);
         console.log(`Enemy ATK: ${combatData.enemy.attack} | DEF: ${combatData.enemy.defense}`);
 
@@ -139,46 +299,215 @@ class StoryRunner {
 
         let enemyHealth = combatData.enemy.health;
         let playerHealth = this.gameState.playerStats.health;
+        let playerStamina = this.gameState.playerStats.stamina;
 
         while (enemyHealth > 0 && playerHealth > 0) {
             console.log(`\n--- COMBAT ROUND ---`);
-            console.log(`Your HP: ${playerHealth} | Enemy HP: ${enemyHealth}`);
+            console.log(`Your HP: ${playerHealth}/${this.gameState.playerStats.maxHealth} | Stamina: ${playerStamina}/${this.gameState.playerStats.maxStamina}`);
+            console.log(`Enemy HP: ${enemyHealth}/${combatData.enemy.maxHealth}`);
 
-            // Player attack with timing
-            const timing = await this.simulateTimingBar();
-            const attackResult = combat.calculateDamage(timing);
+            // Combat action choice
+            console.log(`\n⚔️  Choose your combat action:`);
+            console.log(`[1] 🗡️  Attack - Use timing bar for damage`);
+            console.log(`[2] 🛡️  Defend - Reduce incoming damage, restore stamina`);
+            console.log(`[3] 💨 Rush - Quick attack, costs stamina, bonus crit chance`);
+            console.log(`[4] 💬 Talk - Attempt to reason with enemy (uses Charisma)`);
+            console.log(`[5] 🏃 Flee - Escape combat (uses Dexterity)`);
 
-            enemyHealth = Math.max(0, enemyHealth - attackResult.damage);
+            const actionChoice = await this.getCombatChoice(5);
+            let actionResult;
 
-            console.log(`\n🎯 Timing: ${(timing * 100).toFixed(0)}% accuracy`);
-            console.log(`💥 You deal ${attackResult.damage} damage!`);
+            switch(actionChoice) {
+                case 1: // Attack
+                    actionResult = await this.performAttack(combat);
+                    enemyHealth = Math.max(0, enemyHealth - actionResult.damage);
+                    break;
 
-            if (attackResult.multiplier >= 1.5) {
-                console.log('⭐ CRITICAL HIT!');
-            } else if (attackResult.multiplier >= 1.0) {
-                console.log('✅ Good hit!');
-            } else {
-                console.log('⚠️  Poor timing...');
+                case 2: // Defend
+                    actionResult = this.performDefend();
+                    playerStamina = Math.min(this.gameState.playerStats.maxStamina, playerStamina + actionResult.staminaGain);
+                    console.log(`🛡️  You raise your guard and recover ${actionResult.staminaGain} stamina!`);
+                    break;
+
+                case 3: // Rush
+                    if (playerStamina < 20) {
+                        console.log(`❌ Not enough stamina! (Need 20, have ${playerStamina})`);
+                        continue;
+                    }
+                    actionResult = await this.performRush(combat);
+                    enemyHealth = Math.max(0, enemyHealth - actionResult.damage);
+                    playerStamina -= 20;
+                    break;
+
+                case 4: // Talk
+                    actionResult = this.performTalk(combatData.enemy);
+                    if (actionResult.success) {
+                        console.log(`💬 Success! ${actionResult.message}`);
+                        if (actionResult.flee) {
+                            console.log(`🕊️  Combat ended peacefully!`);
+                            return combatData.victory; // Peaceful resolution
+                        }
+                        enemyHealth = Math.max(0, enemyHealth - actionResult.damage);
+                    } else {
+                        console.log(`💬 ${actionResult.message}`);
+                    }
+                    break;
+
+                case 5: // Flee
+                    actionResult = this.performFlee();
+                    if (actionResult.success) {
+                        console.log(`🏃 You successfully escape from combat!`);
+                        this.gameState.playerStats.health = playerHealth;
+                        this.gameState.playerStats.stamina = playerStamina;
+                        return combatData.defeat || "start"; // Return to safe area
+                    } else {
+                        console.log(`🏃 Failed to escape! The enemy blocks your path!`);
+                    }
+                    break;
             }
 
             if (enemyHealth <= 0) {
                 console.log('\n🏆 VICTORY! Enemy defeated!');
+                // Award experience
+                const expGain = Math.floor(combatData.enemy.maxHealth / 2) + combatData.enemy.attack;
+                this.gameState.playerStats.experience += expGain;
+                console.log(`⭐ You gain ${expGain} experience!`);
+                this.gameState.playerStats.health = playerHealth;
+                this.gameState.playerStats.stamina = playerStamina;
                 return combatData.victory;
             }
 
-            // Enemy attacks back
-            const enemyDamage = combat.enemyAttack();
+            // Enemy attacks back (reduced if player defended)
+            let enemyDamage = combat.enemyAttack();
+            if (actionChoice === 2) { // Defended
+                enemyDamage = Math.floor(enemyDamage * 0.5);
+                console.log(`🛡️  Your defense reduces the damage!`);
+            }
+
             playerHealth = Math.max(0, playerHealth - enemyDamage);
             console.log(`🐲 Enemy attacks for ${enemyDamage} damage!`);
 
             if (playerHealth <= 0) {
                 console.log('\n💀 DEFEAT! You have been slain!');
-                this.gameState.playerStats.health = playerHealth;
+                this.gameState.playerStats.health = 1; // Leave with 1 HP
                 return combatData.defeat;
             }
+
+            // Regenerate small amount of stamina each turn
+            playerStamina = Math.min(this.gameState.playerStats.maxStamina, playerStamina + 5);
+
+            // Add a brief pause between rounds
+            await new Promise(resolve => setTimeout(resolve, 1000));
         }
 
         this.gameState.playerStats.health = playerHealth;
+        this.gameState.playerStats.stamina = playerStamina;
+    }
+
+    async performAttack(combat) {
+        const timingResult = await this.simulateTimingBar();
+        const attackResult = combat.calculateDamage(timingResult.timing);
+
+        console.log(`\n🎯 Zone Hit: ${timingResult.zone.toUpperCase()}`);
+        console.log(`💥 You deal ${attackResult.damage} damage!`);
+
+        if (timingResult.zone === 'blue') {
+            console.log('💎 PERFECT HIT! Maximum damage!');
+        } else if (timingResult.zone === 'green') {
+            console.log('✅ Good hit! Solid damage!');
+        } else if (timingResult.zone === 'red') {
+            console.log('⚠️  Hit in enemy zone - reduced damage!');
+        } else {
+            console.log('❌ Miss! Minimal damage!');
+        }
+
+        return { damage: attackResult.damage };
+    }
+
+    performDefend() {
+        return { staminaGain: 15 };
+    }
+
+    async performRush(combat) {
+        console.log(`💨 RUSH ATTACK! Bonus critical chance!`);
+        const timingResult = await this.simulateTimingBar();
+
+        // Rush gives bonus critical chance
+        let enhancedTiming = timingResult.timing;
+        if (timingResult.zone === 'green' || timingResult.zone === 'blue') {
+            enhancedTiming = 0.4; // Better timing for rush
+        }
+
+        const attackResult = combat.calculateDamage(enhancedTiming);
+        const rushDamage = Math.floor(attackResult.damage * 1.3); // 30% bonus damage
+
+        console.log(`\n💨 RUSH! Zone Hit: ${timingResult.zone.toUpperCase()}`);
+        console.log(`💥 You deal ${rushDamage} rush damage!`);
+        console.log('⚡ Rush bonus applied!');
+
+        return { damage: rushDamage };
+    }
+
+    performTalk(enemy) {
+        const charisma = this.gameState.playerStats.charisma;
+        const persuasion = this.gameState.playerStats.persuasion;
+        const roll = Math.floor(Math.random() * 20) + 1;
+        const total = roll + charisma + persuasion;
+
+        console.log(`💬 Diplomacy attempt: Roll ${roll} + CHA ${charisma} + Persuasion ${persuasion} = ${total}`);
+
+        if (total >= 25) {
+            return {
+                success: true,
+                flee: true,
+                message: `${enemy.name} is convinced by your words and agrees to let you pass!`
+            };
+        } else if (total >= 20) {
+            return {
+                success: true,
+                damage: Math.floor(enemy.maxHealth * 0.3),
+                message: `You confuse ${enemy.name}, causing them to hesitate and become vulnerable!`
+            };
+        } else if (total >= 15) {
+            return {
+                success: true,
+                damage: 0,
+                message: `${enemy.name} pauses, but remains hostile. You've bought yourself time!`
+            };
+        } else {
+            return {
+                success: false,
+                message: `${enemy.name} ignores your words and prepares to attack!`
+            };
+        }
+    }
+
+    performFlee() {
+        const dexterity = this.gameState.playerStats.dexterity;
+        const survival = this.gameState.playerStats.survival;
+        const roll = Math.floor(Math.random() * 20) + 1;
+        const total = roll + dexterity + survival;
+
+        console.log(`🏃 Escape attempt: Roll ${roll} + DEX ${dexterity} + Survival ${survival} = ${total}`);
+
+        return { success: total >= 15 };
+    }
+
+    async getCombatChoice(maxChoice) {
+        return new Promise((resolve) => {
+            const askChoice = () => {
+                this.rl.question(`\nEnter your combat action (1-${maxChoice}): `, (answer) => {
+                    const choice = parseInt(answer, 10);
+                    if (isNaN(choice) || choice < 1 || choice > maxChoice) {
+                        console.log(`❌ Invalid choice. Please enter a number between 1 and ${maxChoice}.`);
+                        askChoice();
+                    } else {
+                        resolve(choice);
+                    }
+                });
+            };
+            askChoice();
+        });
     }
 
     async runStory() {
@@ -211,7 +540,7 @@ class StoryRunner {
                     console.log('\n❌ Story page not found. Adventure ends.');
                     break;
                 }
-                debugLog('Page retrieved successfully', { pageId: currentPageId, hasText: !!currentPage.text, choicesCount: currentPage.choices?.length });
+                debugLog('Page retrieved successfully', { pageId: currentPageId, hasText: !!currentPage.text, choicesCount: currentPage.prompts?.length });
             } catch (error) {
                 debugLog('Error getting page', { error: error.message, currentPageId });
                 throw error;
@@ -222,15 +551,23 @@ class StoryRunner {
             console.log(`${'='.repeat(50)}`);
             console.log(currentPage.text);
 
-            // Handle combat
-            if (this.storyData.pages[currentPageId]?.combat) {
-                currentPageId = await this.handleCombat(this.storyData.pages[currentPageId].combat);
+            // Handle combat - detect combat encounters and add combat data if missing
+            const pageData = this.storyData.pages[currentPageId];
+            if (pageData?.combat) {
+                currentPageId = await this.handleCombat(pageData.combat);
                 turnCount++;
                 continue;
+            } else if (currentPageId.includes('combat_encounter')) {
+                // Auto-generate combat data for combat encounter pages that are missing it
+                const combatData = this.generateCombatDataForPage(currentPageId);
+                if (combatData) {
+                    currentPageId = await this.handleCombat(combatData);
+                    turnCount++;
+                    continue;
+                }
             }
 
             // Handle rewards
-            const pageData = this.storyData.pages[currentPageId];
             if (pageData?.rewards) {
                 if (pageData.rewards.gold) {
                     this.gameState.playerStats.gold += pageData.rewards.gold;
@@ -253,21 +590,21 @@ class StoryRunner {
             }
 
             // Show choices
-            if (currentPage.choices.length === 0) {
+            if (!currentPage.prompts || currentPage.prompts.length === 0) {
                 console.log('\n🏁 THE END');
                 break;
             }
 
             console.log('\n📋 What do you do?');
-            currentPage.choices.forEach((choice, index) => {
-                console.log(`[${index + 1}] ${choice.text}`);
+            currentPage.prompts.forEach((prompt, index) => {
+                console.log(`[${index + 1}] ${prompt.text}`);
             });
 
-            const choiceIndex = await this.getChoice(currentPage.choices.length);
-            const selectedChoice = currentPage.choices[choiceIndex - 1];
+            const choiceIndex = await this.getChoice(currentPage.prompts.length);
+            const selectedChoice = currentPage.prompts[choiceIndex - 1];
 
             console.log(`\n➡️  You chose: "${selectedChoice.text}"`);
-            currentPageId = selectedChoice.target;
+            currentPageId = selectedChoice.target_id;
             turnCount++;
         }
 
