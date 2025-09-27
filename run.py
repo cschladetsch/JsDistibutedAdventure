@@ -128,16 +128,8 @@ generateStory().then(story => {{
 
         print("🚀 Running story generator...")
 
-        # On Windows, prevent console window flicker by using startupinfo
-        startup_info = None
-        if sys.platform.startswith('win'):
-            startup_info = subprocess.STARTUPINFO()
-            startup_info.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-            startup_info.wShowWindow = subprocess.SW_HIDE
-
-        result = subprocess.run(["node", "temp_generator.js"],
-                              capture_output=True, text=True, cwd=".", encoding='utf-8',
-                              startupinfo=startup_info)
+        # Run in same console window without capturing output
+        result = subprocess.run(["node", "temp_generator.js"], cwd=".")
 
         # Clean up
         if os.path.exists("temp_generator.js"):
@@ -147,12 +139,9 @@ generateStory().then(story => {{
 
         if result.returncode == 0:
             print("✅ Story generation completed successfully!")
-            print(result.stdout)
             return True
         else:
-            print(f"❌ Story generation failed:")
-            print(f"stdout: {result.stdout}")
-            print(f"stderr: {result.stderr}")
+            print(f"❌ Story generation failed with exit code: {result.returncode}")
             return False
 
     except Exception as e:

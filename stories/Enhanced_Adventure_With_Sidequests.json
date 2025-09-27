@@ -1,0 +1,805 @@
+{
+  "id": "enhanced_adventure_story",
+  "title": "The Chronicles of Aldermere - Enhanced Adventure",
+  "start_page_id": "village_entrance",
+  "version": "2.0",
+  "quest_system_enabled": true,
+
+  "game_state": {
+    "player_stats": {
+      "health": 100, "max_health": 100, "mana": 50, "max_mana": 50,
+      "stamina": 100, "max_stamina": 100, "energy": 100, "max_energy": 100,
+      "strength": 10, "dexterity": 10, "constitution": 10, "intelligence": 10,
+      "wisdom": 10, "charisma": 10, "luck": 10, "perception": 10,
+      "attack": 10, "defense": 5, "accuracy": 75, "evasion": 10,
+      "critical_chance": 5, "critical_damage": 150, "block_chance": 10,
+      "spell_power": 5, "mana_regeneration": 2, "spell_resistance": 0,
+      "reputation": 0, "leadership": 5, "intimidation": 5, "persuasion": 5,
+      "deception": 5, "insight": 5, "diplomacy": 5,
+      "survival": 5, "stealth": 5, "lockpicking": 0, "trap_detection": 0,
+      "gold": 25, "merchant_rep": 0, "crafting_skill": 0,
+      "experience": 0, "level": 1, "skill_points": 0,
+      "poisoned": false, "blessed": false, "cursed": false, "exhausted": false
+    },
+    "inventory": ["Rusty Sword", "Leather Armor", "Healing Potion"],
+    "weapons": {
+      "Rusty Sword": { "damage": 8, "accuracy": 0.8, "rarity": "common" },
+      "Iron Sword": { "damage": 12, "accuracy": 0.85, "rarity": "common" },
+      "Enchanted Blade": { "damage": 18, "accuracy": 0.9, "rarity": "rare" },
+      "Blacksmith's Hammer": { "damage": 20, "accuracy": 0.95, "rarity": "epic" }
+    },
+    "story_flags": [],
+    "world_state": {
+      "time_of_day": "morning",
+      "weather": "clear",
+      "village_reputation": 0,
+      "explored_areas": []
+    }
+  },
+
+  "side_quests": {
+    "blacksmith_apprentice": {
+      "id": "blacksmith_apprentice",
+      "title": "The Lost Hammer of Gareth",
+      "description": "Master Gareth's precious family hammer has been stolen by goblins. Help him recover it to unlock advanced weapon crafting.",
+      "type": "side",
+      "status": "available",
+      "giver": "Master Gareth",
+      "location": "village_blacksmith",
+
+      "prerequisites": {
+        "story_flags": ["visited_village"],
+        "stats_required": { "strength": 8 },
+        "items_required": []
+      },
+
+      "objectives": [
+        {
+          "id": "talk_to_gareth",
+          "description": "Speak with Master Gareth about his missing hammer",
+          "type": "talk",
+          "target": "npc_gareth",
+          "current_progress": 0,
+          "required_progress": 1,
+          "completed": false
+        },
+        {
+          "id": "find_goblin_hideout",
+          "description": "Locate the goblin cave in the Dark Forest",
+          "type": "visit",
+          "target": "goblin_cave_entrance",
+          "current_progress": 0,
+          "required_progress": 1,
+          "completed": false
+        },
+        {
+          "id": "defeat_goblin_chief",
+          "description": "Defeat the Goblin Chief and recover the hammer",
+          "type": "kill",
+          "target": "goblin_chief",
+          "current_progress": 0,
+          "required_progress": 1,
+          "completed": false
+        }
+      ],
+
+      "rewards": {
+        "experience": 150,
+        "gold": 50,
+        "items": ["Iron Sword", "Smithing Manual"],
+        "stat_bonuses": { "attack": 3, "reputation": 10 },
+        "story_flags": ["blacksmith_ally", "smithing_knowledge"],
+        "unlock_quests": ["ancient_forge_mystery"]
+      },
+
+      "connections": {
+        "unlocks": ["ancient_forge_mystery", "merchant_caravan"],
+        "affects_quests": ["village_defense"],
+        "affects_endings": ["hero_of_aldermere"]
+      },
+
+      "time_sensitive": false,
+      "repeatable": false
+    },
+
+    "ancient_forge_mystery": {
+      "id": "ancient_forge_mystery",
+      "title": "Secrets of the Ancient Forge",
+      "description": "The smithing manual reveals hints about a legendary forge hidden beneath the village. Investigate the ancient ruins.",
+      "type": "hidden",
+      "status": "locked",
+      "giver": "Ancient Text",
+      "location": "underground_ruins",
+
+      "prerequisites": {
+        "quests_completed": ["blacksmith_apprentice"],
+        "story_flags": ["smithing_knowledge"],
+        "stats_required": { "intelligence": 12, "perception": 10 }
+      },
+
+      "objectives": [
+        {
+          "id": "decipher_runes",
+          "description": "Translate the ancient runes in the smithing manual",
+          "type": "discover",
+          "target": "ancient_runes",
+          "current_progress": 0,
+          "required_progress": 3,
+          "completed": false
+        },
+        {
+          "id": "find_hidden_entrance",
+          "description": "Locate the entrance to the underground forge",
+          "type": "visit",
+          "target": "forge_entrance",
+          "current_progress": 0,
+          "required_progress": 1,
+          "completed": false
+        },
+        {
+          "id": "awaken_forge_spirit",
+          "description": "Perform the ritual to awaken the ancient forge guardian",
+          "type": "choice",
+          "target": "forge_ritual",
+          "current_progress": 0,
+          "required_progress": 1,
+          "completed": false
+        }
+      ],
+
+      "rewards": {
+        "experience": 300,
+        "gold": 100,
+        "items": ["Enchanted Blade", "Forge Master's Ring"],
+        "stat_bonuses": { "spell_power": 5, "crafting_skill": 20 },
+        "story_flags": ["forge_master", "ancient_knowledge"],
+        "unlock_quests": ["dragon_threat"]
+      },
+
+      "connections": {
+        "requires": ["blacksmith_apprentice"],
+        "unlocks": ["dragon_threat"],
+        "affects_quests": ["village_defense", "merchant_caravan"],
+        "affects_endings": ["master_craftsman", "ancient_guardian"]
+      },
+
+      "time_sensitive": false,
+      "repeatable": false
+    },
+
+    "merchant_caravan": {
+      "id": "merchant_caravan",
+      "title": "Safe Passage to Millbrook",
+      "description": "Merchant Valdris needs protection for his valuable caravan traveling to Millbrook Town. Bandits have been attacking traders.",
+      "type": "urgent",
+      "status": "available",
+      "giver": "Merchant Valdris",
+      "location": "village_gates",
+
+      "prerequisites": {
+        "stats_required": { "dexterity": 12, "reputation": 5 },
+        "story_flags": ["visited_village"]
+      },
+
+      "objectives": [
+        {
+          "id": "accept_escort_duty",
+          "description": "Agree to escort the merchant caravan",
+          "type": "talk",
+          "target": "merchant_valdris",
+          "current_progress": 0,
+          "required_progress": 1,
+          "completed": false
+        },
+        {
+          "id": "survive_first_ambush",
+          "description": "Defend against bandits at Crow's Ridge",
+          "type": "survive",
+          "target": "combat_bandit_ambush_1",
+          "current_progress": 0,
+          "required_progress": 1,
+          "completed": false
+        },
+        {
+          "id": "navigate_mountain_pass",
+          "description": "Safely guide the caravan through treacherous mountain terrain",
+          "type": "choice",
+          "target": "mountain_navigation",
+          "current_progress": 0,
+          "required_progress": 1,
+          "completed": false
+        },
+        {
+          "id": "final_delivery",
+          "description": "Deliver the caravan safely to Millbrook Town",
+          "type": "visit",
+          "target": "millbrook_arrival",
+          "current_progress": 0,
+          "required_progress": 1,
+          "completed": false
+        }
+      ],
+
+      "rewards": {
+        "experience": 200,
+        "gold": 80,
+        "items": ["Traveler's Cloak", "Trade Routes Map", "Bandit Bounty"],
+        "stat_bonuses": { "reputation": 15, "merchant_rep": 20 },
+        "story_flags": ["merchant_guild_ally", "known_trader"],
+        "unlock_quests": ["trade_war_conspiracy"]
+      },
+
+      "connections": {
+        "enhanced_by": ["blacksmith_apprentice"],
+        "unlocks": ["trade_war_conspiracy"],
+        "affects_quests": ["village_defense"],
+        "affects_endings": ["wealthy_merchant", "trade_guild_leader"]
+      },
+
+      "time_sensitive": {
+        "expires_after_page": "leave_village_permanently",
+        "expires_after_turns": 15
+      },
+      "repeatable": false
+    },
+
+    "village_defense": {
+      "id": "village_defense",
+      "title": "The Siege of Aldermere",
+      "description": "A massive orc army approaches the village. Rally allies and prepare defenses to save your home.",
+      "type": "main",
+      "status": "locked",
+      "giver": "Village Elder",
+      "location": "village_center",
+
+      "prerequisites": {
+        "story_flags": ["visited_village", "orc_threat_discovered"],
+        "stats_required": { "leadership": 10, "reputation": 25 }
+      },
+
+      "objectives": [
+        {
+          "id": "rally_defenders",
+          "description": "Convince villagers to join the defense",
+          "type": "choice",
+          "target": "village_rally",
+          "current_progress": 0,
+          "required_progress": 3,
+          "completed": false
+        },
+        {
+          "id": "fortify_defenses",
+          "description": "Strengthen the village walls and gates",
+          "type": "collect",
+          "target": "defense_materials",
+          "current_progress": 0,
+          "required_progress": 5,
+          "completed": false
+        },
+        {
+          "id": "defeat_orc_general",
+          "description": "Face the Orc General in single combat",
+          "type": "kill",
+          "target": "orc_general",
+          "current_progress": 0,
+          "required_progress": 1,
+          "completed": false
+        }
+      ],
+
+      "rewards": {
+        "experience": 500,
+        "gold": 200,
+        "items": ["Hero's Medal", "Village Guardian's Sword"],
+        "stat_bonuses": { "leadership": 10, "reputation": 50, "attack": 5 },
+        "story_flags": ["village_hero", "orc_war_ended"],
+        "unlock_quests": []
+      },
+
+      "connections": {
+        "enhanced_by": ["blacksmith_apprentice", "ancient_forge_mystery", "merchant_caravan"],
+        "unlocks": [],
+        "affects_quests": [],
+        "affects_endings": ["hero_of_aldermere", "village_savior"]
+      },
+
+      "dynamic_difficulty": {
+        "base_difficulty": "hard",
+        "modifiers": {
+          "blacksmith_ally": { "defense_bonus": 20, "better_weapons": true },
+          "forge_master": { "magical_weapons": true, "defense_bonus": 30 },
+          "merchant_guild_ally": { "supplies_bonus": true, "mercenary_help": true }
+        }
+      },
+
+      "time_sensitive": false,
+      "repeatable": false
+    }
+  },
+
+  "quest_npcs": {
+    "npc_gareth": {
+      "id": "npc_gareth",
+      "name": "Master Gareth",
+      "title": "Village Blacksmith",
+      "location": "village_blacksmith",
+      "description": "A weathered dwarf with calloused hands and kind eyes. His workshop rings with the sound of hammer on anvil.",
+      "dialogue_states": {
+        "default": {
+          "text": "Welcome to my forge, traveler. I craft the finest weapons in all of Aldermere.",
+          "options": [
+            { "text": "Show me your wares", "action": "shop", "requires": {} },
+            { "text": "Tell me about yourself", "action": "info", "requires": {} },
+            { "text": "Goodbye", "action": "leave", "requires": {} }
+          ]
+        },
+        "blacksmith_apprentice_available": {
+          "text": "Ah, you look like someone who could help an old smith. My grandfather's hammer... it was stolen by those cursed goblins!",
+          "options": [
+            { "text": "I'll help you recover it", "action": "accept_quest", "quest": "blacksmith_apprentice" },
+            { "text": "Tell me more about this hammer", "action": "quest_info", "quest": "blacksmith_apprentice" },
+            { "text": "I'm not interested", "action": "decline_quest", "requires": {} }
+          ]
+        },
+        "blacksmith_apprentice_active": {
+          "text": "Have you found any trace of my hammer? The goblins have a cave somewhere in the Dark Forest.",
+          "options": [
+            { "text": "Still searching", "action": "continue", "requires": {} },
+            { "text": "Where exactly is this cave?", "action": "quest_hint", "requires": {} }
+          ]
+        },
+        "blacksmith_apprentice_completed": {
+          "text": "You've returned my grandfather's hammer! I am forever in your debt. Please, take this sword I forged with the old techniques.",
+          "options": [
+            { "text": "Thank you for the reward", "action": "complete_quest", "quest": "blacksmith_apprentice" },
+            { "text": "Can you teach me smithing?", "action": "unlock_training", "requires": { "story_flags": ["smithing_knowledge"] } }
+          ]
+        }
+      }
+    },
+
+    "merchant_valdris": {
+      "id": "merchant_valdris",
+      "name": "Valdris the Trader",
+      "title": "Traveling Merchant",
+      "location": "village_gates",
+      "description": "A well-dressed human with nervous eyes, constantly checking his valuable cargo wagon.",
+      "dialogue_states": {
+        "default": {
+          "text": "The roads grow more dangerous each day. I fear for my cargo and my life.",
+          "options": [
+            { "text": "What goods do you carry?", "action": "shop", "requires": {} },
+            { "text": "What troubles you?", "action": "info", "requires": {} }
+          ]
+        },
+        "merchant_caravan_available": {
+          "text": "You look capable with that sword. I need protection for my journey to Millbrook. The pay is good, but the danger is real.",
+          "options": [
+            { "text": "I'll escort your caravan", "action": "accept_quest", "quest": "merchant_caravan" },
+            { "text": "What's the route like?", "action": "quest_info", "quest": "merchant_caravan" },
+            { "text": "Find someone else", "action": "decline_quest", "requires": {} }
+          ]
+        }
+      }
+    }
+  },
+
+  "pages": {
+    "village_entrance": {
+      "id": "village_entrance",
+      "text": "You approach the peaceful village of Aldermere as the morning sun casts long shadows across cobblestone streets. Smoke rises from chimneys, and you hear the distant ring of hammer on anvil from the blacksmith's forge.",
+      "background_id": "village_morning",
+
+      "quest_triggers": {
+        "discover_quests": ["blacksmith_apprentice", "merchant_caravan"],
+        "story_flags_added": ["visited_village"]
+      },
+
+      "prompts": [
+        {
+          "text": "Visit the village blacksmith",
+          "target_id": "village_blacksmith",
+          "requirements": {},
+          "quest_context": {
+            "related_quests": ["blacksmith_apprentice"],
+            "hint": "The sound of metalwork draws your attention"
+          }
+        },
+        {
+          "text": "Check the village gates",
+          "target_id": "village_gates",
+          "requirements": {},
+          "quest_context": {
+            "related_quests": ["merchant_caravan"],
+            "hint": "A merchant's wagon waits by the gates"
+          }
+        },
+        {
+          "text": "Explore the village center",
+          "target_id": "village_center",
+          "requirements": {}
+        },
+        {
+          "text": "Head to the tavern for information",
+          "target_id": "village_tavern",
+          "requirements": {}
+        }
+      ]
+    },
+
+    "village_blacksmith": {
+      "id": "village_blacksmith",
+      "text": "Master Gareth's forge is a hub of activity. The dwarf blacksmith looks up from his work, sweat glistening on his brow. Behind him, you notice an empty display case that seems to have once held something precious.",
+      "background_id": "blacksmith_forge",
+
+      "npcs": ["npc_gareth"],
+
+      "quest_triggers": {
+        "progress_quests": [
+          {
+            "quest_id": "blacksmith_apprentice",
+            "objective_id": "talk_to_gareth",
+            "progress_amount": 1,
+            "condition": "first_visit"
+          }
+        ]
+      },
+
+      "quest_variants": {
+        "blacksmith_apprentice": {
+          "active_text": "Master Gareth works with renewed determination, but you can see the worry in his eyes about his missing hammer.",
+          "completed_text": "Master Gareth beams with joy, his grandfather's hammer prominently displayed in the place of honor it deserves."
+        }
+      },
+
+      "prompts": [
+        {
+          "text": "Talk to Master Gareth",
+          "target_id": "talk_gareth",
+          "requirements": {},
+          "quest_interaction": true
+        },
+        {
+          "text": "Browse his weapons",
+          "target_id": "blacksmith_shop",
+          "requirements": {}
+        },
+        {
+          "text": "Ask about local rumors",
+          "target_id": "blacksmith_rumors",
+          "requirements": {}
+        },
+        {
+          "text": "Leave the forge",
+          "target_id": "village_center",
+          "requirements": {}
+        }
+      ]
+    },
+
+    "village_gates": {
+      "id": "village_gates",
+      "text": "The village gates stand open to welcome travelers. A nervous-looking merchant tends to his wagon loaded with goods, occasionally glancing toward the dark forest beyond.",
+      "background_id": "village_gates",
+
+      "npcs": ["merchant_valdris"],
+
+      "quest_triggers": {
+        "progress_quests": [
+          {
+            "quest_id": "merchant_caravan",
+            "objective_id": "accept_escort_duty",
+            "progress_amount": 1,
+            "condition": "accept_escort"
+          }
+        ]
+      },
+
+      "prompts": [
+        {
+          "text": "Approach the merchant",
+          "target_id": "talk_merchant",
+          "requirements": {},
+          "quest_interaction": true
+        },
+        {
+          "text": "Examine the forest path",
+          "target_id": "forest_entrance",
+          "requirements": {},
+          "quest_context": {
+            "related_quests": ["blacksmith_apprentice"],
+            "hint": "The path leads toward the Dark Forest where goblins are said to dwell"
+          }
+        },
+        {
+          "text": "Return to village center",
+          "target_id": "village_center",
+          "requirements": {}
+        }
+      ]
+    },
+
+    "forest_entrance": {
+      "id": "forest_entrance",
+      "text": "The Dark Forest looms before you, its ancient trees creating a canopy so thick that little sunlight penetrates to the forest floor. You hear strange sounds echoing from within - could this be where the goblins make their lair?",
+      "background_id": "dark_forest_entrance",
+
+      "quest_triggers": {
+        "progress_quests": [
+          {
+            "quest_id": "blacksmith_apprentice",
+            "objective_id": "find_goblin_hideout",
+            "progress_amount": 1,
+            "condition": "first_exploration"
+          }
+        ]
+      },
+
+      "quest_variants": {
+        "blacksmith_apprentice": {
+          "active_text": "With Master Gareth's quest in mind, you scan the forest for signs of goblin activity. Fresh tracks lead deeper into the woods.",
+          "completed_text": "You've already dealt with the goblin threat here. The forest seems much more peaceful now."
+        }
+      },
+
+      "prompts": [
+        {
+          "text": "Follow the goblin tracks deeper into the forest",
+          "target_id": "goblin_cave_entrance",
+          "requirements": {
+            "active_quests": ["blacksmith_apprentice"]
+          },
+          "quest_context": {
+            "related_quests": ["blacksmith_apprentice"],
+            "hint": "The tracks are fresh - the goblins passed this way recently"
+          }
+        },
+        {
+          "text": "Search for other paths",
+          "target_id": "forest_exploration",
+          "requirements": {}
+        },
+        {
+          "text": "Return to the village",
+          "target_id": "village_gates",
+          "requirements": {}
+        }
+      ]
+    },
+
+    "goblin_cave_entrance": {
+      "id": "goblin_cave_entrance",
+      "text": "You discover a hidden cave entrance partially concealed by overgrown vines. Crude goblin totems mark the territory, and you can hear guttural voices echoing from within. The scent of wood smoke and something metallic - perhaps forged metal - drifts from the depths.",
+      "background_id": "cave_entrance",
+
+      "quest_triggers": {
+        "progress_quests": [
+          {
+            "quest_id": "blacksmith_apprentice",
+            "objective_id": "find_goblin_hideout",
+            "progress_amount": 1,
+            "condition": "discovery"
+          }
+        ]
+      },
+
+      "prompts": [
+        {
+          "text": "Enter the cave and confront the goblins",
+          "target_id": "goblin_cave_interior",
+          "requirements": {
+            "active_quests": ["blacksmith_apprentice"]
+          }
+        },
+        {
+          "text": "Scout around the cave perimeter first",
+          "target_id": "cave_scouting",
+          "requirements": {}
+        },
+        {
+          "text": "Return to get better equipment",
+          "target_id": "forest_entrance",
+          "requirements": {}
+        }
+      ]
+    },
+
+    "goblin_cave_interior": {
+      "id": "goblin_cave_interior",
+      "text": "Inside the goblin lair, crude weapons and stolen goods are scattered about. At the far end, a large goblin wearing a chieftain's crown brandishes a magnificently crafted hammer - clearly not of goblin make. This must be Master Gareth's stolen family heirloom!",
+      "background_id": "goblin_lair",
+
+      "combat": {
+        "enemy": {
+          "name": "Goblin Chief",
+          "health": 45,
+          "max_health": 45,
+          "attack": 14,
+          "defense": 6,
+          "special_abilities": ["rage", "stolen_hammer_bonus"]
+        },
+        "victory": "hammer_recovery",
+        "defeat": "forest_entrance"
+      },
+
+      "quest_triggers": {
+        "progress_quests": [
+          {
+            "quest_id": "blacksmith_apprentice",
+            "objective_id": "defeat_goblin_chief",
+            "progress_amount": 1,
+            "condition": "combat_victory"
+          }
+        ]
+      },
+
+      "prompts": [
+        {
+          "text": "Challenge the Goblin Chief to combat!",
+          "target_id": "combat_goblin_chief",
+          "requirements": {},
+          "combat_encounter": true
+        },
+        {
+          "text": "Try to negotiate for the hammer",
+          "target_id": "goblin_negotiation",
+          "requirements": {
+            "stats_required": { "charisma": 15 }
+          }
+        },
+        {
+          "text": "Attempt to steal the hammer stealthily",
+          "target_id": "stealth_attempt",
+          "requirements": {
+            "stats_required": { "stealth": 12 }
+          }
+        }
+      ]
+    },
+
+    "hammer_recovery": {
+      "id": "hammer_recovery",
+      "text": "Victory! The Goblin Chief lies defeated, and Master Gareth's precious hammer is finally within your grasp. The craftsmanship is exquisite - you can see why it means so much to the old dwarf. Ancient runes are etched along the handle, still glowing faintly with residual magic.",
+      "background_id": "victory_scene",
+
+      "quest_triggers": {
+        "complete_quests": ["blacksmith_apprentice"]
+      },
+
+      "rewards": {
+        "items": ["Grandfather's Hammer"],
+        "experience": 100,
+        "story_flags": ["hammer_recovered"]
+      },
+
+      "prompts": [
+        {
+          "text": "Examine the hammer more closely",
+          "target_id": "hammer_examination",
+          "requirements": {},
+          "quest_context": {
+            "unlocks_quest": "ancient_forge_mystery",
+            "hint": "The runes seem to tell a story..."
+          }
+        },
+        {
+          "text": "Search the goblin lair for other treasures",
+          "target_id": "lair_treasure_hunt",
+          "requirements": {}
+        },
+        {
+          "text": "Return immediately to Master Gareth",
+          "target_id": "return_to_gareth",
+          "requirements": {}
+        }
+      ]
+    },
+
+    "hammer_examination": {
+      "id": "hammer_examination",
+      "text": "As you study the ancient runes on the hammer, they begin to glow brighter. The symbols seem to shift and rearrange themselves, revealing what appears to be a map or diagram. You make out references to 'the forge beneath' and 'awakening the ancient flame.' This hammer is more than just a tool - it's a key to something greater.",
+      "background_id": "mysterious_discovery",
+
+      "quest_triggers": {
+        "discover_quests": ["ancient_forge_mystery"],
+        "story_flags_added": ["ancient_runes_seen"]
+      },
+
+      "prompts": [
+        {
+          "text": "Memorize the rune pattern carefully",
+          "target_id": "rune_memorization",
+          "requirements": {
+            "stats_required": { "intelligence": 10 }
+          }
+        },
+        {
+          "text": "Return to Gareth with this discovery",
+          "target_id": "return_to_gareth_with_discovery",
+          "requirements": {}
+        }
+      ]
+    },
+
+    "return_to_gareth_with_discovery": {
+      "id": "return_to_gareth_with_discovery",
+      "text": "Master Gareth's eyes widen as you return his hammer and describe the glowing runes. 'By my beard!' he exclaims. 'Those are the ancient smithing marks of the First Forge! Legend says there's a master forge hidden beneath our very village, built by the dwarf lords of old. If you've awakened the runes, perhaps... perhaps the old magics are stirring again.'",
+      "background_id": "blacksmith_revelation",
+
+      "quest_triggers": {
+        "unlock_quests": ["ancient_forge_mystery"],
+        "complete_quests": ["blacksmith_apprentice"],
+        "story_flags_added": ["blacksmith_ally", "forge_legend_learned"]
+      },
+
+      "rewards": {
+        "experience": 150,
+        "gold": 50,
+        "items": ["Iron Sword", "Smithing Manual"],
+        "stat_bonuses": { "attack": 3, "reputation": 10 }
+      },
+
+      "prompts": [
+        {
+          "text": "Ask Gareth about the First Forge",
+          "target_id": "forge_lore_discussion",
+          "requirements": {}
+        },
+        {
+          "text": "Study the smithing manual",
+          "target_id": "manual_study",
+          "requirements": {},
+          "quest_context": {
+            "advances_quest": "ancient_forge_mystery",
+            "hint": "The manual contains more than just smithing techniques..."
+          }
+        },
+        {
+          "text": "Leave to pursue other adventures",
+          "target_id": "village_center",
+          "requirements": {}
+        }
+      ]
+    }
+  },
+
+  "quest_connections": {
+    "synergies": {
+      "blacksmith_ally + merchant_caravan": {
+        "description": "Having Gareth as an ally provides better weapons for caravan defense",
+        "effects": {
+          "combat_bonus": 5,
+          "new_dialogue_options": ["Ask Gareth to reinforce the caravan wagon"]
+        }
+      },
+      "forge_master + village_defense": {
+        "description": "Ancient forge knowledge allows crafting magical weapons for defense",
+        "effects": {
+          "village_defense_bonus": 25,
+          "magical_weapons_available": true,
+          "new_story_options": ["Forge enchanted weapons for villagers"]
+        }
+      },
+      "merchant_guild_ally + village_defense": {
+        "description": "Trade connections provide mercenary support and supplies",
+        "effects": {
+          "mercenary_reinforcements": true,
+          "supply_bonus": 20,
+          "new_story_options": ["Call in mercenary favors"]
+        }
+      }
+    },
+
+    "cascading_effects": {
+      "reputation_threshold_25": {
+        "unlocks": ["village_defense"],
+        "description": "High reputation makes you a natural leader for village defense"
+      },
+      "multiple_ally_flags": {
+        "condition": "blacksmith_ally AND merchant_guild_ally",
+        "unlocks": ["trade_war_conspiracy"],
+        "description": "Connected allies reveal larger threats"
+      }
+    }
+  }
+}
