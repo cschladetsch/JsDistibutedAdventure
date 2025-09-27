@@ -8,6 +8,7 @@
  * 3. Serve as the foundation for a potential story editor tool.
  */
 const readline = require('readline'); // Import the readline module for console input
+const Colors = require('./external/colors.js'); // Import colors for AI display
 
 // Represents a single choice the player can make.
 class Prompt {
@@ -17,6 +18,9 @@ class Prompt {
         this.requirements = requirements; // Optional: e.g., { "requiresItem": "axe", "flagNotSet": "scared_of_dark" }
         this.loop_type = null;          // null, "good", or "bad" - for loop tracking
         this.triggers_loop = false;     // Whether this choice triggers a new loop
+        this.quest_interaction = false; // Whether this choice involves quest NPCs
+        this.quest_context = null;      // Quest-related context for this choice
+        this.combat_encounter = false;  // Whether this choice leads to combat
     }
 }
 
@@ -31,6 +35,13 @@ class Page {
         this.page_number = null;    // Page number in the story sequence
         this.loop_number = null;    // Which loop this page belongs to (1-5)
         this.is_loop_decision = false; // Whether this page contains a choice that can change outcomes
+
+        // Quest system properties
+        this.quest_triggers = null; // Quest events triggered when visiting this page
+        this.quest_variants = null; // Different text/prompts based on quest status
+        this.npcs = [];             // NPCs present on this page
+        this.rewards = null;        // Items/gold/XP awarded when visiting this page
+        this.combat = null;         // Combat encounter data
     }
 
     /**
@@ -79,6 +90,13 @@ class Story {
         this.title = title;           // The display title of the story.
         this.start_page_id = startPageID; // The entry point of the story.
         this.pages = {};              // An object to store all pages, indexed by their ID for fast lookups.
+
+        // Quest system properties
+        this.quest_system_enabled = false; // Whether this story supports quests
+        this.side_quests = {};        // Collection of all side quests
+        this.quest_npcs = {};         // NPCs that give or are involved in quests
+        this.quest_connections = {};  // Relationships between quests
+        this.game_state = null;       // Player stats, inventory, flags, etc.
     }
 
     /**
@@ -102,16 +120,170 @@ class Story {
     }
 
     /**
+     * Gets all available quests for the current game state
+     * @param {object} gameState Current player state and story flags
+     * @returns {Array} Array of available quest objects
+     */
+    getAvailableQuests(gameState) {
+        if (!this.quest_system_enabled) return [];
+
+        const availableQuests = [];
+        for (const questId in this.side_quests) {
+            const quest = this.side_quests[questId];
+            if (quest.status === 'available' && this.meetsQuestPrerequisites(quest, gameState)) {
+                availableQuests.push(quest);
+            }
+        }
+        return availableQuests;
+    }
+
+    /**
+     * Checks if player meets quest prerequisites
+     * @param {object} quest Quest object to check
+     * @param {object} gameState Current player state
+     * @returns {boolean} True if prerequisites are met
+     */
+    meetsQuestPrerequisites(quest, gameState) {
+        const prereqs = quest.prerequisites || {};
+
+        // Check required story flags
+        if (prereqs.story_flags) {
+            for (const flag of prereqs.story_flags) {
+                if (!gameState.story_flags || !gameState.story_flags.includes(flag)) {
+                    return false;
+                }
+            }
+        }
+
+        // Check required stats
+        if (prereqs.stats_required) {
+            for (const [stat, requiredValue] of Object.entries(prereqs.stats_required)) {
+                if (!gameState.player_stats || gameState.player_stats[stat] < requiredValue) {
+                    return false;
+                }
+            }
+        }
+
+        // Check required items
+        if (prereqs.items_required) {
+            for (const item of prereqs.items_required) {
+                if (!gameState.inventory || !gameState.inventory.includes(item)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Progresses a quest objective
+     * @param {string} questId Quest to progress
+     * @param {string} objectiveId Objective to progress
+     * @param {number} amount Amount to progress
+     * @param {object} gameState Current game state
+     * @returns {object} Progress result with completion status
+     */
+    progressQuest(questId, objectiveId, amount = 1, gameState) {
+        if (!this.side_quests[questId]) return { success: false, error: 'Quest not found' };
+
+        const quest = this.side_quests[questId];
+        const objective = quest.objectives.find(obj => obj.id === objectiveId);
+
+        if (!objective) return { success: false, error: 'Objective not found' };
+        if (objective.completed) return { success: false, error: 'Objective already completed' };
+
+        objective.current_progress = Math.min(
+            objective.current_progress + amount,
+            objective.required_progress
+        );
+
+        if (objective.current_progress >= objective.required_progress) {
+            objective.completed = true;
+        }
+
+        // Check if all objectives are complete
+        const allComplete = quest.objectives.every(obj => obj.completed);
+        if (allComplete && quest.status !== 'completed') {
+            this.completeQuest(questId, gameState);
+            return { success: true, questCompleted: true, objective };
+        }
+
+        return { success: true, questCompleted: false, objective };
+    }
+
+    /**
+     * Completes a quest and awards rewards
+     * @param {string} questId Quest to complete
+     * @param {object} gameState Current game state to modify
+     */
+    completeQuest(questId, gameState) {
+        const quest = this.side_quests[questId];
+        if (!quest) return;
+
+        quest.status = 'completed';
+
+        // Award rewards
+        if (quest.rewards) {
+            if (quest.rewards.experience) {
+                gameState.player_stats.experience += quest.rewards.experience;
+            }
+            if (quest.rewards.gold) {
+                gameState.player_stats.gold += quest.rewards.gold;
+            }
+            if (quest.rewards.items) {
+                gameState.inventory.push(...quest.rewards.items);
+            }
+            if (quest.rewards.stat_bonuses) {
+                for (const [stat, bonus] of Object.entries(quest.rewards.stat_bonuses)) {
+                    gameState.player_stats[stat] += bonus;
+                }
+            }
+            if (quest.rewards.story_flags) {
+                if (!gameState.story_flags) gameState.story_flags = [];
+                gameState.story_flags.push(...quest.rewards.story_flags);
+            }
+            if (quest.rewards.unlock_quests) {
+                for (const unlockQuestId of quest.rewards.unlock_quests) {
+                    if (this.side_quests[unlockQuestId]) {
+                        this.side_quests[unlockQuestId].status = 'available';
+                    }
+                }
+            }
+        }
+
+        // Handle quest connections
+        if (quest.connections && quest.connections.unlocks) {
+            for (const unlockQuestId of quest.connections.unlocks) {
+                if (this.side_quests[unlockQuestId]) {
+                    this.side_quests[unlockQuestId].status = 'available';
+                }
+            }
+        }
+    }
+
+    /**
      * Serializes the entire story into a clean JSON string.
      * @returns {string} A JSON string representing the story.
      */
     toJSON() {
-        return JSON.stringify({
+        const storyData = {
             id: this.id,
             title: this.title,
             start_page_id: this.start_page_id,
             pages: this.pages
-        }, null, 2); // The '2' makes the JSON output nicely formatted.
+        };
+
+        // Include quest system data if enabled
+        if (this.quest_system_enabled) {
+            storyData.quest_system_enabled = this.quest_system_enabled;
+            storyData.side_quests = this.side_quests;
+            storyData.quest_npcs = this.quest_npcs;
+            storyData.quest_connections = this.quest_connections;
+            storyData.game_state = this.game_state;
+        }
+
+        return JSON.stringify(storyData, null, 2);
     }
 
     /**
@@ -122,7 +294,17 @@ class Story {
     static fromJSON(jsonData) {
         const data = (typeof jsonData === 'string') ? JSON.parse(jsonData) : jsonData;
         const story = new Story(data.id, data.title, data.start_page_id);
-        story.pages = data.pages; // Directly assign the pages object.
+        story.pages = data.pages;
+
+        // Load quest system data if present
+        if (data.quest_system_enabled) {
+            story.quest_system_enabled = data.quest_system_enabled;
+            story.side_quests = data.side_quests || {};
+            story.quest_npcs = data.quest_npcs || {};
+            story.quest_connections = data.quest_connections || {};
+            story.game_state = data.game_state || null;
+        }
+
         return story;
     }
 }
@@ -168,13 +350,13 @@ class LLMStoryGenerator {
      * @returns {Story|null} The generated Story object.
      */
     async generate(highLevelPrompt, storyId, storyTitle) {
-        console.log("Requesting structured JSON from LLM...");
+        console.log(Colors.aiLabel("🤖 Requesting structured JSON from AI..."));
         const llmResponse = await this.simulateLLMCall(highLevelPrompt);
-        console.log("LLM JSON response received. Parsing story...");
+        console.log(Colors.lightPurple("🤖 AI JSON response received. Parsing story..."));
         
         try {
             const story = this.parse(llmResponse, storyId, storyTitle);
-            console.log("Story parsed successfully!");
+            console.log(Colors.aiText("🤖 AI Story parsed successfully!"));
             return story;
         } catch (error)
         {
@@ -468,8 +650,8 @@ class DungeonMaster {
     }
 
     async setupAdventure() {
-        console.log("--- Project: Dungeon Master ---");
-        console.log("DM: 'Alright, let's create a new adventure module.'");
+        console.log(Colors.purple("--- Project: Dungeon Master ---"));
+        console.log(Colors.aiLabel("AI DM:"), Colors.lightPurple("'Alright, let's create a new adventure module.'"));
         const highLevelPrompt = "A short, sharp, entertaining detective story in a cyberpunk setting.";
         this.story = await this.generator.generate(
             highLevelPrompt,
@@ -478,12 +660,12 @@ class DungeonMaster {
         );
 
         if (!this.story) {
-            console.log("DM: 'Looks like the creative energies failed us. Can't generate a story.'");
+            console.log(Colors.aiLabel("AI DM:"), Colors.lightPurple("'Looks like the creative energies failed us. Can't generate a story.'"));
             this.rl.close();
             return false;
         }
 
-        console.log(`DM: 'Excellent. The module "${this.story.title}" is ready.'`);
+        console.log(Colors.aiLabel("AI DM:"), Colors.lightPurple(`'Excellent. The module "${this.story.title}" is ready.'`));
         return true;
     }
 
@@ -503,7 +685,7 @@ class DungeonMaster {
         if (!currentPage || currentPage.prompts.length === 0) {
             if (currentPage) {
                  console.log(`\n--- Turn ${turn} ---`);
-                 console.log(`DM (narrating): "${currentPage.text}"`);
+                 console.log(Colors.aiLabel("AI DM (narrating):"), Colors.aiText(`"${currentPage.text}"`));
             }
             console.log("\n--- END OF ADVENTURE ---");
             this.rl.close();
@@ -512,7 +694,7 @@ class DungeonMaster {
 
         console.log(`\n--- Turn ${turn} ---`);
         console.log(`DM (narrating): "${currentPage.text}"`);
-        console.log("DM: 'What do you do?'");
+        console.log(Colors.aiLabel("AI DM:"), Colors.lightPurple("'What do you do?'"));
         
         currentPage.prompts.forEach((prompt, index) => {
             console.log(`[${index}] ${prompt.text}`);
@@ -522,7 +704,7 @@ class DungeonMaster {
             const choiceIndex = parseInt(answer, 10);
 
             if (isNaN(choiceIndex) || choiceIndex < 0 || choiceIndex >= currentPage.prompts.length) {
-                console.log("\nDM: 'That's not a valid choice. Try again.'");
+                console.log(Colors.aiLabel("\nAI DM:"), Colors.lightPurple("'That's not a valid choice. Try again.'"));
                 this.gameLoop(currentPage, turn); // Ask again on the same turn
             } else {
                 const playerChoice = currentPage.prompts[choiceIndex];

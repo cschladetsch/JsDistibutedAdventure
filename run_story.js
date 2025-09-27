@@ -6,11 +6,8 @@ const Colors = require('./external/colors.js');
 
 // Enhanced logging function
 function debugLog(message, data = null) {
-    const timestamp = new Date().toISOString();
-    console.log(`[DEBUG ${timestamp}] ${message}`);
-    if (data) {
-        console.log('[DEBUG DATA]', JSON.stringify(data, null, 2));
-    }
+    // Use new logging system
+    return;
 }
 
 // Catch uncaught exceptions and promise rejections
@@ -70,11 +67,12 @@ class StoryRunner {
             debugLog('Error creating Story instance', { error: error.message, stack: error.stack });
             throw error;
         }
-        this.gameState = this.storyData.gameState || {
-            playerStats: {
+        // Initialize game state from story data or use defaults
+        this.gameState = this.storyData.game_state || {
+            player_stats: {
                 // Core Stats
-                health: 100, maxHealth: 100, mana: 50, maxMana: 50,
-                stamina: 100, maxStamina: 100, energy: 100, maxEnergy: 100,
+                health: 100, max_health: 100, mana: 50, max_mana: 50,
+                stamina: 100, max_stamina: 100, energy: 100, max_energy: 100,
 
                 // Primary Attributes
                 strength: 10, dexterity: 10, constitution: 10, intelligence: 10,
@@ -82,32 +80,46 @@ class StoryRunner {
 
                 // Combat Stats
                 attack: 10, defense: 5, accuracy: 75, evasion: 10,
-                criticalChance: 5, criticalDamage: 150, blockChance: 10,
+                critical_chance: 5, critical_damage: 150, block_chance: 10,
 
                 // Magic Stats
-                spellPower: 5, manaRegeneration: 2, spellResistance: 0,
+                spell_power: 5, mana_regeneration: 2, spell_resistance: 0,
 
                 // Social Stats
                 reputation: 0, leadership: 5, intimidation: 5, persuasion: 5,
                 deception: 5, insight: 5, diplomacy: 5,
 
                 // Survival Stats
-                survival: 5, stealth: 5, lockpicking: 0, trapDetection: 0,
+                survival: 5, stealth: 5, lockpicking: 0, trap_detection: 0,
 
                 // Economic Stats
-                gold: 0, merchantRep: 0, craftingSkill: 0,
+                gold: 25, merchant_rep: 0, crafting_skill: 0,
 
                 // Experience & Progression
-                experience: 0, level: 1, skillPoints: 0,
+                experience: 0, level: 1, skill_points: 0,
 
                 // Status Effects
                 poisoned: false, blessed: false, cursed: false, exhausted: false
             },
-            inventory: ["Basic Sword"],
+            inventory: ["Rusty Sword", "Leather Armor", "Healing Potion"],
             weapons: {
-                "Basic Sword": { damage: 8, accuracy: 0.8 }
+                "Rusty Sword": { damage: 8, accuracy: 0.8, rarity: "common" },
+                "Iron Sword": { damage: 12, accuracy: 0.85, rarity: "common" },
+                "Enchanted Blade": { damage: 18, accuracy: 0.9, rarity: "rare" }
+            },
+            story_flags: [],
+            world_state: {
+                time_of_day: "morning",
+                weather: "clear",
+                village_reputation: 0,
+                explored_areas: []
             }
         };
+
+        // Initialize quest tracking
+        this.activeQuests = [];
+        this.completedQuests = [];
+        this.questProgress = {};
 
         try {
             debugLog('Creating readline interface');
@@ -203,15 +215,119 @@ class StoryRunner {
         return defeatPage || "start"; // Fallback to start
     }
 
+    // Quest Management Methods
+    processQuestTriggers(pageData) {
+        if (!this.story.quest_system_enabled || !pageData.quest_triggers) return;
+
+        const triggers = pageData.quest_triggers;
+
+        // Discover new quests
+        if (triggers.discover_quests) {
+            for (const questId of triggers.discover_quests) {
+                if (this.story.side_quests[questId] && this.story.side_quests[questId].status === 'locked') {
+                    this.story.side_quests[questId].status = 'available';
+                    console.log(`\n🔍 New Quest Available: "${this.story.side_quests[questId].title}"`);
+                }
+            }
+        }
+
+        // Progress existing quests
+        if (triggers.progress_quests) {
+            for (const progressData of triggers.progress_quests) {
+                const result = this.story.progressQuest(
+                    progressData.quest_id,
+                    progressData.objective_id,
+                    progressData.progress_amount,
+                    this.gameState
+                );
+
+                if (result.success) {
+                    console.log(`\n📋 Quest Progress: ${progressData.quest_id} - ${result.objective.description}`);
+                    if (result.questCompleted) {
+                        console.log(`🏆 Quest Completed: "${this.story.side_quests[progressData.quest_id].title}"`);
+                        this.showQuestRewards(progressData.quest_id);
+                    }
+                }
+            }
+        }
+
+        // Complete quests
+        if (triggers.complete_quests) {
+            for (const questId of triggers.complete_quests) {
+                this.story.completeQuest(questId, this.gameState);
+                console.log(`🏆 Quest Completed: "${this.story.side_quests[questId].title}"`);
+                this.showQuestRewards(questId);
+            }
+        }
+
+        // Add story flags
+        if (triggers.story_flags_added) {
+            for (const flag of triggers.story_flags_added) {
+                if (!this.gameState.story_flags.includes(flag)) {
+                    this.gameState.story_flags.push(flag);
+                }
+            }
+        }
+    }
+
+    showQuestRewards(questId) {
+        const quest = this.story.side_quests[questId];
+        if (!quest || !quest.rewards) return;
+
+        console.log(`\n🎁 QUEST REWARDS:`);
+        if (quest.rewards.experience) console.log(`⭐ +${quest.rewards.experience} Experience`);
+        if (quest.rewards.gold) console.log(`💰 +${quest.rewards.gold} Gold`);
+        if (quest.rewards.items) {
+            quest.rewards.items.forEach(item => console.log(`🎒 Found: ${item}`));
+        }
+        if (quest.rewards.stat_bonuses) {
+            for (const [stat, bonus] of Object.entries(quest.rewards.stat_bonuses)) {
+                console.log(`📈 +${bonus} ${stat.toUpperCase()}`);
+            }
+        }
+    }
+
+    showActiveQuests() {
+        if (!this.story.quest_system_enabled) return;
+
+        const availableQuests = this.story.getAvailableQuests(this.gameState);
+        const activeQuests = Object.values(this.story.side_quests).filter(q => q.status === 'active');
+
+        if (availableQuests.length === 0 && activeQuests.length === 0) {
+            console.log(`\n📋 No active quests`);
+            return;
+        }
+
+        console.log(`\n📋 QUEST LOG:`);
+
+        if (activeQuests.length > 0) {
+            console.log(`\n🔄 ACTIVE QUESTS:`);
+            activeQuests.forEach(quest => {
+                console.log(`• ${quest.title}`);
+                const currentObj = quest.objectives.find(obj => !obj.completed);
+                if (currentObj) {
+                    console.log(`  └─ ${currentObj.description} (${currentObj.current_progress}/${currentObj.required_progress})`);
+                }
+            });
+        }
+
+        if (availableQuests.length > 0) {
+            console.log(`\n✨ AVAILABLE QUESTS:`);
+            availableQuests.forEach(quest => {
+                console.log(`• ${quest.title} - ${quest.description}`);
+            });
+        }
+    }
+
     showStats() {
-        const stats = this.gameState.playerStats;
+        const stats = this.gameState.player_stats;
         console.log(`\n📊 PLAYER STATS:`);
-        console.log(`❤️  Health: ${stats.health}/${stats.maxHealth} | 🔵 Mana: ${stats.mana}/${stats.maxMana} | 💪 Stamina: ${stats.stamina}/${stats.maxStamina}`);
-        console.log(`🏆 Level: ${stats.level} | ⭐ XP: ${stats.experience} | 🎯 Skill Points: ${stats.skillPoints}`);
+        console.log(`❤️  Health: ${stats.health}/${stats.max_health} | 🔵 Mana: ${stats.mana}/${stats.max_mana} | 💪 Stamina: ${stats.stamina}/${stats.max_stamina}`);
+        console.log(`🏆 Level: ${stats.level} | ⭐ XP: ${stats.experience} | 🎯 Skill Points: ${stats.skill_points}`);
 
         console.log(`\n🎯 COMBAT STATS:`);
         console.log(`⚔️  ATK: ${stats.attack} | 🛡️  DEF: ${stats.defense} | 🎯 ACC: ${stats.accuracy}% | 💨 EVA: ${stats.evasion}%`);
-        console.log(`💥 Crit: ${stats.criticalChance}% | 🔥 Crit DMG: ${stats.criticalDamage}% | 🛡️  Block: ${stats.blockChance}%`);
+        console.log(`💥 Crit: ${stats.critical_chance}% | 🔥 Crit DMG: ${stats.critical_damage}% | 🛡️  Block: ${stats.block_chance}%`);
 
         console.log(`\n💪 ATTRIBUTES:`);
         console.log(`STR: ${stats.strength} | DEX: ${stats.dexterity} | CON: ${stats.constitution} | INT: ${stats.intelligence}`);
@@ -220,7 +336,7 @@ class StoryRunner {
         console.log(`\n🎭 SOCIAL & SKILLS:`);
         console.log(`👑 REP: ${stats.reputation} | 🗣️  Lead: ${stats.leadership} | 😤 Intim: ${stats.intimidation} | 💬 Persua: ${stats.persuasion}`);
         console.log(`🎭 Decep: ${stats.deception} | 👁️  Insight: ${stats.insight} | 🤝 Diplo: ${stats.diplomacy}`);
-        console.log(`🏕️  Survival: ${stats.survival} | 🥷 Stealth: ${stats.stealth} | 🔓 Lockpick: ${stats.lockpicking} | 🪤 Traps: ${stats.trapDetection}`);
+        console.log(`🏕️  Survival: ${stats.survival} | 🥷 Stealth: ${stats.stealth} | 🔓 Lockpick: ${stats.lockpicking} | 🪤 Traps: ${stats.trap_detection}`);
 
         if (stats.poisoned || stats.blessed || stats.cursed || stats.exhausted) {
             console.log(`\n⚡ STATUS EFFECTS:`);
@@ -231,24 +347,45 @@ class StoryRunner {
         }
 
         console.log(`\n💰 Gold: ${stats.gold} | 🎒 Items: ${this.gameState.inventory.slice(0, 3).join(', ')}${this.gameState.inventory.length > 3 ? '...' : ''}`);
-        console.log(`💡 Tip: Type 'v' during choices to view detailed stats and inventory`);
+
+        // Show quest summary
+        if (this.story.quest_system_enabled) {
+            const activeQuests = Object.values(this.story.side_quests).filter(q => q.status === 'active');
+            const availableQuests = this.story.getAvailableQuests(this.gameState);
+            if (activeQuests.length > 0 || availableQuests.length > 0) {
+                console.log(`📋 Quests: ${activeQuests.length} active, ${availableQuests.length} available`);
+            }
+        }
+
+        console.log(`💡 Tip: Type 'v' for inventory, 'q' for quest log`);
     }
 
     async simulateTimingBar() {
         return new Promise((resolve) => {
             console.log('\n⚔️  COMBAT TIMING BAR');
             console.log('Press SPACE when the marker hits the blue target zone!');
-            console.log(''); // Blank line for spacing
 
             let position = 0;
             const barLength = 50;
-            const speed = 0.5;
+            const speed = 0.8; // Increased speed for smoother movement
             let direction = 1;
             const blueZone = { start: 25, end: 25 };  // Very small blue target zone (1 character wide)
 
+            // Show static reference bar first
+            let staticBar = '';
+            for (let i = 0; i < barLength; i++) {
+                if (i >= blueZone.start && i <= blueZone.end) {
+                    staticBar += Colors.bgBlue(' '); // Blue target zone
+                } else {
+                    staticBar += '═'; // Gray bar
+                }
+            }
+            console.log(`\nTarget:   [${staticBar}]`);
+            console.log('Timing:   [', { end: '' });
+
             const interval = setInterval(() => {
-                // Clear the current line and redraw
-                process.stdout.write('\r\x1b[K'); // Clear entire line
+                // Clear only the timing bar line and redraw smoothly
+                process.stdout.write('\r          [');
 
                 let animatedBar = '';
                 for (let i = 0; i < barLength; i++) {
@@ -261,13 +398,13 @@ class StoryRunner {
                     }
                 }
 
-                process.stdout.write(`[${animatedBar}]`);
+                process.stdout.write(animatedBar + ']');
 
                 position += speed * direction;
                 if (position >= barLength - 1 || position <= 0) {
                     direction *= -1;
                 }
-            }, 100);
+            }, 50); // Faster refresh rate for smoother animation
 
             // Set up input handling
             process.stdin.setRawMode(true);
@@ -303,7 +440,6 @@ class StoryRunner {
             };
 
             process.stdin.on('data', handleInput);
-            console.log('Press SPACE when the █ marker hits the blue zone!');
         });
     }
 
@@ -313,27 +449,27 @@ class StoryRunner {
         console.log(`Enemy ATK: ${combatData.enemy.attack} | DEF: ${combatData.enemy.defense}`);
 
         const combat = new CombatSystem(
-            this.gameState.playerStats,
+            this.gameState.player_stats,
             this.gameState.weapons[this.gameState.inventory[0]],
             combatData.enemy
         );
 
         let enemyHealth = combatData.enemy.health;
-        let playerHealth = this.gameState.playerStats.health;
-        let playerStamina = this.gameState.playerStats.stamina;
+        let playerHealth = this.gameState.player_stats.health;
+        let playerStamina = this.gameState.player_stats.stamina;
 
         while (enemyHealth > 0 && playerHealth > 0) {
             console.log(`\n--- COMBAT ROUND ---`);
-            console.log(`Your HP: ${playerHealth}/${this.gameState.playerStats.maxHealth} | Stamina: ${playerStamina}/${this.gameState.playerStats.maxStamina}`);
+            console.log(`Your HP: ${playerHealth}/${this.gameState.player_stats.max_health} | Stamina: ${playerStamina}/${this.gameState.player_stats.max_stamina}`);
             console.log(`Enemy HP: ${enemyHealth}/${combatData.enemy.maxHealth}`);
 
             // Combat action choice
             console.log(`\n⚔️  Choose your combat action:`);
-            console.log(`[1] 🗡️  Attack - Use timing bar for damage`);
-            console.log(`[2] 🛡️  Defend - Reduce incoming damage, restore stamina`);
-            console.log(`[3] 💨 Rush - Quick attack, costs stamina, bonus crit chance`);
-            console.log(`[4] 💬 Talk - Attempt to reason with enemy (uses Charisma)`);
-            console.log(`[5] 🏃 Flee - Escape combat (uses Dexterity)`);
+            console.log(`${Colors.cyan('[1]')} ${Colors.red('🗡️  Attack')} - Use timing bar for damage`);
+            console.log(`${Colors.cyan('[2]')} ${Colors.blue('🛡️  Defend')} - Reduce incoming damage, restore stamina`);
+            console.log(`${Colors.cyan('[3]')} ${Colors.yellow('💨 Rush')} - Quick attack, costs stamina, bonus crit chance`);
+            console.log(`${Colors.cyan('[4]')} ${Colors.green('💬 Talk')} - Attempt to reason with enemy (uses Charisma)`);
+            console.log(`${Colors.cyan('[5]')} ${Colors.magenta('🏃 Flee')} - Escape combat (uses Dexterity)`);
 
             const actionChoice = await this.getCombatChoice(5);
             let actionResult;
@@ -346,7 +482,7 @@ class StoryRunner {
 
                 case 2: // Defend
                     actionResult = this.performDefend();
-                    playerStamina = Math.min(this.gameState.playerStats.maxStamina, playerStamina + actionResult.staminaGain);
+                    playerStamina = Math.min(this.gameState.player_stats.max_stamina, playerStamina + actionResult.staminaGain);
                     console.log(`🛡️  You raise your guard and recover ${actionResult.staminaGain} stamina!`);
                     break;
 
@@ -378,8 +514,8 @@ class StoryRunner {
                     actionResult = this.performFlee();
                     if (actionResult.success) {
                         console.log(`🏃 You successfully escape from combat!`);
-                        this.gameState.playerStats.health = playerHealth;
-                        this.gameState.playerStats.stamina = playerStamina;
+                        this.gameState.player_stats.health = playerHealth;
+                        this.gameState.player_stats.stamina = playerStamina;
                         return combatData.defeat || "start"; // Return to safe area
                     } else {
                         console.log(`🏃 Failed to escape! The enemy blocks your path!`);
@@ -391,10 +527,10 @@ class StoryRunner {
                 console.log('\n🏆 VICTORY! Enemy defeated!');
                 // Award experience
                 const expGain = Math.floor(combatData.enemy.maxHealth / 2) + combatData.enemy.attack;
-                this.gameState.playerStats.experience += expGain;
+                this.gameState.player_stats.experience += expGain;
                 console.log(`⭐ You gain ${expGain} experience!`);
-                this.gameState.playerStats.health = playerHealth;
-                this.gameState.playerStats.stamina = playerStamina;
+                this.gameState.player_stats.health = playerHealth;
+                this.gameState.player_stats.stamina = playerStamina;
                 return combatData.victory;
             }
 
@@ -410,19 +546,19 @@ class StoryRunner {
 
             if (playerHealth <= 0) {
                 console.log('\n💀 DEFEAT! You have been slain!');
-                this.gameState.playerStats.health = 1; // Leave with 1 HP
+                this.gameState.player_stats.health = 1; // Leave with 1 HP
                 return combatData.defeat;
             }
 
             // Regenerate small amount of stamina each turn
-            playerStamina = Math.min(this.gameState.playerStats.maxStamina, playerStamina + 5);
+            playerStamina = Math.min(this.gameState.player_stats.max_stamina, playerStamina + 5);
 
             // Add a brief pause between rounds
             await new Promise(resolve => setTimeout(resolve, 1000));
         }
 
-        this.gameState.playerStats.health = playerHealth;
-        this.gameState.playerStats.stamina = playerStamina;
+        this.gameState.player_stats.health = playerHealth;
+        this.gameState.player_stats.stamina = playerStamina;
     }
 
     async performAttack(combat) {
@@ -470,8 +606,8 @@ class StoryRunner {
     }
 
     performTalk(enemy) {
-        const charisma = this.gameState.playerStats.charisma;
-        const persuasion = this.gameState.playerStats.persuasion;
+        const charisma = this.gameState.player_stats.charisma;
+        const persuasion = this.gameState.player_stats.persuasion;
         const roll = Math.floor(Math.random() * 20) + 1;
         const total = roll + charisma + persuasion;
 
@@ -504,8 +640,8 @@ class StoryRunner {
     }
 
     performFlee() {
-        const dexterity = this.gameState.playerStats.dexterity;
-        const survival = this.gameState.playerStats.survival;
+        const dexterity = this.gameState.player_stats.dexterity;
+        const survival = this.gameState.player_stats.survival;
         const roll = Math.floor(Math.random() * 20) + 1;
         const total = roll + dexterity + survival;
 
@@ -535,7 +671,7 @@ class StoryRunner {
         debugLog('runStory() method called');
 
         try {
-            console.log(`\n🎮 Running Story: "${this.story.title}"`);
+            console.log(Colors.aiLabel(`\n🤖 AI Story:`), Colors.lightPurple(`"${this.story.title}"`));
             debugLog('Story title displayed');
 
             this.showStats();
@@ -567,13 +703,31 @@ class StoryRunner {
                 throw error;
             }
 
-            console.log(`\n${'='.repeat(50)}`);
-            console.log(`TURN ${turnCount} | PAGE ${turnCount}: ${currentPageId.toUpperCase()}`);
-            console.log(`${'='.repeat(50)}`);
-            console.log(currentPage.text);
+            console.log(Colors.purple(`\n${'='.repeat(50)}`));
+            console.log(Colors.aiLabel(`🤖 TURN ${turnCount}`), Colors.lightPurple(`| PAGE ${turnCount}: ${currentPageId.toUpperCase()}`));
+            console.log(Colors.purple(`${'='.repeat(50)}`));
+
+            // Get page data and process quest triggers first
+            const pageData = this.storyData.pages[currentPageId];
+            this.processQuestTriggers(pageData);
+
+            // Show quest-aware page text
+            let pageText = currentPage.text;
+            if (this.story.quest_system_enabled && pageData?.quest_variants) {
+                for (const [questId, variants] of Object.entries(pageData.quest_variants)) {
+                    const quest = this.story.side_quests[questId];
+                    if (quest) {
+                        if (quest.status === 'active' && variants.active_text) {
+                            pageText = variants.active_text;
+                        } else if (quest.status === 'completed' && variants.completed_text) {
+                            pageText = variants.completed_text;
+                        }
+                    }
+                }
+            }
+            console.log(Colors.aiText(pageText));
 
             // Handle combat - detect combat encounters and add combat data if missing
-            const pageData = this.storyData.pages[currentPageId];
             if (pageData?.combat) {
                 currentPageId = await this.handleCombat(pageData.combat);
                 turnCount++;
@@ -591,7 +745,7 @@ class StoryRunner {
             // Handle rewards
             if (pageData?.rewards) {
                 if (pageData.rewards.gold) {
-                    this.gameState.playerStats.gold += pageData.rewards.gold;
+                    this.gameState.player_stats.gold += pageData.rewards.gold;
                     console.log(`\n💰 You found ${pageData.rewards.gold} gold!`);
                 }
                 if (pageData.rewards.items) {
@@ -601,11 +755,15 @@ class StoryRunner {
                     });
                 }
                 if (pageData.rewards.healing) {
-                    this.gameState.playerStats.health = Math.min(
-                        this.gameState.playerStats.maxHealth,
-                        this.gameState.playerStats.health + pageData.rewards.healing
+                    this.gameState.player_stats.health = Math.min(
+                        this.gameState.player_stats.max_health,
+                        this.gameState.player_stats.health + pageData.rewards.healing
                     );
                     console.log(`❤️  You heal ${pageData.rewards.healing} HP!`);
+                }
+                if (pageData.rewards.experience) {
+                    this.gameState.player_stats.experience += pageData.rewards.experience;
+                    console.log(`⭐ You gain ${pageData.rewards.experience} experience!`);
                 }
                 this.showStats();
             }
@@ -618,7 +776,7 @@ class StoryRunner {
 
             console.log('\n📋 What do you do?');
             currentPage.prompts.forEach((prompt, index) => {
-                console.log(`[${index + 1}] ${prompt.text}`);
+                console.log(`${Colors.cyan(`[${index + 1}]`)} ${Colors.yellow(prompt.text)}`);
             });
 
             const choiceIndex = await this.getChoice(currentPage.prompts.length);
@@ -641,7 +799,13 @@ class StoryRunner {
     async getChoice(maxChoice) {
         return new Promise((resolve) => {
             const askChoice = () => {
-                this.rl.question(`\nEnter your choice (1-${maxChoice}) or 'v' for inventory: `, (answer) => {
+                let promptText = `\nEnter your choice (1-${maxChoice}) or 'v' for inventory`;
+                if (this.story.quest_system_enabled) {
+                    promptText += ", 'q' for quest log";
+                }
+                promptText += ": ";
+
+                this.rl.question(promptText, (answer) => {
                     if (!answer) {
                         console.log(`❌ Please enter a choice.`);
                         askChoice();
@@ -656,9 +820,20 @@ class StoryRunner {
                         return;
                     }
 
+                    if (trimmedAnswer === 'q') {
+                        this.showActiveQuests();
+                        askChoice();
+                        return;
+                    }
+
                     const choice = parseInt(answer, 10);
                     if (isNaN(choice) || choice < 1 || choice > maxChoice) {
-                        console.log(`❌ Invalid choice. Please enter a number between 1 and ${maxChoice}, or 'v' for inventory.`);
+                        let errorMsg = `❌ Invalid choice. Please enter a number between 1 and ${maxChoice}, or 'v' for inventory`;
+                        if (this.story.quest_system_enabled) {
+                            errorMsg += ", 'q' for quest log";
+                        }
+                        errorMsg += ".";
+                        console.log(errorMsg);
                         askChoice();
                         return;
                     }
@@ -775,7 +950,7 @@ const latestStory = storyFiles[0].name;
 const storyPath = `stories/${latestStory}`;
 
 debugLog('Selected story file', { latestStory, storyPath });
-console.log(`🎮 Loading story: ${latestStory}`);
+console.log(Colors.aiLabel(`🤖 Loading AI story:`), Colors.lightPurple(latestStory));
 
 try {
     debugLog('Creating StoryRunner instance');

@@ -14,6 +14,16 @@ const colors = {
     cyan: '\x1b[36m',
     white: '\x1b[37m',
 
+    // Bright text colors (light versions)
+    brightBlack: '\x1b[90m',
+    brightRed: '\x1b[91m',
+    brightGreen: '\x1b[92m',
+    brightYellow: '\x1b[93m',
+    brightBlue: '\x1b[94m',
+    brightMagenta: '\x1b[95m',  // Light purple
+    brightCyan: '\x1b[96m',
+    brightWhite: '\x1b[97m',
+
     // Background colors
     bgBlack: '\x1b[40m',
     bgRed: '\x1b[41m',
@@ -23,6 +33,9 @@ const colors = {
     bgMagenta: '\x1b[45m',
     bgCyan: '\x1b[46m',
     bgWhite: '\x1b[47m',
+
+    // Bright background colors
+    bgBrightMagenta: '\x1b[105m',  // Light purple background
 
     // Text styles
     reset: '\x1b[0m',
@@ -89,9 +102,36 @@ class Colors {
         return `${colors.bgBlack}${text}${colors.reset}`;
     }
 
+    // Purple methods for AI content
+    static purple(text) {
+        return `${colors.magenta}${text}${colors.reset}`;
+    }
+
+    static lightPurple(text) {
+        return `${colors.brightMagenta}${text}${colors.reset}`;
+    }
+
+    static bgPurple(text = ' ') {
+        return `${colors.bgMagenta}${text}${colors.reset}`;
+    }
+
+    static bgLightPurple(text = ' ') {
+        return `${colors.bgBrightMagenta}${text}${colors.reset}`;
+    }
+
     // Combined styles
     static brightWhiteOnBlack(text) {
         return `${colors.bright}${colors.white}${colors.bgBlack}${text}${colors.reset}`;
+    }
+
+    static aiText(text) {
+        // Special formatting for AI-generated content
+        return `${colors.brightMagenta}${text}${colors.reset}`;
+    }
+
+    static aiLabel(text) {
+        // Special formatting for AI labels
+        return `${colors.bright}${colors.magenta}${text}${colors.reset}`;
     }
 
     // Raw codes for manual use

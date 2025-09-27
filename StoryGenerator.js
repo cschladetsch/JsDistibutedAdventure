@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { Story, Page, LLMStoryGenerator } = require('./StorySystem.js'); // Import classes
 const HybridStoryGenerator = require('./external/HybridStoryGenerator');
+const Colors = require('./external/colors.js');
 
 // Combat system for timing-based battles
 class CombatSystem {
@@ -196,12 +197,12 @@ Return ONLY valid JSON with this structure:
      */
     async _callClaudeApi(prompt, systemPrompt) {
         if (!this.apiKey) {
-            console.log("SIMULATING API CALL...");
+            console.log(Colors.aiLabel("🤖 SIMULATING AI API CALL..."));
             const simulator = new LLMStoryGenerator(this.system);
             return simulator.simulateLLMCall(prompt);
         }
 
-        console.log("MAKING (simulated) REAL API CALL to Claude...");
+        console.log(Colors.aiLabel("🤖 MAKING (simulated) REAL AI API CALL..."));
         /*
         const headers = {
             'x-api-key': this.apiKey,
@@ -325,24 +326,24 @@ Theme: ${theme}`;
      * @returns {Story|null} The fully generated Story object.
      */
     async generateLongStory(theme, minPages = 20, options = {}) {
-        console.log(`Generating long story for theme: "${theme}"`);
+        console.log(Colors.lightPurple(`🤖 Generating AI story for theme: "${theme}"`));
 
         // --- Phase 1: Generate the High-Level Outline ---
         const outlinePrompt = `Create a detailed story outline for a branching narrative with 5 major chapters. The theme is: ${theme}. The story should have a clear beginning, a complex middle with choices, and multiple endings (at least one good, one bad). Provide the outline as a JSON object with a "title" and a list of "chapters", where each chapter has a "title" and a "description" of the key events and choices within it.`;
 
         // Generate dynamic outline based on theme
         const simulatedOutline = await this._generateOutlineForTheme(theme);
-        console.log("Generated story outline:", simulatedOutline.title);
+        console.log(Colors.aiText("🤖 AI Generated outline:"), Colors.lightPurple(simulatedOutline.title));
 
         // --- Phase 2: Generate Base Story Structure ---
-        console.log("Generating base story structure...");
+        console.log(Colors.aiText("🤖 AI Generating base story structure..."));
         let fullStoryData = await this._generateAdvancedStoryData(theme, simulatedOutline);
 
         // --- Phase 3: Generate Additional Chapter Pages (Optimized) ---
         const chapterPromises = [];
         for (let i = 0; i < simulatedOutline.chapters.length; i++) {
             const chapter = simulatedOutline.chapters[i];
-            console.log(`Generating pages for Chapter ${i+1}: ${chapter.title}...`);
+            console.log(Colors.lightPurple(`🤖 AI Generating pages for Chapter ${i+1}: ${chapter.title}...`));
 
             // Enhanced prompt with content rating awareness
             const contentRating = options.contentRating || 'PG-13';
@@ -400,7 +401,7 @@ Return ONLY a JSON object with a "pages" property containing the new pages:
             Object.assign(fullStoryData.pages, pages);
         });
 
-        console.log("Assembling all generated pages into a single story...");
+        console.log(Colors.aiText("🤖 AI Assembling all generated pages into a single story..."));
         const parser = new LLMStoryGenerator(this.system);
         const finalStory = parser.parse(fullStoryData, "generated_story", simulatedOutline.title);
 
@@ -409,7 +410,7 @@ Return ONLY a JSON object with a "pages" property containing the new pages:
         console.log(`Initial story has ${currentPageCount} pages. Minimum required: ${minPages}`);
 
         if (currentPageCount < minPages) {
-            console.log(`Generating additional pages to meet minimum requirement...`);
+            console.log(Colors.lightPurple(`🤖 AI Generating additional pages to meet minimum requirement...`));
             const additionalPagesNeeded = minPages - currentPageCount;
 
             const BATCH_SIZE = 50;
@@ -426,7 +427,7 @@ Return ONLY a JSON object with a "pages" property containing the new pages:
                 const batchEnd = Math.min(batchStart + BATCH_SIZE, pagesToGenerate);
                 const batchSize = batchEnd - batchStart;
 
-                console.log(`Generating batch: pages ${batchStart + 1}-${batchEnd} of ${pagesToGenerate}...`);
+                console.log(Colors.lightPurple(`🤖 AI Generating batch: pages ${batchStart + 1}-${batchEnd} of ${pagesToGenerate}...`));
 
                 const batchPrompt = `Generate ${batchSize} additional interconnected story pages for "${simulatedOutline.title}".
 
