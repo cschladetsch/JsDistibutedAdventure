@@ -1,0 +1,93 @@
+{
+  "title": "Story System Text Strings",
+  "startup": {
+    "loading_story": "🤖 Loading AI story: {filename}",
+    "story_title": "🤖 AI Story: \"{title}\"",
+    "input_ended": "📝 Input stream ended. Press Ctrl+C to exit or run interactively.",
+    "goodbye": "👋 Goodbye!"
+  },
+  "player_stats": {
+    "header": "📊 PLAYER STATS:",
+    "health_mana_stamina": "❤️  Health: {health}/{maxHealth} | 🔵 Mana: {mana}/{maxMana} | 💪 Stamina: {stamina}/{maxStamina}",
+    "level_exp": "🏆 Level: {level} | ⭐ XP: {experience} | 🎯 Skill Points: {skillPoints}",
+    "combat_stats_header": "🎯 COMBAT STATS:",
+    "combat_stats": "⚔️  ATK: {attack} | 🛡️  DEF: {defense} | 🎯 ACC: {accuracy}% | 💨 EVA: {evasion}%",
+    "combat_stats2": "💥 Crit: {critChance}% | 🔥 Crit DMG: {critDamage}% | 🛡️  Block: {blockChance}%",
+    "attributes_header": "💪 ATTRIBUTES:",
+    "attributes": "STR: {strength} | DEX: {dexterity} | CON: {constitution} | INT: {intelligence}",
+    "attributes2": "WIS: {wisdom} | CHA: {charisma} | LUK: {luck} | PER: {perception}",
+    "social_skills_header": "🎭 SOCIAL & SKILLS:",
+    "social_skills": "👑 REP: {reputation} | 🗣️  Lead: {leadership} | 😤 Intim: {intimidation} | 💬 Persua: {persuasion}",
+    "social_skills2": "🎭 Decep: {deception} | 👁️  Insight: {insight} | 🤝 Diplo: {diplomacy}",
+    "survival_skills": "🏕️  Survival: {survival} | 🥷 Stealth: {stealth} | 🔓 Lockpick: {lockpicking} | 🪤 Traps: {trapDetection}",
+    "status_effects_header": "⚡ STATUS EFFECTS:",
+    "poisoned": "🟢 Poisoned",
+    "blessed": "✨ Blessed",
+    "cursed": "😈 Cursed",
+    "exhausted": "😴 Exhausted",
+    "gold_items": "💰 Gold: {gold} | 🎒 Items: {items}",
+    "tip": "💡 Tip: Type 'v' for inventory, 'q' for quest log"
+  },
+  "turn_system": {
+    "turn_header": "🤖 TURN {turnNumber} | PAGE {pageNumber}: {pageId}",
+    "turn_separator": "==================================================",
+    "what_do_you_do": "📋 What do you do?",
+    "choice_selected": "➡️  You chose: \"{choice}\"",
+    "the_end": "🏁 THE END",
+    "adventure_complete": "🎉 Adventure Complete!"
+  },
+  "input_prompts": {
+    "press_key_choice": "Press a key for your choice (1-{maxChoice}) or 'v' for inventory",
+    "enter_choice": "Enter your choice (1-{maxChoice}) or 'v' for inventory",
+    "with_quest_log": ", 'q' for quest log",
+    "colon_space": ": ",
+    "invalid_key": "❌ Invalid key '{key}'. Press a number between 1 and {maxChoice}, or 'v' for inventory",
+    "invalid_choice": "❌ Invalid choice. Please enter a number between 1 and {maxChoice}, or 'v' for inventory",
+    "please_enter_choice": "❌ Please enter a choice.",
+    "choice_selected_instantly": "⚡ You pressed '{key}' - choice selected instantly!",
+    "showing_inventory": "📦 You pressed 'v' - showing inventory...",
+    "showing_quest_log": "📋 You pressed 'q' - showing quest log..."
+  },
+  "inventory": {
+    "header": "📦 DETAILED INVENTORY",
+    "separator": "============================================================",
+    "weapons_header": "⚔️  WEAPONS:",
+    "weapon_stats": "   • {name} [{rarity}]",
+    "weapon_details": "     Damage: {damage} | Accuracy: {accuracy}%",
+    "items_header": "🎲 ITEMS:",
+    "item_entry": "   • {name}",
+    "item_description": "     {description}",
+    "item_value": "     Value: {value}",
+    "other_header": "🎯 OTHER:",
+    "world_status_header": "🌍 WORLD STATUS:",
+    "time": "   Time: {timeOfDay}",
+    "weather": "   Weather: {weather}",
+    "village_rep": "   Village Rep: {reputation}",
+    "explored": "   Explored: {areas}"
+  },
+  "quest_system": {
+    "no_active_quests": "📋 No active quests",
+    "quest_log_header": "📋 QUEST LOG:",
+    "active_quests_header": "🔄 ACTIVE QUESTS:",
+    "available_quests_header": "✨ AVAILABLE QUESTS:",
+    "quest_entry": "• {title}",
+    "quest_objective": "  └─ {description} ({current}/{required})",
+    "quest_description": "• {title} - {description}",
+    "new_quest_available": "🔍 New Quest Available: \"{title}\"",
+    "quest_progress": "📋 Quest Progress: {questId} - {description}",
+    "quest_completed": "🏆 Quest Completed: \"{title}\"",
+    "quest_rewards_header": "🎁 QUEST REWARDS:",
+    "experience_reward": "⭐ +{experience} Experience",
+    "gold_reward": "💰 +{gold} Gold",
+    "item_found": "🎒 Found: {item}",
+    "stat_bonus": "📈 +{bonus} {stat}"
+  },
+  "errors": {
+    "story_page_not_found": "❌ Story page not found. Adventure ends.",
+    "story_execution_failed": "❌ Story execution failed: {error}",
+    "failed_to_initialize": "❌ Failed to initialize story: {error}",
+    "no_story_files": "❌ No story files found in stories/ directory",
+    "stories_directory_not_found": "❌ Stories directory not found",
+    "error_reading_directory": "❌ Error reading stories directory: {error}"
+  }
+}

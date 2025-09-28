@@ -1,0 +1,73 @@
+{
+  "title": "Combat System Text Strings",
+  "combat_encounter": {
+    "header": "⚔️  COMBAT ENCOUNTER: {enemyName}",
+    "dangerous_foe": "💀 A dangerous foe blocks your path! 💀",
+    "enemy_stats": "Enemy HP: {health}/{maxHealth}",
+    "enemy_combat_stats": "Enemy ATK: {attack} | DEF: {defense}"
+  },
+  "timing_bar": {
+    "header": "⚔️  {actionType} TIMING BAR",
+    "instruction": "Press SPACE when the marker hits the blue target zone!",
+    "targets_label": "Targets:",
+    "timing_label": "Timing:"
+  },
+  "timing_results": {
+    "perfect_hit": "🎯 🌟 PERFECT HIT! 🌟 CRITICAL DAMAGE!",
+    "good_hit": "🎯 ✨ GOOD HIT! ✨ Strong damage!",
+    "decent_hit": "🎯 👍 DECENT HIT! Normal damage.",
+    "missed": "🎯 💥 MISSED! Minimal damage..."
+  },
+  "round_descriptions": {
+    "round_header": "= ROUND {roundNumber} =",
+    "player_advantage": [
+      "You circle your opponent with confidence, weapon ready. The enemy seems intimidated by your skill.",
+      "Your training shows as you maintain perfect stance. The enemy hesitates, looking for an opening.",
+      "You press your advantage, forcing the enemy to back away. Victory seems within reach."
+    ],
+    "even_match": [
+      "Both fighters circle each other warily, neither showing weakness. This will be a true test of skill.",
+      "You and your opponent are evenly matched. Every move could determine the outcome.",
+      "The battle intensifies as both combatants fight with equal determination."
+    ],
+    "player_disadvantage": [
+      "Your enemy towers over you menacingly. This fight will test your limits.",
+      "The enemy's superior strength becomes apparent as they advance. You must rely on skill over power.",
+      "Sweat beads on your forehead as you realize you're outmatched. Desperation fuels your next move."
+    ]
+  },
+  "player_stats": {
+    "health_stamina": "📊 Your HP: {health}/{maxHealth} | 💨 Stamina: {stamina}/{maxStamina}",
+    "enemy_health": "🎯 Enemy HP: {health}/{maxHealth}"
+  },
+  "combat_actions": {
+    "header": "⚔️  Choose your combat action:",
+    "attack": "[1] 🗡️  Attack - Use timing bar for damage",
+    "defend": "[2] 🛡️  Defend - Reduce incoming damage, restore stamina",
+    "rush": "[3] 💨 Rush - Quick attack, costs stamina, bonus crit chance",
+    "talk": "[4] 💬 Talk - Attempt to reason with enemy (uses Charisma)",
+    "flee": "[5] 🏃 Flee - Escape combat (uses Dexterity)"
+  },
+  "attack_descriptions": {
+    "perfect": "Your blade finds the perfect opening, striking with devastating precision! Critical hit!",
+    "good": "A well-timed strike connects solidly with your target. Excellent form!",
+    "okay": "Your attack lands but lacks the precision for maximum damage. Still effective.",
+    "miss": "Your timing was off and the attack glances harmlessly off your enemy."
+  },
+  "rush_descriptions": {
+    "perfect": "Your lightning-fast rush overwhelms the enemy's defenses! A devastating combo attack!",
+    "good": "You surge forward with incredible speed, landing multiple strikes in rapid succession!",
+    "okay": "Your rush attack connects but the enemy partially deflects the assault.",
+    "miss": "Your rush is too hasty and the enemy sidesteps your wild charge."
+  },
+  "combat_results": {
+    "victory": "🏆 VICTORY! Enemy defeated!",
+    "defeat": "💀 DEFEAT! You have been slain!",
+    "experience_gain": "⭐ You gain {exp} experience!",
+    "damage_dealt": "💥 You deal {damage} damage!",
+    "enemy_attacks": "🐲 Enemy attacks for {damage} damage!",
+    "defense_reduces": "🛡️  Your defense reduces the damage!",
+    "rush_bonus": "💨 Rush techniques applied!",
+    "not_enough_stamina": "❌ Not enough stamina! (Need {required}, have {current})"
+  }
+}

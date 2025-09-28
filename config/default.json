@@ -1,0 +1,63 @@
+{
+  "app": {
+    "name": "JavaScript Distributed Story System",
+    "version": "2.0.0",
+    "port": 3000,
+    "host": "localhost"
+  },
+  "story": {
+    "defaultLength": 20,
+    "maxLength": 100,
+    "contentRating": "PG-13",
+    "enableWebEnhancement": true,
+    "enableXRatedContent": false,
+    "autoSaveInterval": 300000,
+    "backupCount": 5
+  },
+  "combat": {
+    "animationSpeed": 60,
+    "timingBarDifficulty": "normal",
+    "enableSoundEffects": false,
+    "criticalHitChance": 0.15,
+    "magicSystemEnabled": true
+  },
+  "ai": {
+    "claudeModel": "claude-3-sonnet-20240229",
+    "deepseekModel": "deepseek-r1:latest",
+    "maxRetries": 3,
+    "requestTimeout": 30000,
+    "rateLimitDelay": 1000,
+    "enableAdaptiveDifficulty": true
+  },
+  "ui": {
+    "colorTheme": "default",
+    "animationEnabled": true,
+    "soundEnabled": false,
+    "autoComplete": true,
+    "instantKeySelection": true,
+    "asciiArtEnabled": true
+  },
+  "multiplayer": {
+    "enabled": false,
+    "maxPlayers": 4,
+    "sessionTimeout": 1800000,
+    "enableVoting": true
+  },
+  "logging": {
+    "level": "info",
+    "enableConsole": true,
+    "enableFile": true,
+    "maxFiles": 5,
+    "maxSize": "10MB"
+  },
+  "database": {
+    "type": "sqlite",
+    "path": "./data/stories.db",
+    "enableBackups": true
+  },
+  "security": {
+    "enableApiKeyValidation": true,
+    "enableRateLimit": true,
+    "maxRequestsPerMinute": 60
+  }
+}

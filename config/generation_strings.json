@@ -1,0 +1,59 @@
+{
+  "title": "Story Generation Text Strings",
+  "generation_process": {
+    "generating_story": "🎭 Generating AI story for theme: \"{theme}\"",
+    "simulating_api": "🤖 SIMULATING AI API CALL...",
+    "real_api": "🤖 MAKING (simulated) REAL AI API CALL...",
+    "generated_outline": "🤖 AI Generated outline: {title}",
+    "generating_base": "🤖 AI Generating base story structure...",
+    "generating_chapter": "🤖 AI Generating pages for Chapter {number}: {title}...",
+    "assembling_pages": "🤖 AI Assembling all generated pages into a single story...",
+    "initial_pages": "Initial story has {count} pages. Minimum required: {minimum}",
+    "generating_additional": "🤖 AI Generating additional pages to meet minimum requirement...",
+    "generating_batch": "🤖 AI Generating batch: pages {start}-{end} of {total}...",
+    "final_pages": "Final story now has {count} pages.",
+    "story_saved": "Story saved to: {path}",
+    "created_directory": "Created directory: {directory}"
+  },
+  "api_warnings": {
+    "no_api_key": "Warning: ~/.CLAUDE_KEY file not found. Generator will run in simulation mode.",
+    "found_api_key": "Found Claude API key file.",
+    "error_reading_key": "Error reading API key: {error}",
+    "llm_invalid_format": "LLM returned invalid story format, using fallback",
+    "llm_invalid_outline": "LLM returned invalid outline format, using fallback",
+    "error_generating_story": "Error generating story with LLM, using fallback: {error}",
+    "error_generating_outline": "Error generating outline with LLM, using fallback: {error}",
+    "failed_chapter_generation": "Failed to generate chapter {number}: {error}",
+    "error_saving_story": "Error saving story: {error}"
+  },
+  "story_requirements": {
+    "themes_header": "ALL NINE THEMES MUST BE PRESENT IN EVERY STORY:",
+    "love_theme": "LOVE: Romantic relationships, passion, emotional connections, intimate moments",
+    "violence_theme": "VIOLENCE: Combat, conflict, brutality, physical confrontations, bloodshed",
+    "death_theme": "DEATH: Character deaths, mortality, loss, grief, fatal consequences",
+    "sex_theme": "SEX: Sexual tension, intimate encounters, desire, physical attraction, adult relationships",
+    "sadness_theme": "SADNESS: Grief, loss, heartbreak, tragedy, emotional pain, despair",
+    "surprise_theme": "SURPRISE: Unexpected plot twists, shocking revelations, unforeseen events, sudden changes",
+    "happiness_theme": "HAPPINESS: Joy, celebration, triumph, positive outcomes, fulfillment, contentment",
+    "disgust_theme": "DISGUST: Revulsion, repulsion, moral outrage, physical revulsion, abhorrent situations",
+    "disdain_theme": "DISDAIN: Contempt, scorn, arrogance, superiority, dismissive attitudes, condescension",
+    "arc_structure_header": "THE 7-ARC STRUCTURE: Each page must be tagged with one of these story arcs:",
+    "setup_arc": "setup: Ordinary world and call to adventure",
+    "confrontation_arc": "confrontation: Rising action and first conflicts",
+    "midpoint_arc": "midpoint: Major revelation or turning point",
+    "crisis_arc": "crisis: Dark night of the soul",
+    "climax_arc": "climax: Final confrontation",
+    "resolution_arc": "resolution: Falling action and consequences",
+    "denouement_arc": "denouement: New equilibrium and endings"
+  },
+  "generation_status": {
+    "story_generated": "✅ Story generated successfully!",
+    "massive_story": "✅ MASSIVE story generated successfully!",
+    "mega_story": "✅ MEGA story generated!",
+    "title_label": "📖 Title: {title}",
+    "pages_label": "📄 Pages: {count}",
+    "ready_for_adventure": "🚀 Ready for epic adventure!",
+    "ready_to_play": "🎯 Ready to play!",
+    "structure_complete": "📊 Story Structure Complete!"
+  }
+}

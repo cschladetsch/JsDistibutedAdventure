@@ -1,0 +1,1422 @@
+{
+  "id": "generated_story",
+  "title": "Gears of Destiny",
+  "start_page_id": "start",
+  "pages": {
+    "start": {
+      "id": "start",
+      "text": "You begin your adventure in an unknown land.",
+      "background_id": "adventure_start",
+      "prompts": [
+        {
+          "text": "Investigate the situation",
+          "target_id": "investigate",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        },
+        {
+          "text": "Prepare for action",
+          "target_id": "prepare",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        },
+        {
+          "text": "Seek help from others",
+          "target_id": "seek_help",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false,
+      "quest_triggers": null,
+      "quest_variants": null,
+      "npcs": [],
+      "rewards": null,
+      "combat": null
+    },
+    "romantic_encounter": {
+      "id": "romantic_encounter",
+      "text": "A captivating figure turns to you with eyes that seem to hold ancient secrets. 'I've been waiting for someone like you,' they say with a smile that makes your heart race.",
+      "background_id": "tavern_fireplace",
+      "prompts": [
+        {
+          "text": "Offer to buy them a drink and learn more",
+          "target_id": "romantic_conversation",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        },
+        {
+          "text": "Ask if they'd like to join your adventure",
+          "target_id": "romantic_partnership",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        },
+        {
+          "text": "Politely excuse yourself and explore elsewhere",
+          "target_id": "explore",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false,
+      "quest_triggers": null,
+      "quest_variants": null,
+      "npcs": [],
+      "rewards": null,
+      "combat": null
+    },
+    "romantic_conversation": {
+      "id": "romantic_conversation",
+      "text": "Over wine and candlelight, you share stories of your past adventures. The connection between you grows stronger with each passing moment.",
+      "background_id": "tavern_intimate_table",
+      "prompts": [
+        {
+          "text": "Suggest continuing the evening somewhere more private",
+          "target_id": "romantic_deepening",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        },
+        {
+          "text": "Propose adventuring together tomorrow",
+          "target_id": "romantic_partnership",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false,
+      "quest_triggers": null,
+      "quest_variants": null,
+      "npcs": [],
+      "rewards": null,
+      "combat": null
+    },
+    "romantic_partnership": {
+      "id": "romantic_partnership",
+      "text": "Your new companion's hand feels warm in yours as you agree to face the dangers ahead together. With love as your motivation, you feel unstoppable.",
+      "background_id": "tavern_handshake",
+      "prompts": [
+        {
+          "text": "Begin the adventure as lovers",
+          "target_id": "explore_together",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        },
+        {
+          "text": "Take time to get to know each other better",
+          "target_id": "romantic_deepening",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false,
+      "quest_triggers": null,
+      "quest_variants": null,
+      "npcs": [],
+      "rewards": null,
+      "combat": null
+    },
+    "romantic_deepening": {
+      "id": "romantic_deepening",
+      "text": "In the quiet intimacy of shared space, you discover that this connection runs deeper than mere attraction. Your hearts beat in harmony.",
+      "background_id": "intimate_chamber",
+      "prompts": [
+        {
+          "text": "Confess your growing feelings",
+          "target_id": "love_confession",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        },
+        {
+          "text": "Focus on the adventure ahead",
+          "target_id": "explore_together",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false,
+      "quest_triggers": null,
+      "quest_variants": null,
+      "npcs": [],
+      "rewards": null,
+      "combat": null
+    },
+    "love_confession": {
+      "id": "love_confession",
+      "text": "Under the starlit sky, you both admit that this meeting feels like destiny. Your love story has only just begun, but it already feels eternal.",
+      "background_id": "moonlit_balcony",
+      "prompts": [
+        {
+          "text": "Begin your romantic adventure together",
+          "target_id": "explore_together",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false,
+      "quest_triggers": null,
+      "quest_variants": null,
+      "npcs": [],
+      "rewards": null,
+      "combat": null
+    },
+    "explore_together": {
+      "id": "explore_together",
+      "text": "Hand in hand, you venture forth together. Every challenge seems conquerable when faced with your beloved by your side.",
+      "background_id": "exploration_couple",
+      "prompts": [
+        {
+          "text": "Continue your romantic adventure",
+          "target_id": "start",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        },
+        {
+          "text": "Find a quiet place to rest together",
+          "target_id": "romantic_rest",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false,
+      "quest_triggers": null,
+      "quest_variants": null,
+      "npcs": [],
+      "rewards": null,
+      "combat": null
+    },
+    "romantic_rest": {
+      "id": "romantic_rest",
+      "text": "By the warmth of the campfire, you hold each other close. The adventure can wait - this moment of love is all that matters.",
+      "background_id": "cozy_campfire",
+      "prompts": [
+        {
+          "text": "Continue the journey with renewed passion",
+          "target_id": "start",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false,
+      "quest_triggers": null,
+      "quest_variants": null,
+      "npcs": [],
+      "rewards": null,
+      "combat": null
+    },
+    "explore": {
+      "id": "explore",
+      "text": "You venture forth alone and discover new challenges. Yet part of you wonders what might have been if you'd chosen companionship.",
+      "background_id": "exploration",
+      "prompts": [
+        {
+          "text": "Continue exploring solo",
+          "target_id": "start",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        },
+        {
+          "text": "Return to seek that mysterious stranger",
+          "target_id": "romantic_encounter",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false,
+      "quest_triggers": null,
+      "quest_variants": null,
+      "npcs": [],
+      "rewards": null,
+      "combat": null
+    },
+    "prepare": {
+      "id": "prepare",
+      "text": "You take time to ready yourself for the challenges ahead. Your preparations are interrupted by danger!",
+      "background_id": "preparation_area",
+      "prompts": [
+        {
+          "text": "Fight!",
+          "target_id": "combat_encounter_2",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        },
+        {
+          "text": "Flee to safety",
+          "target_id": "seek_help",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false,
+      "quest_triggers": null,
+      "quest_variants": null,
+      "npcs": [],
+      "rewards": null,
+      "combat": null
+    },
+    "adventure_page_1": {
+      "background": "adventure_scene_1",
+      "text": "Adventure continues at location 1. You face new challenges and discoveries here.",
+      "choices": [
+        {
+          "text": "Continue exploring",
+          "target": "adventure_page_2"
+        },
+        {
+          "text": "Search for treasure",
+          "target": "treasure_1"
+        },
+        {
+          "text": "Rest and recover",
+          "target": "rest_1"
+        }
+      ]
+    },
+    "treasure_1": {
+      "background": "treasure_scene",
+      "text": "You search for treasure and find valuable items!",
+      "rewards": {
+        "gold": 12
+      },
+      "choices": [
+        {
+          "text": "Continue adventure",
+          "target": "adventure_page_2"
+        }
+      ]
+    },
+    "rest_1": {
+      "background": "rest_area",
+      "text": "You take time to rest and recover your strength.",
+      "rewards": {
+        "healing": 10
+      },
+      "choices": [
+        {
+          "text": "Continue refreshed",
+          "target": "adventure_page_2"
+        }
+      ]
+    },
+    "adventure_page_2": {
+      "background": "adventure_scene_2",
+      "text": "Adventure continues at location 2. You face new challenges and discoveries here.",
+      "choices": [
+        {
+          "text": "Continue exploring",
+          "target": "adventure_page_3"
+        },
+        {
+          "text": "Search for treasure",
+          "target": "treasure_2"
+        },
+        {
+          "text": "Rest and recover",
+          "target": "rest_2"
+        }
+      ]
+    },
+    "treasure_2": {
+      "background": "treasure_scene",
+      "text": "You search for treasure and find valuable items!",
+      "rewards": {
+        "gold": 14
+      },
+      "choices": [
+        {
+          "text": "Continue adventure",
+          "target": "adventure_page_3"
+        }
+      ]
+    },
+    "rest_2": {
+      "background": "rest_area",
+      "text": "You take time to rest and recover your strength.",
+      "rewards": {
+        "healing": 10
+      },
+      "choices": [
+        {
+          "text": "Continue refreshed",
+          "target": "adventure_page_3"
+        }
+      ]
+    },
+    "adventure_page_3": {
+      "background": "adventure_scene_3",
+      "text": "Adventure continues at location 3. You face new challenges and discoveries here.",
+      "choices": [
+        {
+          "text": "Continue exploring",
+          "target": "adventure_page_4"
+        },
+        {
+          "text": "Search for treasure",
+          "target": "treasure_3"
+        },
+        {
+          "text": "Rest and recover",
+          "target": "rest_3"
+        }
+      ]
+    },
+    "treasure_3": {
+      "background": "treasure_scene",
+      "text": "You search for treasure and find valuable items!",
+      "rewards": {
+        "gold": 16
+      },
+      "choices": [
+        {
+          "text": "Continue adventure",
+          "target": "adventure_page_4"
+        }
+      ]
+    },
+    "rest_3": {
+      "background": "rest_area",
+      "text": "You take time to rest and recover your strength.",
+      "rewards": {
+        "healing": 10
+      },
+      "choices": [
+        {
+          "text": "Continue refreshed",
+          "target": "adventure_page_4"
+        }
+      ]
+    },
+    "investigate": {
+      "id": "investigate",
+      "text": "You carefully examine your surroundings and discover important clues. Suddenly, you hear movement nearby!",
+      "background_id": "investigation_scene",
+      "prompts": [
+        {
+          "text": "Face the threat",
+          "target_id": "combat_encounter_1",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        },
+        {
+          "text": "Try to avoid conflict",
+          "target_id": "prepare",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false,
+      "quest_triggers": null,
+      "quest_variants": null,
+      "npcs": [],
+      "rewards": null,
+      "combat": null
+    },
+    "seek_help": {
+      "id": "seek_help",
+      "text": "You find helpful allies who provide valuable assistance. Together, you face new challenges.",
+      "background_id": "ally_meeting",
+      "prompts": [
+        {
+          "text": "Continue the adventure",
+          "target_id": "start",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false,
+      "quest_triggers": null,
+      "quest_variants": null,
+      "npcs": [],
+      "rewards": null,
+      "combat": null
+    },
+    "combat_encounter_1": {
+      "id": "combat_encounter_1",
+      "text": "A Bandit blocks your path! Prepare for battle!",
+      "background_id": "battle_scene",
+      "prompts": [
+        {
+          "text": "Attack!",
+          "target_id": "combat_timing",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false,
+      "quest_triggers": null,
+      "quest_variants": null,
+      "npcs": [],
+      "rewards": null,
+      "combat": null
+    },
+    "combat_encounter_2": {
+      "id": "combat_encounter_2",
+      "text": "A fierce Beast appears! This will be a tough fight!",
+      "background_id": "battle_scene",
+      "prompts": [
+        {
+          "text": "Engage in combat!",
+          "target_id": "combat_timing",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false,
+      "quest_triggers": null,
+      "quest_variants": null,
+      "npcs": [],
+      "rewards": null,
+      "combat": null
+    },
+    "victory_1": {
+      "id": "victory_1",
+      "text": "You have defeated the Bandit! You feel stronger and find some treasure.",
+      "background_id": "victory_scene",
+      "prompts": [
+        {
+          "text": "Continue exploring",
+          "target_id": "start",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false,
+      "quest_triggers": null,
+      "quest_variants": null,
+      "npcs": [],
+      "rewards": null,
+      "combat": null
+    },
+    "victory_2": {
+      "id": "victory_2",
+      "text": "Incredible! You have bested the mighty Beast! You gain valuable rewards.",
+      "background_id": "victory_scene",
+      "prompts": [
+        {
+          "text": "Celebrate your victory",
+          "target_id": "start",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false,
+      "quest_triggers": null,
+      "quest_variants": null,
+      "npcs": [],
+      "rewards": null,
+      "combat": null
+    },
+    "defeat": {
+      "id": "defeat",
+      "text": "You have been defeated, but you manage to escape with your life. You retreat to safety to recover.",
+      "background_id": "defeat_scene",
+      "prompts": [
+        {
+          "text": "Try again",
+          "target_id": "start",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false,
+      "quest_triggers": null,
+      "quest_variants": null,
+      "npcs": [],
+      "rewards": null,
+      "combat": null
+    },
+    "adventure_page_4": {
+      "background": "adventure_scene_4",
+      "text": "Adventure continues at location 4. You face new challenges and discoveries here.",
+      "choices": [
+        {
+          "text": "Continue exploring",
+          "target": "adventure_page_5"
+        },
+        {
+          "text": "Search for treasure",
+          "target": "treasure_4"
+        },
+        {
+          "text": "Rest and recover",
+          "target": "rest_4"
+        }
+      ]
+    },
+    "treasure_4": {
+      "background": "treasure_scene",
+      "text": "You search for treasure and find valuable items!",
+      "rewards": {
+        "gold": 18
+      },
+      "choices": [
+        {
+          "text": "Continue adventure",
+          "target": "adventure_page_5"
+        }
+      ]
+    },
+    "rest_4": {
+      "background": "rest_area",
+      "text": "You take time to rest and recover your strength.",
+      "rewards": {
+        "healing": 10
+      },
+      "choices": [
+        {
+          "text": "Continue refreshed",
+          "target": "adventure_page_5"
+        }
+      ]
+    },
+    "adventure_page_5": {
+      "background": "adventure_scene_5",
+      "text": "Adventure continues at location 5. You face new challenges and discoveries here.",
+      "choices": [
+        {
+          "text": "Continue exploring",
+          "target": "adventure_page_6"
+        },
+        {
+          "text": "Search for treasure",
+          "target": "treasure_5"
+        },
+        {
+          "text": "Rest and recover",
+          "target": "rest_5"
+        }
+      ]
+    },
+    "treasure_5": {
+      "background": "treasure_scene",
+      "text": "You search for treasure and find valuable items!",
+      "rewards": {
+        "gold": 20
+      },
+      "choices": [
+        {
+          "text": "Continue adventure",
+          "target": "adventure_page_6"
+        }
+      ]
+    },
+    "rest_5": {
+      "background": "rest_area",
+      "text": "You take time to rest and recover your strength.",
+      "rewards": {
+        "healing": 10
+      },
+      "choices": [
+        {
+          "text": "Continue refreshed",
+          "target": "adventure_page_6"
+        }
+      ]
+    },
+    "adventure_page_6": {
+      "background": "adventure_scene_6",
+      "text": "Adventure continues at location 6. You face new challenges and discoveries here.",
+      "choices": [
+        {
+          "text": "Continue exploring",
+          "target": "adventure_page_7"
+        },
+        {
+          "text": "Search for treasure",
+          "target": "treasure_6"
+        },
+        {
+          "text": "Rest and recover",
+          "target": "rest_6"
+        }
+      ]
+    },
+    "treasure_6": {
+      "background": "treasure_scene",
+      "text": "You search for treasure and find valuable items!",
+      "rewards": {
+        "gold": 22
+      },
+      "choices": [
+        {
+          "text": "Continue adventure",
+          "target": "adventure_page_7"
+        }
+      ]
+    },
+    "rest_6": {
+      "background": "rest_area",
+      "text": "You take time to rest and recover your strength.",
+      "rewards": {
+        "healing": 10
+      },
+      "choices": [
+        {
+          "text": "Continue refreshed",
+          "target": "adventure_page_7"
+        }
+      ]
+    },
+    "adventure_page_7": {
+      "background": "adventure_scene_7",
+      "text": "Adventure continues at location 7. You face new challenges and discoveries here.",
+      "choices": [
+        {
+          "text": "Continue exploring",
+          "target": "adventure_page_8"
+        },
+        {
+          "text": "Search for treasure",
+          "target": "treasure_7"
+        },
+        {
+          "text": "Rest and recover",
+          "target": "rest_7"
+        }
+      ]
+    },
+    "treasure_7": {
+      "background": "treasure_scene",
+      "text": "You search for treasure and find valuable items!",
+      "rewards": {
+        "gold": 24
+      },
+      "choices": [
+        {
+          "text": "Continue adventure",
+          "target": "adventure_page_8"
+        }
+      ]
+    },
+    "rest_7": {
+      "background": "rest_area",
+      "text": "You take time to rest and recover your strength.",
+      "rewards": {
+        "healing": 10
+      },
+      "choices": [
+        {
+          "text": "Continue refreshed",
+          "target": "adventure_page_8"
+        }
+      ]
+    },
+    "adventure_page_8": {
+      "background": "adventure_scene_8",
+      "text": "Adventure continues at location 8. You face new challenges and discoveries here.",
+      "choices": [
+        {
+          "text": "Continue exploring",
+          "target": "adventure_page_9"
+        },
+        {
+          "text": "Search for treasure",
+          "target": "treasure_8"
+        },
+        {
+          "text": "Rest and recover",
+          "target": "rest_8"
+        }
+      ]
+    },
+    "treasure_8": {
+      "background": "treasure_scene",
+      "text": "You search for treasure and find valuable items!",
+      "rewards": {
+        "gold": 26
+      },
+      "choices": [
+        {
+          "text": "Continue adventure",
+          "target": "adventure_page_9"
+        }
+      ]
+    },
+    "rest_8": {
+      "background": "rest_area",
+      "text": "You take time to rest and recover your strength.",
+      "rewards": {
+        "healing": 10
+      },
+      "choices": [
+        {
+          "text": "Continue refreshed",
+          "target": "adventure_page_9"
+        }
+      ]
+    },
+    "adventure_page_9": {
+      "background": "adventure_scene_9",
+      "text": "Adventure continues at location 9. You face new challenges and discoveries here.",
+      "choices": [
+        {
+          "text": "Continue exploring",
+          "target": "adventure_page_10"
+        },
+        {
+          "text": "Search for treasure",
+          "target": "treasure_9"
+        },
+        {
+          "text": "Rest and recover",
+          "target": "rest_9"
+        }
+      ]
+    },
+    "treasure_9": {
+      "background": "treasure_scene",
+      "text": "You search for treasure and find valuable items!",
+      "rewards": {
+        "gold": 28
+      },
+      "choices": [
+        {
+          "text": "Continue adventure",
+          "target": "adventure_page_10"
+        }
+      ]
+    },
+    "rest_9": {
+      "background": "rest_area",
+      "text": "You take time to rest and recover your strength.",
+      "rewards": {
+        "healing": 10
+      },
+      "choices": [
+        {
+          "text": "Continue refreshed",
+          "target": "adventure_page_10"
+        }
+      ]
+    },
+    "adventure_page_10": {
+      "background": "adventure_scene_10",
+      "text": "Adventure continues at location 10. You face new challenges and discoveries here.",
+      "choices": [
+        {
+          "text": "Continue exploring",
+          "target": "adventure_page_11"
+        },
+        {
+          "text": "Search for treasure",
+          "target": "treasure_10"
+        },
+        {
+          "text": "Rest and recover",
+          "target": "rest_10"
+        }
+      ]
+    },
+    "treasure_10": {
+      "background": "treasure_scene",
+      "text": "You search for treasure and find valuable items!",
+      "rewards": {
+        "gold": 30
+      },
+      "choices": [
+        {
+          "text": "Continue adventure",
+          "target": "adventure_page_11"
+        }
+      ]
+    },
+    "rest_10": {
+      "background": "rest_area",
+      "text": "You take time to rest and recover your strength.",
+      "rewards": {
+        "healing": 10
+      },
+      "choices": [
+        {
+          "text": "Continue refreshed",
+          "target": "adventure_page_11"
+        }
+      ]
+    },
+    "adventure_page_11": {
+      "background": "adventure_scene_11",
+      "text": "Adventure continues at location 11. You face new challenges and discoveries here.",
+      "choices": [
+        {
+          "text": "Continue exploring",
+          "target": "adventure_page_12"
+        },
+        {
+          "text": "Search for treasure",
+          "target": "treasure_11"
+        },
+        {
+          "text": "Rest and recover",
+          "target": "rest_11"
+        }
+      ]
+    },
+    "treasure_11": {
+      "background": "treasure_scene",
+      "text": "You search for treasure and find valuable items!",
+      "rewards": {
+        "gold": 32
+      },
+      "choices": [
+        {
+          "text": "Continue adventure",
+          "target": "adventure_page_12"
+        }
+      ]
+    },
+    "rest_11": {
+      "background": "rest_area",
+      "text": "You take time to rest and recover your strength.",
+      "rewards": {
+        "healing": 10
+      },
+      "choices": [
+        {
+          "text": "Continue refreshed",
+          "target": "adventure_page_12"
+        }
+      ]
+    },
+    "adventure_page_12": {
+      "background": "adventure_scene_12",
+      "text": "Adventure continues at location 12. You face new challenges and discoveries here.",
+      "choices": [
+        {
+          "text": "Continue exploring",
+          "target": "adventure_page_13"
+        },
+        {
+          "text": "Search for treasure",
+          "target": "treasure_12"
+        },
+        {
+          "text": "Rest and recover",
+          "target": "rest_12"
+        }
+      ]
+    },
+    "treasure_12": {
+      "background": "treasure_scene",
+      "text": "You search for treasure and find valuable items!",
+      "rewards": {
+        "gold": 34
+      },
+      "choices": [
+        {
+          "text": "Continue adventure",
+          "target": "adventure_page_13"
+        }
+      ]
+    },
+    "rest_12": {
+      "background": "rest_area",
+      "text": "You take time to rest and recover your strength.",
+      "rewards": {
+        "healing": 10
+      },
+      "choices": [
+        {
+          "text": "Continue refreshed",
+          "target": "adventure_page_13"
+        }
+      ]
+    },
+    "adventure_page_13": {
+      "background": "adventure_scene_13",
+      "text": "Adventure continues at location 13. You face new challenges and discoveries here.",
+      "choices": [
+        {
+          "text": "Continue exploring",
+          "target": "adventure_page_14"
+        },
+        {
+          "text": "Search for treasure",
+          "target": "treasure_13"
+        },
+        {
+          "text": "Rest and recover",
+          "target": "rest_13"
+        }
+      ]
+    },
+    "treasure_13": {
+      "background": "treasure_scene",
+      "text": "You search for treasure and find valuable items!",
+      "rewards": {
+        "gold": 36
+      },
+      "choices": [
+        {
+          "text": "Continue adventure",
+          "target": "adventure_page_14"
+        }
+      ]
+    },
+    "rest_13": {
+      "background": "rest_area",
+      "text": "You take time to rest and recover your strength.",
+      "rewards": {
+        "healing": 10
+      },
+      "choices": [
+        {
+          "text": "Continue refreshed",
+          "target": "adventure_page_14"
+        }
+      ]
+    },
+    "adventure_page_14": {
+      "background": "adventure_scene_14",
+      "text": "Adventure continues at location 14. You face new challenges and discoveries here.",
+      "choices": [
+        {
+          "text": "Continue exploring",
+          "target": "adventure_page_15"
+        },
+        {
+          "text": "Search for treasure",
+          "target": "treasure_14"
+        },
+        {
+          "text": "Rest and recover",
+          "target": "rest_14"
+        }
+      ]
+    },
+    "treasure_14": {
+      "background": "treasure_scene",
+      "text": "You search for treasure and find valuable items!",
+      "rewards": {
+        "gold": 38
+      },
+      "choices": [
+        {
+          "text": "Continue adventure",
+          "target": "adventure_page_15"
+        }
+      ]
+    },
+    "rest_14": {
+      "background": "rest_area",
+      "text": "You take time to rest and recover your strength.",
+      "rewards": {
+        "healing": 10
+      },
+      "choices": [
+        {
+          "text": "Continue refreshed",
+          "target": "adventure_page_15"
+        }
+      ]
+    },
+    "adventure_page_15": {
+      "background": "adventure_scene_15",
+      "text": "Adventure continues at location 15. You face new challenges and discoveries here.",
+      "choices": [
+        {
+          "text": "Continue exploring",
+          "target": "adventure_page_16"
+        },
+        {
+          "text": "Search for treasure",
+          "target": "treasure_15"
+        },
+        {
+          "text": "Rest and recover",
+          "target": "rest_15"
+        }
+      ]
+    },
+    "treasure_15": {
+      "background": "treasure_scene",
+      "text": "You search for treasure and find valuable items!",
+      "rewards": {
+        "gold": 40
+      },
+      "choices": [
+        {
+          "text": "Continue adventure",
+          "target": "adventure_page_16"
+        }
+      ]
+    },
+    "rest_15": {
+      "background": "rest_area",
+      "text": "You take time to rest and recover your strength.",
+      "rewards": {
+        "healing": 10
+      },
+      "choices": [
+        {
+          "text": "Continue refreshed",
+          "target": "adventure_page_16"
+        }
+      ]
+    },
+    "adventure_page_16": {
+      "background": "adventure_scene_16",
+      "text": "Adventure continues at location 16. You face new challenges and discoveries here.",
+      "choices": [
+        {
+          "text": "Continue exploring",
+          "target": "adventure_page_17"
+        },
+        {
+          "text": "Search for treasure",
+          "target": "treasure_16"
+        },
+        {
+          "text": "Rest and recover",
+          "target": "rest_16"
+        }
+      ]
+    },
+    "treasure_16": {
+      "background": "treasure_scene",
+      "text": "You search for treasure and find valuable items!",
+      "rewards": {
+        "gold": 42
+      },
+      "choices": [
+        {
+          "text": "Continue adventure",
+          "target": "adventure_page_17"
+        }
+      ]
+    },
+    "rest_16": {
+      "background": "rest_area",
+      "text": "You take time to rest and recover your strength.",
+      "rewards": {
+        "healing": 10
+      },
+      "choices": [
+        {
+          "text": "Continue refreshed",
+          "target": "adventure_page_17"
+        }
+      ]
+    },
+    "adventure_page_17": {
+      "background": "adventure_scene_17",
+      "text": "Adventure continues at location 17. You face new challenges and discoveries here.",
+      "choices": [
+        {
+          "text": "Continue exploring",
+          "target": "adventure_page_18"
+        },
+        {
+          "text": "Search for treasure",
+          "target": "treasure_17"
+        },
+        {
+          "text": "Rest and recover",
+          "target": "rest_17"
+        }
+      ]
+    },
+    "treasure_17": {
+      "background": "treasure_scene",
+      "text": "You search for treasure and find valuable items!",
+      "rewards": {
+        "gold": 44
+      },
+      "choices": [
+        {
+          "text": "Continue adventure",
+          "target": "adventure_page_18"
+        }
+      ]
+    },
+    "rest_17": {
+      "background": "rest_area",
+      "text": "You take time to rest and recover your strength.",
+      "rewards": {
+        "healing": 10
+      },
+      "choices": [
+        {
+          "text": "Continue refreshed",
+          "target": "adventure_page_18"
+        }
+      ]
+    },
+    "adventure_page_18": {
+      "background": "adventure_scene_18",
+      "text": "Adventure continues at location 18. You face new challenges and discoveries here.",
+      "choices": [
+        {
+          "text": "Continue exploring",
+          "target": "adventure_page_19"
+        },
+        {
+          "text": "Search for treasure",
+          "target": "treasure_18"
+        },
+        {
+          "text": "Rest and recover",
+          "target": "rest_18"
+        }
+      ]
+    },
+    "treasure_18": {
+      "background": "treasure_scene",
+      "text": "You search for treasure and find valuable items!",
+      "rewards": {
+        "gold": 46
+      },
+      "choices": [
+        {
+          "text": "Continue adventure",
+          "target": "adventure_page_19"
+        }
+      ]
+    },
+    "rest_18": {
+      "background": "rest_area",
+      "text": "You take time to rest and recover your strength.",
+      "rewards": {
+        "healing": 10
+      },
+      "choices": [
+        {
+          "text": "Continue refreshed",
+          "target": "adventure_page_19"
+        }
+      ]
+    },
+    "adventure_page_19": {
+      "background": "adventure_scene_19",
+      "text": "Adventure continues at location 19. You face new challenges and discoveries here.",
+      "choices": [
+        {
+          "text": "Continue exploring",
+          "target": "adventure_page_20"
+        },
+        {
+          "text": "Search for treasure",
+          "target": "treasure_19"
+        },
+        {
+          "text": "Rest and recover",
+          "target": "rest_19"
+        }
+      ]
+    },
+    "treasure_19": {
+      "background": "treasure_scene",
+      "text": "You search for treasure and find valuable items!",
+      "rewards": {
+        "gold": 48
+      },
+      "choices": [
+        {
+          "text": "Continue adventure",
+          "target": "adventure_page_20"
+        }
+      ]
+    },
+    "rest_19": {
+      "background": "rest_area",
+      "text": "You take time to rest and recover your strength.",
+      "rewards": {
+        "healing": 10
+      },
+      "choices": [
+        {
+          "text": "Continue refreshed",
+          "target": "adventure_page_20"
+        }
+      ]
+    },
+    "adventure_page_20": {
+      "background": "adventure_scene_20",
+      "text": "Adventure continues at location 20. You face new challenges and discoveries here.",
+      "choices": [
+        {
+          "text": "Continue exploring",
+          "target": "adventure_page_1"
+        },
+        {
+          "text": "Search for treasure",
+          "target": "treasure_20"
+        },
+        {
+          "text": "Rest and recover",
+          "target": "rest_20"
+        }
+      ]
+    },
+    "treasure_20": {
+      "background": "treasure_scene",
+      "text": "You search for treasure and find valuable items!",
+      "rewards": {
+        "gold": 50
+      },
+      "choices": [
+        {
+          "text": "Continue adventure",
+          "target": "adventure_page_1"
+        }
+      ]
+    },
+    "rest_20": {
+      "background": "rest_area",
+      "text": "You take time to rest and recover your strength.",
+      "rewards": {
+        "healing": 10
+      },
+      "choices": [
+        {
+          "text": "Continue refreshed",
+          "target": "adventure_page_1"
+        }
+      ]
+    }
+  }
+}

@@ -1,5 +1,157 @@
 {
+  "name": "javascript-distributed-story",
+  "version": "2.0.0",
+  "description": "Advanced interactive text-based RPG story system with AI-powered narrative generation, combat mechanics, and dynamic storytelling",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node run_story.js",
+    "dev": "nodemon run_story.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "build": "npm run lint && npm run test",
+    "generate": "node auto_story_generator.js",
+    "generate:web": "node create_web_enhanced_story.js",
+    "generate:rich": "node generate_rich_story.js",
+    "generate:interesting": "node create_interesting_story.js",
+    "generate:mystery": "node create_interesting_story.js mystery",
+    "generate:romance": "node create_interesting_story.js romance",
+    "generate:epic": "node create_interesting_story.js epic",
+    "generate:space": "node create_interesting_story.js space",
+    "generate:quick": "node create_interesting_story.js quick",
+    "generate:horror": "node create_interesting_story.js horror",
+    "generate:comedy": "node create_interesting_story.js comedy",
+    "generate:random": "node create_interesting_story.js random",
+    "generate:openworld": "node create_open_world.js",
+    "generate:fantasy": "node create_open_world.js fantasy_kingdom",
+    "generate:space-station": "node create_open_world.js space_station",
+    "generate:apocalypse": "node create_open_world.js post_apocalyptic",
+    "generate:steampunk": "node create_open_world.js steampunk_city",
+    "generate:underwater": "node create_open_world.js underwater_realm",
+    "generate:skylands": "node create_open_world.js floating_islands",
+    "test:systems": "node test_systems.js",
+    "test:combat": "node lib/EnhancedCombatSystem.js",
+    "test:backpack": "node test_systems.js",
+    "play:simple": "node story_combat.js",
+    "play": "node run_story.js",
+    "play:latest": "python play_latest.py",
+    "play:choice": "python play_story_choice.py",
+    "combat:demo": "node show_combat_bar.js",
+    "combat:simulate": "node simulate_combat.js",
+    "docs": "jsdoc -c jsdoc.conf.json",
+    "docs:serve": "http-server docs -p 8080",
+    "setup": "npm install && npm run build",
+    "clean": "rimraf node_modules dist coverage docs",
+    "precommit": "npm run lint && npm run test"
+  },
+  "keywords": [
+    "rpg",
+    "interactive-fiction",
+    "story-generator",
+    "ai",
+    "narrative",
+    "game",
+    "text-adventure",
+    "llm",
+    "claude",
+    "deepseek",
+    "combat-system",
+    "quest-system",
+    "javascript",
+    "node"
+  ],
+  "author": "Chris <chris@example.com>",
+  "license": "MIT",
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
   "dependencies": {
+    "chalk": "^5.3.0",
+    "inquirer": "^9.2.12",
+    "blessed": "^0.1.81",
+    "figlet": "^1.7.0",
+    "gradient-string": "^2.0.2",
+    "ora": "^7.0.1",
+    "cli-progress": "^3.12.0",
+    "commander": "^11.1.0",
+    "dotenv": "^16.3.1",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.4",
+    "ws": "^8.14.2",
+    "express": "^4.18.2",
+    "socket.io": "^4.7.4",
+    "node-fetch": "^3.3.2",
+    "axios": "^1.6.2",
+    "cheerio": "^1.0.0-rc.12",
+    "jsonschema": "^1.4.1",
+    "uuid": "^9.0.1",
+    "config": "^3.3.9",
+    "winston": "^3.11.0",
+    "node-cron": "^3.0.3",
     "claude": "^0.1.1"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.2",
+    "eslint": "^8.55.0",
+    "prettier": "^3.1.1",
+    "jsdoc": "^4.0.2",
+    "http-server": "^14.1.1",
+    "rimraf": "^5.0.5",
+    "@types/node": "^20.10.5",
+    "typescript": "^5.3.3",
+    "ts-node": "^10.9.2",
+    "supertest": "^6.3.3",
+    "sinon": "^17.0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourname/javascript-distributed-story.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourname/javascript-distributed-story/issues"
+  },
+  "homepage": "https://github.com/yourname/javascript-distributed-story#readme",
+  "jest": {
+    "testEnvironment": "node",
+    "collectCoverageFrom": [
+      "*.js",
+      "external/*.js",
+      "!node_modules/**",
+      "!stories/**",
+      "!config/**",
+      "!docs/**"
+    ],
+    "coverageDirectory": "coverage",
+    "coverageReporters": ["text", "lcov", "html"]
+  },
+  "prettier": {
+    "semi": true,
+    "trailingComma": "es5",
+    "singleQuote": true,
+    "printWidth": 100,
+    "tabWidth": 2
+  },
+  "eslintConfig": {
+    "env": {
+      "node": true,
+      "es2022": true,
+      "jest": true
+    },
+    "extends": ["eslint:recommended"],
+    "parserOptions": {
+      "ecmaVersion": "latest",
+      "sourceType": "module"
+    },
+    "rules": {
+      "no-console": "off",
+      "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }]
+    }
   }
 }

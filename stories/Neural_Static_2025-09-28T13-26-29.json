@@ -1,0 +1,827 @@
+{
+  "id": "generated_story",
+  "title": "Neural Static",
+  "start_page_id": "start",
+  "pages": {
+    "start": {
+      "id": "start",
+      "text": "You're a detective in a neon-lit metropolis investigating corporate espionage.",
+      "background_id": "cyber_city_rain",
+      "prompts": [
+        {
+          "text": "Investigate the situation",
+          "target_id": "investigate",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        },
+        {
+          "text": "Prepare for action",
+          "target_id": "prepare",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        },
+        {
+          "text": "Seek help from others",
+          "target_id": "seek_help",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false,
+      "quest_triggers": null,
+      "quest_variants": null,
+      "npcs": [],
+      "rewards": null,
+      "combat": null
+    },
+    "romantic_encounter": {
+      "id": "romantic_encounter",
+      "text": "A captivating figure turns to you with eyes that seem to hold ancient secrets. 'I've been waiting for someone like you,' they say with a smile that makes your heart race.",
+      "background_id": "tavern_fireplace",
+      "prompts": [
+        {
+          "text": "Offer to buy them a drink and learn more",
+          "target_id": "romantic_conversation",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        },
+        {
+          "text": "Ask if they'd like to join your adventure",
+          "target_id": "romantic_partnership",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        },
+        {
+          "text": "Politely excuse yourself and explore elsewhere",
+          "target_id": "explore",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false,
+      "quest_triggers": null,
+      "quest_variants": null,
+      "npcs": [],
+      "rewards": null,
+      "combat": null
+    },
+    "romantic_conversation": {
+      "id": "romantic_conversation",
+      "text": "Over wine and candlelight, you share stories of your past adventures. The connection between you grows stronger with each passing moment.",
+      "background_id": "tavern_intimate_table",
+      "prompts": [
+        {
+          "text": "Suggest continuing the evening somewhere more private",
+          "target_id": "romantic_deepening",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        },
+        {
+          "text": "Propose adventuring together tomorrow",
+          "target_id": "romantic_partnership",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false,
+      "quest_triggers": null,
+      "quest_variants": null,
+      "npcs": [],
+      "rewards": null,
+      "combat": null
+    },
+    "romantic_partnership": {
+      "id": "romantic_partnership",
+      "text": "Your new companion's hand feels warm in yours as you agree to face the dangers ahead together. With love as your motivation, you feel unstoppable.",
+      "background_id": "tavern_handshake",
+      "prompts": [
+        {
+          "text": "Begin the adventure as lovers",
+          "target_id": "explore_together",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        },
+        {
+          "text": "Take time to get to know each other better",
+          "target_id": "romantic_deepening",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false,
+      "quest_triggers": null,
+      "quest_variants": null,
+      "npcs": [],
+      "rewards": null,
+      "combat": null
+    },
+    "romantic_deepening": {
+      "id": "romantic_deepening",
+      "text": "In the quiet intimacy of shared space, you discover that this connection runs deeper than mere attraction. Your hearts beat in harmony.",
+      "background_id": "intimate_chamber",
+      "prompts": [
+        {
+          "text": "Confess your growing feelings",
+          "target_id": "love_confession",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        },
+        {
+          "text": "Focus on the adventure ahead",
+          "target_id": "explore_together",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false,
+      "quest_triggers": null,
+      "quest_variants": null,
+      "npcs": [],
+      "rewards": null,
+      "combat": null
+    },
+    "love_confession": {
+      "id": "love_confession",
+      "text": "Under the starlit sky, you both admit that this meeting feels like destiny. Your love story has only just begun, but it already feels eternal.",
+      "background_id": "moonlit_balcony",
+      "prompts": [
+        {
+          "text": "Begin your romantic adventure together",
+          "target_id": "explore_together",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false,
+      "quest_triggers": null,
+      "quest_variants": null,
+      "npcs": [],
+      "rewards": null,
+      "combat": null
+    },
+    "explore_together": {
+      "id": "explore_together",
+      "text": "Hand in hand, you venture forth together. Every challenge seems conquerable when faced with your beloved by your side.",
+      "background_id": "exploration_couple",
+      "prompts": [
+        {
+          "text": "Continue your romantic adventure",
+          "target_id": "start",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        },
+        {
+          "text": "Find a quiet place to rest together",
+          "target_id": "romantic_rest",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false,
+      "quest_triggers": null,
+      "quest_variants": null,
+      "npcs": [],
+      "rewards": null,
+      "combat": null
+    },
+    "romantic_rest": {
+      "id": "romantic_rest",
+      "text": "By the warmth of the campfire, you hold each other close. The adventure can wait - this moment of love is all that matters.",
+      "background_id": "cozy_campfire",
+      "prompts": [
+        {
+          "text": "Continue the journey with renewed passion",
+          "target_id": "start",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false,
+      "quest_triggers": null,
+      "quest_variants": null,
+      "npcs": [],
+      "rewards": null,
+      "combat": null
+    },
+    "explore": {
+      "id": "explore",
+      "text": "You venture forth alone and discover new challenges. Yet part of you wonders what might have been if you'd chosen companionship.",
+      "background_id": "exploration",
+      "prompts": [
+        {
+          "text": "Continue exploring solo",
+          "target_id": "start",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        },
+        {
+          "text": "Return to seek that mysterious stranger",
+          "target_id": "romantic_encounter",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false,
+      "quest_triggers": null,
+      "quest_variants": null,
+      "npcs": [],
+      "rewards": null,
+      "combat": null
+    },
+    "prepare": {
+      "id": "prepare",
+      "text": "You take time to ready yourself for the challenges ahead. Your preparations are interrupted by danger!",
+      "background_id": "preparation_area",
+      "prompts": [
+        {
+          "text": "Fight!",
+          "target_id": "combat_encounter_2",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        },
+        {
+          "text": "Flee to safety",
+          "target_id": "seek_help",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false,
+      "quest_triggers": null,
+      "quest_variants": null,
+      "npcs": [],
+      "rewards": null,
+      "combat": null
+    },
+    "adventure_page_1": {
+      "id": "adventure_page_1",
+      "text": "Adventure continues at location 1. You face new challenges and discoveries here.",
+      "background_id": "adventure_scene_1",
+      "prompts": [
+        {
+          "text": "Continue exploring",
+          "target_id": "adventure_page_2",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        },
+        {
+          "text": "Search for treasure",
+          "target_id": "treasure_1",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        },
+        {
+          "text": "Rest and recover",
+          "target_id": "rest_1",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false,
+      "quest_triggers": null,
+      "quest_variants": null,
+      "npcs": [],
+      "rewards": null,
+      "combat": null
+    },
+    "treasure_1": {
+      "id": "treasure_1",
+      "text": "You search for treasure and find valuable items!",
+      "background_id": "treasure_scene",
+      "prompts": [
+        {
+          "text": "Continue adventure",
+          "target_id": "adventure_page_2",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false,
+      "quest_triggers": null,
+      "quest_variants": null,
+      "npcs": [],
+      "rewards": null,
+      "combat": null
+    },
+    "rest_1": {
+      "id": "rest_1",
+      "text": "You take time to rest and recover your strength.",
+      "background_id": "rest_area",
+      "prompts": [
+        {
+          "text": "Continue refreshed",
+          "target_id": "adventure_page_2",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false,
+      "quest_triggers": null,
+      "quest_variants": null,
+      "npcs": [],
+      "rewards": null,
+      "combat": null
+    },
+    "adventure_page_2": {
+      "id": "adventure_page_2",
+      "text": "Adventure continues at location 2. You face new challenges and discoveries here.",
+      "background_id": "adventure_scene_2",
+      "prompts": [
+        {
+          "text": "Continue exploring",
+          "target_id": "adventure_page_3",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        },
+        {
+          "text": "Search for treasure",
+          "target_id": "treasure_2",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        },
+        {
+          "text": "Rest and recover",
+          "target_id": "rest_2",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false,
+      "quest_triggers": null,
+      "quest_variants": null,
+      "npcs": [],
+      "rewards": null,
+      "combat": null
+    },
+    "treasure_2": {
+      "id": "treasure_2",
+      "text": "You search for treasure and find valuable items!",
+      "background_id": "treasure_scene",
+      "prompts": [
+        {
+          "text": "Continue adventure",
+          "target_id": "adventure_page_3",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false,
+      "quest_triggers": null,
+      "quest_variants": null,
+      "npcs": [],
+      "rewards": null,
+      "combat": null
+    },
+    "rest_2": {
+      "id": "rest_2",
+      "text": "You take time to rest and recover your strength.",
+      "background_id": "rest_area",
+      "prompts": [
+        {
+          "text": "Continue refreshed",
+          "target_id": "adventure_page_3",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false,
+      "quest_triggers": null,
+      "quest_variants": null,
+      "npcs": [],
+      "rewards": null,
+      "combat": null
+    },
+    "adventure_page_3": {
+      "id": "adventure_page_3",
+      "text": "Adventure continues at location 3. You face new challenges and discoveries here.",
+      "background_id": "adventure_scene_3",
+      "prompts": [
+        {
+          "text": "Continue exploring",
+          "target_id": "adventure_page_1",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        },
+        {
+          "text": "Search for treasure",
+          "target_id": "treasure_3",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        },
+        {
+          "text": "Rest and recover",
+          "target_id": "rest_3",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false,
+      "quest_triggers": null,
+      "quest_variants": null,
+      "npcs": [],
+      "rewards": null,
+      "combat": null
+    },
+    "treasure_3": {
+      "id": "treasure_3",
+      "text": "You search for treasure and find valuable items!",
+      "background_id": "treasure_scene",
+      "prompts": [
+        {
+          "text": "Continue adventure",
+          "target_id": "adventure_page_1",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false,
+      "quest_triggers": null,
+      "quest_variants": null,
+      "npcs": [],
+      "rewards": null,
+      "combat": null
+    },
+    "rest_3": {
+      "id": "rest_3",
+      "text": "You take time to rest and recover your strength.",
+      "background_id": "rest_area",
+      "prompts": [
+        {
+          "text": "Continue refreshed",
+          "target_id": "adventure_page_1",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false,
+      "quest_triggers": null,
+      "quest_variants": null,
+      "npcs": [],
+      "rewards": null,
+      "combat": null
+    },
+    "investigate": {
+      "id": "investigate",
+      "text": "You carefully examine your surroundings and discover important clues. Suddenly, you hear movement nearby!",
+      "background_id": "investigation_scene",
+      "prompts": [
+        {
+          "text": "Face the threat",
+          "target_id": "combat_encounter_1",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        },
+        {
+          "text": "Try to avoid conflict",
+          "target_id": "prepare",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false,
+      "quest_triggers": null,
+      "quest_variants": null,
+      "npcs": [],
+      "rewards": null,
+      "combat": null
+    },
+    "seek_help": {
+      "id": "seek_help",
+      "text": "You find helpful allies who provide valuable assistance. Together, you face new challenges.",
+      "background_id": "ally_meeting",
+      "prompts": [
+        {
+          "text": "Continue the adventure",
+          "target_id": "start",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false,
+      "quest_triggers": null,
+      "quest_variants": null,
+      "npcs": [],
+      "rewards": null,
+      "combat": null
+    },
+    "combat_encounter_1": {
+      "id": "combat_encounter_1",
+      "text": "A Bandit blocks your path! Prepare for battle!",
+      "background_id": "battle_scene",
+      "prompts": [
+        {
+          "text": "Attack!",
+          "target_id": "combat_timing",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false,
+      "quest_triggers": null,
+      "quest_variants": null,
+      "npcs": [],
+      "rewards": null,
+      "combat": null
+    },
+    "combat_encounter_2": {
+      "id": "combat_encounter_2",
+      "text": "A fierce Beast appears! This will be a tough fight!",
+      "background_id": "battle_scene",
+      "prompts": [
+        {
+          "text": "Engage in combat!",
+          "target_id": "combat_timing",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false,
+      "quest_triggers": null,
+      "quest_variants": null,
+      "npcs": [],
+      "rewards": null,
+      "combat": null
+    },
+    "victory_1": {
+      "id": "victory_1",
+      "text": "You have defeated the Bandit! You feel stronger and find some treasure.",
+      "background_id": "victory_scene",
+      "prompts": [
+        {
+          "text": "Continue exploring",
+          "target_id": "start",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false,
+      "quest_triggers": null,
+      "quest_variants": null,
+      "npcs": [],
+      "rewards": null,
+      "combat": null
+    },
+    "victory_2": {
+      "id": "victory_2",
+      "text": "Incredible! You have bested the mighty Beast! You gain valuable rewards.",
+      "background_id": "victory_scene",
+      "prompts": [
+        {
+          "text": "Celebrate your victory",
+          "target_id": "start",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false,
+      "quest_triggers": null,
+      "quest_variants": null,
+      "npcs": [],
+      "rewards": null,
+      "combat": null
+    },
+    "defeat": {
+      "id": "defeat",
+      "text": "You have been defeated, but you manage to escape with your life. You retreat to safety to recover.",
+      "background_id": "defeat_scene",
+      "prompts": [
+        {
+          "text": "Try again",
+          "target_id": "start",
+          "requirements": {},
+          "loop_type": null,
+          "triggers_loop": false,
+          "quest_interaction": false,
+          "quest_context": null,
+          "combat_encounter": false
+        }
+      ],
+      "page_number": null,
+      "loop_number": null,
+      "is_loop_decision": false,
+      "quest_triggers": null,
+      "quest_variants": null,
+      "npcs": [],
+      "rewards": null,
+      "combat": null
+    }
+  }
+}
