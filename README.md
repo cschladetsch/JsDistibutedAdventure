@@ -52,12 +52,8 @@ An advanced interactive text-based RPG story system with AI-powered narrative ge
 ### Installation
 
 ```bash
-# Clone the repository
-git clone https://github.com/yourname/javascript-distributed-story.git
-cd javascript-distributed-story
-
 # Install dependencies
-npm install
+npm install -i requirements.txt
 
 # Set up environment variables
 cp .env.example .env
@@ -70,9 +66,7 @@ npm start
 ### First Run
 
 ```bash
-# 🎯 QUICK START - Play the timing combat game
-npm run play:simple
-
+npm -i 
 # Generate different story types
 npm run generate:random     # Random interesting story
 npm run generate:mystery    # Detective/puzzle story
@@ -236,5 +230,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 **Made with ❤️ for interactive storytelling enthusiasts**
+
 
 *Transform your imagination into playable adventures!*
