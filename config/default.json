@@ -6,11 +6,11 @@
     "host": "localhost"
   },
   "story": {
-    "defaultLength": 20,
-    "maxLength": 100,
-    "contentRating": "PG-13",
+    "defaultLength": 300,
+    "maxLength": 2000,
+    "contentRating": "X",
     "enableWebEnhancement": true,
-    "enableXRatedContent": false,
+    "enableXRatedContent": true,
     "autoSaveInterval": 300000,
     "backupCount": 5
   },
