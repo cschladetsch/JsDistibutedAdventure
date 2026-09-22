@@ -1,0 +1,4 @@
+title: Interactive Story System
+description: A text-based interactive story system with RPG elements: branching narrative with meaningful choices, a skill-based combat timing system, and dynamic story generation via an LLM.
+theme: null
+markdown: kramdown
